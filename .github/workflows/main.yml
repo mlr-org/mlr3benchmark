@@ -1,0 +1,36 @@
+# copied from mlr3proba (thanks @pat-s)
+
+on:
+  push:
+  pull_request:
+  # for now, CRON jobs only run on the default branch of the repo (i.e. usually on master)
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron: "0 4 * * *"
+
+name: R CMD Check via {tic}
+
+jobs:
+  R-CMD-check:
+    runs-on: ${{ matrix.config.os }}
+
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          # comment out lines if you do not want to build on certain platforms
+          - { os: windows-latest, r: "release" }
+          - { os: macOS-latest, r: "release" }
+          - { os: macOS-latest, r: "devel" }
+          - { os: ubuntu-latest, r: "release" }
+
+    env:
+      # otherwise remotes::fun() errors cause the build to fail. Example: Unavailability of binaries
+      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
+      CRAN: ${{ matrix.config.cran }}
+      # we are not allowed to write to ~/.ccache on GH Actions
+      # setting some ccache options
+      CCACHE_BASEDIR: ${{ GITHUB.WORKSPACE }}
+      CCACHE_DIR: ${{ GITHUB.WORKSPACE }}/.ccache
