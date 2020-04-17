@@ -1,4 +1,4 @@
-do_package_checks(error_on = "warning")
+do_package_checks(error_on = "warning", codecov = FALSE)
 
 if (ci_on_ghactions() && ci_has_env("BUILD_PKGDOWN")) {
   # creates pkgdown site and pushes to gh-pages branch
