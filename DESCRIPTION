@@ -24,7 +24,10 @@ Imports:
     paradox,
     R6
 Suggests:
-    testthat
+    ggplot2,
+    reshape2,
+    testthat,
+    xgboost
 Encoding: UTF-8
 NeedsCompilation: no
 Roxygen: list(markdown = TRUE)
