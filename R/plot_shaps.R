@@ -138,7 +138,7 @@ plot_shap_summary <- function(shaps, low = "blue", high = "red",
 }
 
 plot_shap_importance <- function(shaps, relative = TRUE, bar_width = 0.4,
-                                 low = "blue", high = "red",
+                                 low = "blue", high = "red", order = TRUE,
                                  legend.position = "none",
                                  legend.w = 0.5, legend.h = 10,
                                  legend_limit = NULL, xlim = NULL,
@@ -151,6 +151,11 @@ plot_shap_importance <- function(shaps, relative = TRUE, bar_width = 0.4,
 
   if (relative) {
     agg$Shap = (agg$Shap/sum(agg$Shap))*100
+  }
+
+  if (order) {
+    agg = agg[order(agg$Shap, decreasing = FALSE), ]
+    agg$Var = factor(agg$Var, levels = agg$Var)
   }
 
   if (is.null(legend_limit)) {
