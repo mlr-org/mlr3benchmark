@@ -298,8 +298,8 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
   )
 )
 
-.plot_crittdiff = function(obj, meas, ...) {
-  obj = obj$crit_differences(meas, ...)
+.plot_crittdiff = function(obj, meas, p.value, ...) {
+  obj = obj$crit_differences(meas = meas, p.value = p.value, ...)
 
   # Plot descriptive lines and learner names
   p = ggplot(obj$data)
@@ -388,27 +388,50 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 #' significantly different learners. For `test = "bd"` an interval is drawn around the algorithm
 #' selected as a baseline and any learner within this interval is not significantly different
 #' from the baseline.
+#' * `"fn"`: Plots post-hoc Friedman-Nemenyi by first calling `[BenchmarkAggr]$friedman_posthoc`
+#' and plotting significant pairs in coloured squares and leaving non-significant pairs blank.
 #'
 #' @param obj [BenchmarkAggr]
 #' @param type `(character(1))` \cr Type of plot, see description.
 #' @param meas `(character(1))` \cr Measure to plot, should be in `obj$measures`, can be `NULL` if
 #' only one measure is in `obj`.
 #' @param level `(numeric(1))` \cr Confidence level for error bars for `type = "mean"`
+#' @param p.value `(numeric(1))` \cr What value should be considered significant for
+#' `type = "cd"` and `type = "fn"`>
 #' @param ... `ANY` \cr Additional arguments passed to `[BenchmarkAggr]$crit_differences`.
 #'
 #' @references Janez Demsar, Statistical Comparisons of Classifiers over
 #' Multiple Data Sets, JMLR, 2006
 #'
+#' @examples
+#' library(mlr3)
+#' library(mlr3learners)
+#' set.seed(1)
+#' task = tsks(c("iris", "sonar", "wine", "zoo"))
+#' learns = lrns(c("classif.featureless", "classif.ranger", "classif.xgboost"))
+#' bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 3)))
+#' obj = as.BenchmarkAggr(bm)
+#'
+#' # mean and error bars
+#' autoplot(obj, type = "mean")
+#'
+#' # critical differences
+#' autoplot(obj, type = "cd")
+#'
+#' # post-hoc friedman-nemenyi
+#' autoplot(obj, type = "fn")
+#'
 #' @export
-autoplot.BenchmarkAggr = function(obj, type = c("mean", "cd"), meas = NULL, level = 0.95, ...) {
+autoplot.BenchmarkAggr = function(obj, type = c("mean", "cd", "fn"), meas = NULL, level = 0.95,
+                                  p.value = 0.05, ...) {
 
   type = match.arg(type)
 
   meas = .check_meas(obj, meas)
 
   if (type == "cd") {
-    .plot_crittdiff(obj, meas, ...)
-  } else {
+    .plot_crittdiff(obj, meas, p.value, ...)
+  } else if (type == "mean") {
     if (obj$ntasks < 2) {
       stop("At least two tasks required.")
     }
@@ -420,6 +443,27 @@ autoplot.BenchmarkAggr = function(obj, type = c("mean", "cd"), meas = NULL, leve
       geom_errorbar(aes(ymin = lower, ymax = upper),
                     width = .5) +
       geom_point()
+  } else if (type == "fn") {
+
+    p = tryCatch(obj$friedman_posthoc(meas)$p.value,
+      warning = function(w) stop("Global Friedman test non-significant, try type = 'mean' instead.")) # nolint
+
+    p = reshape2::melt(p)
+    p$value[is.na(p$value)] = 1
+    p$value = factor(ifelse(p$value < p.value, "0", "1"))
+    ggplot(data = p, aes(x = Var1,y = Var2, fill = value)) +
+      geom_tile(color = "black", size = 0.5) +
+      scale_fill_manual(name = "col",
+                          values = c("0" = "red", "1" = "white"),
+                          labels = c("0", "1"),
+                        aesthetics = c("colour", "fill")) +
+      theme(axis.title = element_blank(),
+            axis.text.y = element_text(angle = 45),
+            axis.text.x = element_text(angle = 45, vjust = 0.8, hjust = 0.7),
+            panel.grid = element_blank(),
+            panel.background = element_rect(fill = "white"),
+            legend.position = "none") +
+      labs(title = paste0("Pairwise Nemenyi post-hoc of ", meas))
   }
 
 }

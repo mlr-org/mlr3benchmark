@@ -4,7 +4,14 @@
 \alias{autoplot.BenchmarkAggr}
 \title{Plots for BenchmarkAggr}
 \usage{
-\method{autoplot}{BenchmarkAggr}(obj, type = c("mean", "cd"), meas = NULL, level = 0.95, ...)
+\method{autoplot}{BenchmarkAggr}(
+  obj,
+  type = c("mean", "cd", "fn"),
+  meas = NULL,
+  level = 0.95,
+  p.value = 0.05,
+  ...
+)
 }
 \arguments{
 \item{obj}{\link{BenchmarkAggr}}
@@ -15,6 +22,9 @@
 only one measure is in \code{obj}.}
 
 \item{level}{\code{(numeric(1))} \cr Confidence level for error bars for \code{type = "mean"}}
+
+\item{p.value}{\code{(numeric(1))} \cr What value should be considered significant for
+\code{type = "cd"} and \code{type = "fn"}>}
 
 \item{...}{\code{ANY} \cr Additional arguments passed to \verb{[BenchmarkAggr]$crit_differences}.}
 }
@@ -31,7 +41,28 @@ For \code{test = "nemenyi"} a bar is drawn, connecting all groups of not
 significantly different learners. For \code{test = "bd"} an interval is drawn around the algorithm
 selected as a baseline and any learner within this interval is not significantly different
 from the baseline.
+\item \code{"fn"}: Plots post-hoc Friedman-Nemenyi by first calling \verb{[BenchmarkAggr]$friedman_posthoc}
+and plotting significant pairs in coloured squares and leaving non-significant pairs blank.
 }
+}
+\examples{
+library(mlr3)
+library(mlr3learners)
+set.seed(1)
+task = tsks(c("iris", "sonar", "wine", "zoo"))
+learns = lrns(c("classif.featureless", "classif.ranger", "classif.xgboost"))
+bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 3)))
+obj = as.BenchmarkAggr(bm)
+
+# mean and error bars
+autoplot(obj, type = "mean")
+
+# critical differences
+autoplot(obj, type = "cd")
+
+# post-hoc friedman-nemenyi
+autoplot(obj, type = "fn")
+
 }
 \references{
 Janez Demsar, Statistical Comparisons of Classifiers over
