@@ -4,3 +4,4 @@
 ^tic\.R$
 ^LICENSE$
 ^\.ccache$
+^codecov\.yml$
