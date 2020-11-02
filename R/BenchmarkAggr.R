@@ -36,9 +36,20 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' and at least one measure (numeric).
     initialize = function(dt) {
       dt = as.data.table(dt)
+
       # at the very least should include task_id, learner_id, and one measure
-      # FIXME - Need check that at least one measure included
       checkmate::assert(all(c("task_id", "learner_id") %in% colnames(dt)))
+
+      # TODO - The line below could be removed if there is a use for this extra data,
+      # for now there isn't in this object.
+      dt = subset(dt, select = setdiff(colnames(dt),
+                            c("nr", "task", "learner", "resampling", "resampling_id",
+                              "iteration", "prediction", "resample_result", "iters")))
+
+      if (ncol(dt) < 3) {
+        stop("At least one measure must be included in `dt`.")
+      }
+
       dt$task_id = factor(dt$task_id)
       dt$learner_id = factor(dt$learner_id)
       private$.dt = dt
@@ -281,9 +292,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     tasks = function() as.character(unique(private$.dt$task_id)),
     #' @field measures `(character())` \cr Unique measure names.
     measures = function() {
-      as.character(setdiff(colnames(private$.dt),
-              c("nr", "task", "task_id", "learner", "learner_id", "resampling", "resampling_id",
-                "iteration", "prediction", "resample_result", "iters")))
+      setdiff(colnames(private$.dt), c("task_id", "learner_id"))
     },
     #' @field nlrns `(integers())` \cr Number of learners.
     nlrns = function() length(self$learners),
@@ -376,10 +385,12 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 #' @title Plots for BenchmarkAggr
 #'
 #' @description
-#' Generates plots for [BenchmarkAggr], depending on argument `type`:
+#' Generates plots for [BenchmarkAggr], all assume that there are multiple, independent, tasks.
+#' Choices depending on the argument `type`:
 #'
 #' * `"mean"` (default): Assumes there are at least two independent tasks. Plots the sample mean
 #' of the measure for all learners with error bars computed with the standard error of the mean.
+#' * `"box"`: Boxplots for each learners calculated over all tasks for a given measure.
 #' * `"cd"`: Critical difference plots (Demsar, 2006), uses the `$crit_differences` method from
 #' [BenchmarkAggr]. If a baseline is selected for the Bonferroni-Dunn test, the critical difference
 #' interval will be positioned around the baseline. If not, the best performing algorithm will be
@@ -422,7 +433,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 #' autoplot(obj, type = "fn")
 #'
 #' @export
-autoplot.BenchmarkAggr = function(obj, type = c("mean", "cd", "fn"), meas = NULL, level = 0.95,
+autoplot.BenchmarkAggr = function(obj, type = c("mean", "box", "cd", "fn"), meas = NULL, level = 0.95,
                                   p.value = 0.05, ...) {
 
   type = match.arg(type)
@@ -464,6 +475,10 @@ autoplot.BenchmarkAggr = function(obj, type = c("mean", "cd", "fn"), meas = NULL
             panel.background = element_rect(fill = "white"),
             legend.position = "none") +
       labs(title = paste0("Pairwise Nemenyi post-hoc of ", meas))
+  } else if (type == "box") {
+    ggplot(data = obj$data,
+           aes_string(x = "learner_id", y = meas)) +
+      geom_boxplot()
   }
 
 }

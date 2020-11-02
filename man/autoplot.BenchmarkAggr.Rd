@@ -6,7 +6,7 @@
 \usage{
 \method{autoplot}{BenchmarkAggr}(
   obj,
-  type = c("mean", "cd", "fn"),
+  type = c("mean", "box", "cd", "fn"),
   meas = NULL,
   level = 0.95,
   p.value = 0.05,
@@ -29,10 +29,12 @@ only one measure is in \code{obj}.}
 \item{...}{\code{ANY} \cr Additional arguments passed to \verb{[BenchmarkAggr]$crit_differences}.}
 }
 \description{
-Generates plots for \link{BenchmarkAggr}, depending on argument \code{type}:
+Generates plots for \link{BenchmarkAggr}, all assume that there are multiple, independent, tasks.
+Choices depending on the argument \code{type}:
 \itemize{
 \item \code{"mean"} (default): Assumes there are at least two independent tasks. Plots the sample mean
 of the measure for all learners with error bars computed with the standard error of the mean.
+\item \code{"box"}: Boxplots for each learners calculated over all tasks for a given measure.
 \item \code{"cd"}: Critical difference plots (Demsar, 2006), uses the \verb{$crit_differences} method from
 \link{BenchmarkAggr}. If a baseline is selected for the Bonferroni-Dunn test, the critical difference
 interval will be positioned around the baseline. If not, the best performing algorithm will be
