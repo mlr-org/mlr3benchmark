@@ -214,7 +214,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
       checkmate::assertNumeric(p.value, lower = 0, upper = 1, len = 1)
 
       # Get Rankmatrix, transpose and get mean ranks
-      mean.rank = rowMeans(self$rank_data(meas))
+      mean.rank = rowMeans(self$rank_data(meas, minimize = minimize))
       # Gather Info for plotting the descriptive part.
       df = data.frame(mean.rank,
                       learner_id = names(mean.rank),
