@@ -436,7 +436,9 @@ as.BenchmarkAggr.BenchmarkResult = function(obj, ...) BenchmarkAggr$new(obj$aggr
     if (obj$nmeas > 1) {
       stop("Multiple measures available but `meas` is NULL. Please specify a measure.")
     } else {
-      return(obj$measures)
+      meas = obj$measures
     }
   }
+
+  return(meas)
 }
