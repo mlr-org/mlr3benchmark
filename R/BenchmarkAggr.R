@@ -56,14 +56,14 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' @param meas `(character(1))` \cr
     #' Measure to rank the data against, should be in `$measures`. Can be `NULL` if only one measure
     #' in data.
-    #' @param minimise `(logical(1))` \cr
-    #' Should the measure be minimised? Default is `TRUE`.
+    #' @param minimize `(logical(1))` \cr
+    #' Should the measure be minimized? Default is `TRUE`.
     #' @param task `(character(1))` \cr
     #' If `NULL` then returns a matrix of ranks where columns are tasks and rows are
     #' learners, otherwise returns a one-column matrix of a specified task, should
     #' be in `$tasks`.
-    rank_data = function(meas, minimise = TRUE, task = NULL) {
-      meas = .check_meas(meas)
+    rank_data = function(meas, minimize = TRUE, task = NULL) {
+      meas = .check_meas(self, meas)
       df = subset(private$.dt, select = c("task_id", meas))
       lrns = self$learners
       nr = self$nlrns
@@ -144,7 +144,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' p.value for which the global test will be considered significant.
     friedman_posthoc = function(meas = NULL, p.value = 0.05) {
 
-      meas = .check_meas(meas)
+      meas = .check_meas(self, meas)
       checkmate::assertNumeric(p.value, lower = 0, upper = 1, len = 1)
       f.test = self$friedman_test(meas)
 
@@ -183,8 +183,8 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' @param meas `(character(1))` \cr
     #' Measure to rank the data against, should be in `$measures`. Can be `NULL` if only one measure
     #' in data.
-    #' @param minimise `(logical(1))` \cr
-    #' Should the measure be minimised? Default is `TRUE`.
+    #' @param minimize `(logical(1))` \cr
+    #' Should the measure be minimized? Default is `TRUE`.
     #' @param p.value `(numeric(1))` \cr
     #' p.value for which the global test will be considered significant.
     #' @param baseline `(character(1))` \cr
@@ -195,10 +195,10 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' Nemenyi (`nemenyi`) tests? Default is Bonferroni-Dunn.
     #' @references Janez Demsar, Statistical Comparisons of Classifiers over
     #' Multiple Data Sets, JMLR, 2006
-    crit_differences = function(meas = NULL, minimise = TRUE, p.value = 0.05, baseline = NULL,
+    crit_differences = function(meas = NULL, minimize = TRUE, p.value = 0.05, baseline = NULL,
                                 test = c("bd", "nemenyi")) {
 
-      meas = .check_meas(meas)
+      meas = .check_meas(self, meas)
       test = match.arg(test)
       checkmate::assertNumeric(p.value, lower = 0, upper = 1, len = 1)
 
@@ -301,7 +301,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 .plot_crittdiff = function(obj, meas, ...) {
   obj = obj$crit_differences(meas, ...)
 
-  # Plot descritptive lines and learner names
+  # Plot descriptive lines and learner names
   p = ggplot(obj$data)
   # Point at mean rank
   p = p + geom_point(aes_string("mean.rank", 0, colour = "learner_id"), size = 3)
@@ -336,10 +336,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 
   # Plot the critical difference bars
   if (obj$cd.info$test == "bd") {
-    if (!is.null(baseline)) {
-      checkmate::assert_choice(baseline, as.character(obj$data$learner_id))
-      cd.x = obj$data$mean.rank[obj$data$learner_id == baseline]
-    }
+    cd.x = obj$data$mean.rank[obj$data$learner_id == obj$baseline]
     # Add horizontal bar arround baseline
     p = p + annotate("segment", x = cd.x + cd, xend = cd.x - cd, y = cd.y, yend = cd.y,
                      alpha = 0.5, color = "darkgrey", size = 2)
@@ -361,7 +358,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
                            data = nemenyi.data, size = 2, color = "dimgrey", alpha = 0.9)
       # Add text (descriptive)
       p = p + annotate("text",
-                       label = stri_paste("Critical Difference =", round(cd, 2), sep = " "),
+                       label = paste("Critical Difference =", round(cd, 2), sep = " "),
                        y = max(obj$data$yend) + .1, x = mean(obj$data$mean.rank))
       # Add bar (descriptive)
       p = p + annotate("segment",
@@ -407,10 +404,10 @@ autoplot.BenchmarkAggr = function(obj, type = c("mean", "cd"), meas = NULL, leve
 
   type = match.arg(type)
 
-  meas = .check_meas(meas)
+  meas = .check_meas(obj, meas)
 
   if (type == "cd") {
-    .plot_crittdiff(obj, pretty.names, ...)
+    .plot_crittdiff(obj, meas, ...)
   } else {
     if (obj$ntasks < 2) {
       stop("At least two tasks required.")

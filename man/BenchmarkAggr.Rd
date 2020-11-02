@@ -112,17 +112,18 @@ Prints the internal data via \link[data.table:print.data.table]{data.table::prin
 \subsection{Method \code{rank_data()}}{
 Ranks the aggregated data given some measure.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BenchmarkAggr$rank_data(meas, minimise = TRUE, task = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{BenchmarkAggr$rank_data(meas, minimize = TRUE, task = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{meas}}{\code{(character(1))} \cr
-Measure to rank the data against, should be in \verb{$measures}.}
+Measure to rank the data against, should be in \verb{$measures}. Can be \code{NULL} if only one measure
+in data.}
 
-\item{\code{minimise}}{\code{(logical(1))} \cr
-Should the measure be minimised? Default is \code{TRUE}.}
+\item{\code{minimize}}{\code{(logical(1))} \cr
+Should the measure be minimized? Default is \code{TRUE}.}
 
 \item{\code{task}}{\code{(character(1))} \cr
 If \code{NULL} then returns a matrix of ranks where columns are tasks and rows are
@@ -163,14 +164,15 @@ Posthoc Friedman Nemenyi tests. Computed with
 \link[PMCMR:posthoc.friedman.nemenyi.test]{PMCMR::posthoc.friedman.nemenyi.test}. If global \verb{$friedman_test} is non-significant then
 this is returned and no post-hocs computed. Also returns critical difference
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BenchmarkAggr$friedman_posthoc(meas, p.value = 0.05)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{BenchmarkAggr$friedman_posthoc(meas = NULL, p.value = 0.05)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{meas}}{\code{(character(1))} \cr
-Measure to rank the data against, should be in \verb{$measures}.}
+Measure to rank the data against, should be in \verb{$measures}. Can be \code{NULL} if only one measure
+in data.}
 
 \item{\code{p.value}}{\code{(numeric(1))} \cr
 p.value for which the global test will be considered significant.}
@@ -186,8 +188,8 @@ Generate critical differences for a critical difference diagram.
 Primarily should be used internally by \link{autoplot.BenchmarkAggr}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BenchmarkAggr$crit_differences(
-  meas,
-  minimise = TRUE,
+  meas = NULL,
+  minimize = TRUE,
   p.value = 0.05,
   baseline = NULL,
   test = c("bd", "nemenyi")
@@ -198,10 +200,11 @@ Primarily should be used internally by \link{autoplot.BenchmarkAggr}.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{meas}}{\code{(character(1))} \cr
-Measure to rank the data against, should be in \verb{$measures}.}
+Measure to rank the data against, should be in \verb{$measures}. Can be \code{NULL} if only one measure
+in data.}
 
-\item{\code{minimise}}{\code{(logical(1))} \cr
-Should the measure be minimised? Default is \code{TRUE}.}
+\item{\code{minimize}}{\code{(logical(1))} \cr
+Should the measure be minimized? Default is \code{TRUE}.}
 
 \item{\code{p.value}}{\code{(numeric(1))} \cr
 p.value for which the global test will be considered significant.}
