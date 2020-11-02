@@ -15,7 +15,7 @@ available, which essentially wrap \verb{$aggregate.}
 }
 \examples{
 library(mlr3)
-task = tsk("boston_housing")
+task = tsks(c("boston_housing", "mtcars"))
 learns = lrns(c("regr.featureless", "regr.rpart"))
 bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
 
@@ -187,6 +187,7 @@ Primarily should be used internally by \link{autoplot.BenchmarkAggr}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BenchmarkAggr$crit_differences(
   meas,
+  minimise = TRUE,
   p.value = 0.05,
   baseline = NULL,
   test = c("bd", "nemenyi")
@@ -198,6 +199,9 @@ Primarily should be used internally by \link{autoplot.BenchmarkAggr}.
 \describe{
 \item{\code{meas}}{\code{(character(1))} \cr
 Measure to rank the data against, should be in \verb{$measures}.}
+
+\item{\code{minimise}}{\code{(logical(1))} \cr
+Should the measure be minimised? Default is \code{TRUE}.}
 
 \item{\code{p.value}}{\code{(numeric(1))} \cr
 p.value for which the global test will be considered significant.}

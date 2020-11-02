@@ -7,7 +7,7 @@
 #' available, which essentially wrap `$aggregate.`
 #' @examples
 #' library(mlr3)
-#' task = tsk("boston_housing")
+#' task = tsks(c("boston_housing", "mtcars"))
 #' learns = lrns(c("regr.featureless", "regr.rpart"))
 #' bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
 #'
@@ -178,6 +178,8 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' See references for details.
     #' @param meas `(character(1))` \cr
     #' Measure to rank the data against, should be in `$measures`.
+    #' @param minimise `(logical(1))` \cr
+    #' Should the measure be minimised? Default is `TRUE`.
     #' @param p.value `(numeric(1))` \cr
     #' p.value for which the global test will be considered significant.
     #' @param baseline `(character(1))` \cr
@@ -188,7 +190,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' Nemenyi (`nemenyi`) tests? Default is Bonferroni-Dunn.
     #' @references Janez Demsar, Statistical Comparisons of Classifiers over
     #' Multiple Data Sets, JMLR, 2006
-    crit_differences = function(meas, p.value = 0.05, baseline = NULL,
+    crit_differences = function(meas, minimise = TRUE, p.value = 0.05, baseline = NULL,
                                 test = c("bd", "nemenyi")) {
 
       test = match.arg(test)
@@ -290,7 +292,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
   )
 )
 
-autoplot.BenchmarkAggr = function(obj, type = "critdiff", pretty.names = TRUE, ...) {
+.plot_crittdiff = function(obj, ...) {
   obj = obj$crit_differences(...)
 
   # Plot descritptive lines and learner names
@@ -304,13 +306,9 @@ autoplot.BenchmarkAggr = function(obj, type = "critdiff", pretty.names = TRUE, .
   p = p + geom_segment(aes_string("mean.rank", "yend", xend = "xend",
                                   yend = "yend", color = "learner_id"), size = 1)
   # Plot Learner name
-  if (pretty.names) {
-    p = p + geom_text(aes_string("xend", "yend", label = "short_name", color = "learner_id",
-                                 hjust = "right"), vjust = -1)
-  } else {
-    p = p + geom_text(aes_string("xend", "yend", label = "learner_id", color = "learner_id",
-                                 hjust = "right"), vjust = -1)
-  }
+  p = p + geom_text(aes_string("xend", "yend", label = "learner_id", color = "learner_id",
+                               hjust = "right"), vjust = -1)
+
   p = p + xlab("Average Rank")
   # Change appearance
   p = p + scale_x_continuous(breaks = c(0:max(obj$data$xend)))
@@ -371,6 +369,44 @@ autoplot.BenchmarkAggr = function(obj, type = "critdiff", pretty.names = TRUE, .
     }
   }
   return(p)
+}
+#' @title Plots for BenchmarkAggr
+#'
+#' @description
+#' Generates plots for [BenchmarkAggr], depending on argument `type`:
+#'
+#' * `"mean"` (default): Assumes there are at least two independent tasks. Plots the sample mean
+#' of the measure for all learners with error bars computed with the standard error of the mean.
+#' * `"cd"`: Critical difference plots (Demsar, 2006), uses the `$crit_differences` method from
+#' [BenchmarkAggr].
+#'
+#' @param obj [BenchmarkAggr]
+#' @param type `(character(1))` \cr Type of plot, see description.
+#' @param level `(numeric(1))` \cr Confidence level for error bars for `type = "mean"`
+#' @param ... `ANY` \cr Additional arguments passed to `[BenchmarkAggr]$crit_differences`.
+#'
+#' @references Janez Demsar, Statistical Comparisons of Classifiers over
+#' Multiple Data Sets, JMLR, 2006
+autoplot.BenchmarkAggr = function(obj, type = c("cd", "mean"), level = 0.95, ...) {
+
+  type = match.arg(type)
+
+  if (type == "cd") {
+    .plot_crittdiff(obj, pretty.names, ...)
+  } else {
+    if (obj$ntasks < 2) {
+      stop("At least two tasks required.")
+    }
+    loss = aggregate(as.formula(paste0(meas, " ~ learner_id")), obj$data, mean)
+    se = aggregate(as.formula(paste0(meas, " ~ learner_id")), obj$data, sd)[, 2]/sqrt(obj$ntasks)
+    loss$lower = loss[, meas] - se * qnorm(1 - (1 - level)/2)
+    loss$upper = loss[, meas] + se * qnorm(1 - (1 - level)/2)
+    ggplot(data = loss, aes_string(x = "learner_id", y = meas)) +
+      geom_errorbar(aes(ymin = lower, ymax = upper),
+                    width = .5) +
+      geom_point()
+  }
+
 }
 
 #' @export
