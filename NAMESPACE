@@ -2,6 +2,7 @@
 
 S3method(as.BenchmarkAggr,BenchmarkResult)
 S3method(as.BenchmarkAggr,default)
+S3method(autoplot,BenchmarkAggr)
 export(BenchmarkAggr)
 export(as.BenchmarkAggr)
 import(checkmate)

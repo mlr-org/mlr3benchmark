@@ -54,7 +54,8 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 
     #' @description Ranks the aggregated data given some measure.
     #' @param meas `(character(1))` \cr
-    #' Measure to rank the data against, should be in `$measures`.
+    #' Measure to rank the data against, should be in `$measures`. Can be `NULL` if only one measure
+    #' in data.
     #' @param minimise `(logical(1))` \cr
     #' Should the measure be minimised? Default is `TRUE`.
     #' @param task `(character(1))` \cr
@@ -62,6 +63,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' learners, otherwise returns a one-column matrix of a specified task, should
     #' be in `$tasks`.
     rank_data = function(meas, minimise = TRUE, task = NULL) {
+      meas = .check_meas(meas)
       df = subset(private$.dt, select = c("task_id", meas))
       lrns = self$learners
       nr = self$nlrns
@@ -136,11 +138,13 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' [PMCMR::posthoc.friedman.nemenyi.test]. If global `$friedman_test` is non-significant then
     #' this is returned and no post-hocs computed. Also returns critical difference
     #' @param meas `(character(1))` \cr
-    #' Measure to rank the data against, should be in `$measures`.
+    #' Measure to rank the data against, should be in `$measures`. Can be `NULL` if only one measure
+    #' in data.
     #' @param p.value `(numeric(1))` \cr
     #' p.value for which the global test will be considered significant.
-    friedman_posthoc = function(meas, p.value = 0.05) {
+    friedman_posthoc = function(meas = NULL, p.value = 0.05) {
 
+      meas = .check_meas(meas)
       checkmate::assertNumeric(p.value, lower = 0, upper = 1, len = 1)
       f.test = self$friedman_test(meas)
 
@@ -177,7 +181,8 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' Where \eqn{q_\alpha} is based on the studentized range statistic.
     #' See references for details.
     #' @param meas `(character(1))` \cr
-    #' Measure to rank the data against, should be in `$measures`.
+    #' Measure to rank the data against, should be in `$measures`. Can be `NULL` if only one measure
+    #' in data.
     #' @param minimise `(logical(1))` \cr
     #' Should the measure be minimised? Default is `TRUE`.
     #' @param p.value `(numeric(1))` \cr
@@ -190,9 +195,10 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' Nemenyi (`nemenyi`) tests? Default is Bonferroni-Dunn.
     #' @references Janez Demsar, Statistical Comparisons of Classifiers over
     #' Multiple Data Sets, JMLR, 2006
-    crit_differences = function(meas, minimise = TRUE, p.value = 0.05, baseline = NULL,
+    crit_differences = function(meas = NULL, minimise = TRUE, p.value = 0.05, baseline = NULL,
                                 test = c("bd", "nemenyi")) {
 
+      meas = .check_meas(meas)
       test = match.arg(test)
       checkmate::assertNumeric(p.value, lower = 0, upper = 1, len = 1)
 
@@ -277,7 +283,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     measures = function() {
       as.character(setdiff(colnames(private$.dt),
               c("nr", "task", "task_id", "learner", "learner_id", "resampling", "resampling_id",
-                "iteration", "prediction")))
+                "iteration", "prediction", "resample_result", "iters")))
     },
     #' @field nlrns `(integers())` \cr Number of learners.
     nlrns = function() length(self$learners),
@@ -292,8 +298,8 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
   )
 )
 
-.plot_crittdiff = function(obj, ...) {
-  obj = obj$crit_differences(...)
+.plot_crittdiff = function(obj, meas, ...) {
+  obj = obj$crit_differences(meas, ...)
 
   # Plot descritptive lines and learner names
   p = ggplot(obj$data)
@@ -378,18 +384,30 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 #' * `"mean"` (default): Assumes there are at least two independent tasks. Plots the sample mean
 #' of the measure for all learners with error bars computed with the standard error of the mean.
 #' * `"cd"`: Critical difference plots (Demsar, 2006), uses the `$crit_differences` method from
-#' [BenchmarkAggr].
+#' [BenchmarkAggr]. If a baseline is selected for the Bonferroni-Dunn test, the critical difference
+#' interval will be positioned around the baseline. If not, the best performing algorithm will be
+#' chosen as baseline. Learners are drawn on the y-axis according to their average rank.
+#' For `test = "nemenyi"` a bar is drawn, connecting all groups of not
+#' significantly different learners. For `test = "bd"` an interval is drawn around the algorithm
+#' selected as a baseline and any learner within this interval is not significantly different
+#' from the baseline.
 #'
 #' @param obj [BenchmarkAggr]
 #' @param type `(character(1))` \cr Type of plot, see description.
+#' @param meas `(character(1))` \cr Measure to plot, should be in `obj$measures`, can be `NULL` if
+#' only one measure is in `obj`.
 #' @param level `(numeric(1))` \cr Confidence level for error bars for `type = "mean"`
 #' @param ... `ANY` \cr Additional arguments passed to `[BenchmarkAggr]$crit_differences`.
 #'
 #' @references Janez Demsar, Statistical Comparisons of Classifiers over
 #' Multiple Data Sets, JMLR, 2006
-autoplot.BenchmarkAggr = function(obj, type = c("cd", "mean"), level = 0.95, ...) {
+#'
+#' @export
+autoplot.BenchmarkAggr = function(obj, type = c("mean", "cd"), meas = NULL, level = 0.95, ...) {
 
   type = match.arg(type)
+
+  meas = .check_meas(meas)
 
   if (type == "cd") {
     .plot_crittdiff(obj, pretty.names, ...)
@@ -416,3 +434,12 @@ as.BenchmarkAggr.default = function(obj, ...) BenchmarkAggr$new(obj)
 #' @export
 as.BenchmarkAggr.BenchmarkResult = function(obj, ...) BenchmarkAggr$new(obj$aggregate(...))
 
+.check_meas = function(obj, meas) {
+  if (is.null(meas)) {
+    if (obj$nmeas > 1) {
+      stop("Multiple measures available but `meas` is NULL. Please specify a measure.")
+    } else {
+      return(obj$measures)
+    }
+  }
+}
