@@ -80,7 +80,7 @@ plot_shap_summary <- function(shaps, low = "blue", high = "red",
                               legend.h = 25, legend.w = 0.5,
                               show.mean = TRUE, mean.abs = TRUE, mean.round = 4,
                               show.legend = TRUE,
-                              ord = NULL) {
+                              ord = NULL, violin = FALSE) {
 
   shaps = shaps[complete.cases(shaps), ]
 
@@ -118,6 +118,10 @@ plot_shap_summary <- function(shaps, low = "blue", high = "red",
   } else {
     p = p + ggplot2::scale_color_gradient(low = low, high = high) +
       ggplot2::theme(legend.position = "none")
+  }
+
+  if (violin) {
+    p = p + geom_violin(alpha = 0, lwd = 1)
   }
 
 
@@ -278,3 +282,24 @@ plot_shap_interaction <- function(shaps, shap_feature, intX_feature,
   p
 
 }
+
+library(mlr3);library(mlr3proba);library(mlr3learners)
+library(ggplot2)
+learn = lrn("surv.xgboost")
+task = tsk("grace")
+learn$train(task)
+shaps=get_shaps(learn$model, task)
+plot_shap_summary(shaps, jitter_h = 0.2, violin = TRUE)
+
+shaps[, 3:5] = round(shaps[,3:5], 1)
+plot_shap_summary(shaps, jitter_h = 0.2, violin = TRUE)
+
+learn = lrn("surv.xgboost")
+task = tgen("simsurv")$generate(200)
+learn$train(task)
+shaps=get_shaps(learn$model, task)
+plot_shap_summary(shaps, jitter_h = 0.2, violin = TRUE)
+
+shaps[, 3:5] = round(shaps[,3:5], 2)
+plot_shap_summary(shaps, jitter_h = 0.2, violin = TRUE)
+
