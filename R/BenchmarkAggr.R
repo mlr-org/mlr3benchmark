@@ -271,7 +271,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
         nem.df = nem.df[nem.df$xend - nem.df$xstart > 0, ]
         # Y-value for bars is between 0.1 and 0..35 hardcoded
         # Descriptive lines for learners start at 0.5, 1.5, ...
-        nem.df$y = seq(from = 0.1, to = 0.35, length.out = dim(nem.df)[1])
+        nem.df$y = seq(from = 0.1, by = 0.2, length.out = dim(nem.df)[1])
         cd.info$nemenyi.data = as.data.frame(nem.df)
       }
 
@@ -343,43 +343,44 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
   cd.y = obj$cd.info$y
   cd = obj$cd.info$cd
 
+  # Add crit difference test (descriptive)
+  p = p + annotate("text",
+                   label = paste("Critical Difference =", round(cd, 2), sep = " "),
+                   y = max(obj$data$yend) + 0.8, x = mean(obj$data$mean.rank))
+  # Add bar (descriptive)
+  p = p + annotate("segment",
+                   x = mean(obj$data$mean.rank) - 0.5 * cd,
+                   xend = mean(obj$data$mean.rank) + 0.5 * cd,
+                   y = max(obj$data$yend) + 0.4,
+                   yend = max(obj$data$yend) + 0.4,
+                   size = 1.3, alpha = 0.9)
+
   # Plot the critical difference bars
   if (obj$cd.info$test == "bd") {
     cd.x = obj$data$mean.rank[obj$data$learner_id == obj$baseline]
-    # Add horizontal bar arround baseline
-    p = p + annotate("segment", x = cd.x + cd, xend = cd.x - cd, y = cd.y, yend = cd.y,
-                     alpha = 0.5, color = "darkgrey", size = 2)
-    # Add intervall limiting bar's
+    # Add horizontal bar around baseline
+    p = p + annotate("segment", x = cd.x + cd,
+                     xend = ifelse(cd.x - cd < 0, 0, cd.x - cd), y = cd.y, yend = cd.y,
+                     alpha = 0.9, color = "dimgrey", size = 1.3)
+    # Add interval limiting bar's
     p = p + annotate("segment", x = cd.x + cd, xend = cd.x + cd, y = cd.y - 0.05,
-                     yend = cd.y + 0.05, color = "darkgrey", size = 1)
+                     yend = cd.y + 0.05, color = "dimgrey", size = 1.3, alpha = 0.9)
     p = p + annotate("segment", x = cd.x - cd, xend = cd.x - cd, y = cd.y - 0.05,
-                     yend = cd.y + 0.05, color = "darkgrey", size = 1)
+                     yend = cd.y + 0.05, color = "dimgrey", size = 1.3, alpha = 0.9)
     # Add point at learner
-    p = p + annotate("point", x = cd.x, y = cd.y, alpha = 0.5)
-    # Add critical difference text
-    p = p + annotate("text", label = paste("Critical Difference =", round(cd, 2), sep = " "),
-                     x = cd.x, y = cd.y + 0.05)
+    p = p + annotate("point", x = cd.x, y = cd.y, alpha = 0.6, color = "black")
   } else {
     nemenyi.data = obj$cd.info$nemenyi.data
     if (!(nrow(nemenyi.data) == 0L)) {
       # Add connecting bars
       p = p + geom_segment(aes_string("xstart", "y", xend = "xend", yend = "y"),
-                           data = nemenyi.data, size = 2, color = "dimgrey", alpha = 0.9)
-      # Add text (descriptive)
-      p = p + annotate("text",
-                       label = paste("Critical Difference =", round(cd, 2), sep = " "),
-                       y = max(obj$data$yend) + .1, x = mean(obj$data$mean.rank))
-      # Add bar (descriptive)
-      p = p + annotate("segment",
-                       x = mean(obj$data$mean.rank) - 0.5 * cd,
-                       xend = mean(obj$data$mean.rank) + 0.5 * cd,
-                       y = max(obj$data$yend) + .2,
-                       yend = max(obj$data$yend) + .2,
-                       size = 2L)
+                           data = nemenyi.data, size = 1.3, color = "dimgrey", alpha = 0.9,
+                           )
     } else {
       message("No connecting bars to plot!")
     }
   }
+
   return(p)
 }
 #' @title Plots for BenchmarkAggr
@@ -474,7 +475,7 @@ autoplot.BenchmarkAggr = function(obj, type = c("mean", "box", "cd", "fn"), meas
             panel.grid = element_blank(),
             panel.background = element_rect(fill = "white"),
             legend.position = "none") +
-      labs(title = paste0("Pairwise Nemenyi post-hoc of ", meas))
+      labs(title = paste0("Pairwise Nemenyi Post-Hoc of ", meas))
   } else if (type == "box") {
     ggplot(data = obj$data,
            aes_string(x = "learner_id", y = meas)) +
