@@ -84,7 +84,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
       }
 
       if (!is.null(task)) {
-        df = subset(private$.dt, task_id == task)
+        df = subset(df, task_id == task)
         rdf = matrix(data.table::frank(subset(df, select = meas)), ncol = 1)
         colnames(rdf) = task
       } else {
