@@ -5,14 +5,14 @@ get_shaps <- function(model, task, data = NULL) {
 
   p = predict(model, data,
               predcontrib = T, approxcontrib = F)
-  p = p[,-ncol(p)]
+  p = p[, -ncol(p)]
 
   shaps = reshape2::melt(p)
   vars = reshape2::melt(data)
-  relTruth = reshape2::melt(apply(data, 2, function(x)
+  relTruth = reshape2::melt(apply(data, 2, function(x) # nolint
     (x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE))))
-  shap.frame = cbind(shaps, relTruth$value, vars$value)
-  colnames(shap.frame) = c("id", "Var", "Shap", "relTruth","Truth")
+  shap.frame = cbind(shaps, relTruth$value, vars$value) # nolint
+  colnames(shap.frame) = c("id", "Var", "Shap", "relTruth", "Truth")
 
   return(shap.frame)
 }
@@ -23,7 +23,7 @@ get_interaction_shaps <- function(model, task, data = NULL) {
 
   p = predict(model, data,
               predinteraction = TRUE)
-  p = p[,colnames(data),colnames(data)]
+  p = p[, colnames(data) ,colnames(data)]
 
   p = array(c(as.numeric(p), as.numeric(data)), dim = c(dim(p)[1:2], dim(p)[3] + 1),
             dimnames = list(NULL, colnames(data), c(colnames(data), "Truth")))
@@ -37,7 +37,7 @@ plot_shap_feature <- function(shaps, feature,
                               se = TRUE, xlab = feature,
                               smooth_color = "blue", smooth_fill = "lightblue",
                               smooth_lwd = 0.5, smooth_level = 0.95,
-                              points_color = "black"){
+                              points_color = "black") {
 
   shaps = shaps[complete.cases(shaps), ]
   type = match.arg(type)
@@ -77,16 +77,16 @@ plot_shap_feature <- function(shaps, feature,
 
 plot_shap_summary <- function(shaps, low = "blue", high = "red",
                               jitter_w = 0, jitter_h = 0.2,
-                              legend.h = 25, legend.w = 0.5,
-                              show.mean = TRUE, mean.abs = TRUE, mean.round = 4,
-                              show.legend = TRUE,
+                              legend.h = 25, legend.w = 0.5, # nolint
+                              show.mean = TRUE, mean.abs = TRUE, mean.round = 4, # nolint
+                              show.legend = TRUE, # nolint
                               ord = NULL, violin = FALSE) {
 
   shaps = shaps[complete.cases(shaps), ]
 
   if (is.null(ord)) {
     ord = aggregate(Shap ~ Var, data = shaps, function(x) mean(abs(x)))
-    shaps$Var = factor(shaps$Var, levels = as.character(ord[order(ord$Shap) ,1]))
+    shaps$Var = factor(shaps$Var, levels = as.character(ord[order(ord$Shap), 1]))
   } else {
     shaps$Var = factor(shaps$Var, levels = ord)
   }
@@ -128,13 +128,13 @@ plot_shap_summary <- function(shaps, low = "blue", high = "red",
 
   if (show.mean) {
     if (mean.abs) {
-      shapmean = aggregate(Shap ~ Var, data = shaps, function(x) mean(abs(x)))[,2]
+      shapmean = aggregate(Shap ~ Var, data = shaps, function(x) mean(abs(x)))[, 2]
     } else {
-      shapmean = aggregate(Shap ~ Var, data = shaps, mean)[,2]
+      shapmean = aggregate(Shap ~ Var, data = shaps, mean)[, 2]
     }
 
     p = p + ggplot2::geom_text(aes(x = x, y = y, colour = NULL),
-                      data = data.frame(x = max(shaps$Shap) + 0.5, y = 1:length(shapmean)),
+                      data = data.frame(x = max(shaps$Shap) + 0.5, y = seq_along(shapmean)),
                       label = format(round(shapmean, mean.round), nsmall = mean.round))
   }
 
@@ -143,18 +143,18 @@ plot_shap_summary <- function(shaps, low = "blue", high = "red",
 
 plot_shap_importance <- function(shaps, relative = TRUE, bar_width = 0.4,
                                  low = "blue", high = "red", order = TRUE,
-                                 legend.position = "none",
-                                 legend.w = 0.5, legend.h = 10,
+                                 legend.position = "none", # nolint
+                                 legend.w = 0.5, legend.h = 10, # nolint
                                  legend_limit = NULL, xlim = NULL,
-                                 show.mean = TRUE, mean.round = 4) {
+                                 show.mean = TRUE, mean.round = 4) { # nolint
 
   shaps = shaps[complete.cases(shaps), ]
 
   agg = cbind(aggregate(Shap ~ Var, data = shaps, function(x) mean(abs(x))),
-              Mean = aggregate(Shap ~ Var, data = shaps, mean)[,2])
+              Mean = aggregate(Shap ~ Var, data = shaps, mean)[, 2])
 
   if (relative) {
-    agg$Shap = (agg$Shap/sum(agg$Shap))*100
+    agg$Shap = (agg$Shap / sum(agg$Shap)) * 100
   }
 
   if (order) {
@@ -202,8 +202,8 @@ plot_shap_importance <- function(shaps, relative = TRUE, bar_width = 0.4,
 
 }
 
-plot_shap_sidebyside_importance <- function(shaps, bar_width = 0.4, ylim = NULL,
-                                            legend.position = "top") {
+plot_shap_sidebyside_importance <- function(shaps, bar_width = 0.4, ylim = NULL, # nolint
+                                            legend.position = "top") { # nolint
 
   agg <- data.frame()
   for (i in seq_along(shaps)) {
@@ -212,7 +212,7 @@ plot_shap_sidebyside_importance <- function(shaps, bar_width = 0.4, ylim = NULL,
     shapi <- cbind(Data = names(shaps)[[i]],
                    aggregate(Shap ~ Var, data = dat, function(x) mean(abs(x)),
                              na.action = na.pass))
-    shapi$Shap <- (shapi$Shap/sum(shapi$Shap, na.rm = TRUE)) * 100
+    shapi$Shap <- (shapi$Shap / sum(shapi$Shap, na.rm = TRUE)) * 100
     agg <- rbind(agg, shapi)
   }
 
@@ -245,18 +245,18 @@ plot_shap_sidebyside_importance <- function(shaps, bar_width = 0.4, ylim = NULL,
 
 }
 
-plot_shap_interaction <- function(shaps, shap_feature, intX_feature,
-                                  intZ_feature = NULL, type = c("b", "p", "s"),
+plot_shap_interaction <- function(shaps, shap_feature, intX_feature, # nolint
+                                  intZ_feature = NULL, type = c("b", "p", "s"), # nolint
                                   se = TRUE, smooth_color = "blue", smooth_fill = "lightblue",
                                   smooth_lwd = 0.5, smooth_level = 0.95,
                                   low = "blue", high = "red") {
 
   type = match.arg(type)
 
-  int_shaps = shaps[,intX_feature,shap_feature]
-  Xtruth = shaps[,intX_feature,"Truth"]
+  int_shaps = shaps[, intX_feature, shap_feature]
+  Xtruth = shaps[, intX_feature, "Truth"]
   if (!is.null(intZ_feature)) {
-    Ztruth = shaps[,intZ_feature,"Truth"]
+    Ztruth = shaps[, intZ_feature, "Truth"]
   } else {
     Ztruth = Xtruth
   }
@@ -288,23 +288,22 @@ plot_shap_interaction <- function(shaps, shap_feature, intX_feature,
 
 }
 
-library(mlr3);library(mlr3proba);library(mlr3learners)
-library(ggplot2)
-learn = lrn("surv.xgboost")
-task = tsk("grace")
-learn$train(task)
-shaps=get_shaps(learn$model, task)
-plot_shap_summary(shaps, jitter_h = 0.2, violin = TRUE)
-
-shaps[, 3:5] = round(shaps[,3:5], 1)
-plot_shap_summary(shaps, jitter_h = 0.2, violin = TRUE)
-
-learn = lrn("surv.xgboost")
-task = tgen("simsurv")$generate(200)
-learn$train(task)
-shaps=get_shaps(learn$model, task)
-plot_shap_summary(shaps, jitter_h = 0.2, violin = TRUE)
-
-shaps[, 3:5] = round(shaps[,3:5], 2)
-plot_shap_summary(shaps, jitter_h = 0.2, violin = TRUE)
-
+# library(mlr3);library(mlr3proba);library(mlr3learners)
+# library(ggplot2)
+# learn = lrn("surv.xgboost")
+# task = tsk("grace")
+# learn$train(task)
+# shaps = get_shaps(learn$model, task)
+# plot_shap_summary(shaps, jitter_h = 0.2, violin = TRUE)
+#
+# shaps[, 3:5] = round(shaps[, 3:5], 1)
+# plot_shap_summary(shaps, jitter_h = 0.2, violin = TRUE)
+#
+# learn = lrn("surv.xgboost")
+# task = tgen("simsurv")$generate(200)
+# learn$train(task)
+# shaps = get_shaps(learn$model, task)
+# plot_shap_summary(shaps, jitter_h = 0.2, violin = TRUE)
+#
+# shaps[, 3:5] = round(shaps[, 3:5], 2)
+# plot_shap_summary(shaps, jitter_h = 0.2, violin = TRUE)

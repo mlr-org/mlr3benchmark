@@ -98,8 +98,8 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
       } else {
         tasks = self$tasks
         rdf = matrix(nrow = nr, ncol = self$ntasks)
-        for(i in seq_along(tasks)) {
-          rdf[,i] = data.table::frank(subset(df, task_id == tasks[[i]], select = meas))
+        for (i in seq_along(tasks)) {
+          rdf[, i] = data.table::frank(subset(df, task_id == tasks[[i]], select = meas))
         }
         colnames(rdf) = tasks
       }
@@ -115,7 +115,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' @param p.adjust.method `(character(1))` \cr
     #' Passed to [p.adjust] if `meas = NULL` for multiple testing correction. If `NULL`
     #' then no correction applied.
-    friedman_test = function(meas = NULL, p.adjust.method = NULL) {
+    friedman_test = function(meas = NULL, p.adjust.method = NULL) { # nolint
 
       if (self$nlrns < 2) {
         stop("At least two learners are required.")
@@ -137,13 +137,13 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
         rownames(x) = self$measures
 
         if (!is.null(p.adjust.method)) {
-          x$p.adj.value = p.adjust(x$p.value, p.adjust.method)
-          x$p.signif = ifelse(x$p.adj.value <= 0.001, "***",
+          x$p.adj.value = p.adjust(x$p.value, p.adjust.method) # nolint
+          x$p.signif = ifelse(x$p.adj.value <= 0.001, "***", # nolint
                               ifelse(x$p.adj.value <= 0.01, "**",
                                      ifelse(x$p.adj.value <= 0.05, "*",
                                             ifelse(x$p.adj.value <= 0.1, ".", " "))))
         } else {
-          x$p.signif = ifelse(x$p.value <= 0.001, "***",
+          x$p.signif = ifelse(x$p.value <= 0.001, "***", # nolint
                               ifelse(x$p.value <= 0.01, "**",
                                      ifelse(x$p.value <= 0.05, "*",
                                             ifelse(x$p.value <= 0.1, ".", " "))))
@@ -161,30 +161,30 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' in data.
     #' @param p.value `(numeric(1))` \cr
     #' p.value for which the global test will be considered significant.
-    friedman_posthoc = function(meas = NULL, p.value = 0.05) {
+    friedman_posthoc = function(meas = NULL, p.value = 0.05) { # nolint
 
       meas = .check_meas(self, meas)
       checkmate::assertNumeric(p.value, lower = 0, upper = 1, len = 1)
-      f.test = self$friedman_test(meas)
+      f.test = self$friedman_test(meas) # nolint
 
       if (!is.na(f.test$p.value)) {
-        f.rejnull = f.test$p.value < p.value
+        f.rejnull = f.test$p.value < p.value # nolint
         if (!f.rejnull) {
           warning("Cannot reject null hypothesis of overall Friedman test,
              returning overall Friedman test.")
         }
       } else {
-        f.rejnull = FALSE
+        f.rejnull = FALSE # nolint
         warning("P-value not computable. Learner performances might be exactly equal.")
       }
 
       if (f.rejnull) {
         form = as.formula(paste0(meas, " ~ learner_id | task_id", sep = ""))
-        nem.test = PMCMR::posthoc.friedman.nemenyi.test(form, data = private$.dt)
-        nem.test$f.rejnull = f.rejnull
+        nem.test = PMCMR::posthoc.friedman.nemenyi.test(form, data = private$.dt) # nolint
+        nem.test$f.rejnull = f.rejnull # nolint
         return(nem.test)
       } else {
-        f.test$f.rejnull = f.rejnull
+        f.test$f.rejnull = f.rejnull # nolint
         return(f.test)
       }
     },
@@ -215,7 +215,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' Nemenyi (`nemenyi`) tests? Default is Bonferroni-Dunn.
     #' @references Janez Demsar, Statistical Comparisons of Classifiers over
     #' Multiple Data Sets, JMLR, 2006
-    crit_differences = function(meas = NULL, minimize = TRUE, p.value = 0.05, baseline = NULL,
+    crit_differences = function(meas = NULL, minimize = TRUE, p.value = 0.05, baseline = NULL, # nolint
                                 test = c("bd", "nemenyi")) {
 
       meas = .check_meas(self, meas)
@@ -248,7 +248,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
       }
 
       # Perform nemenyi test
-      nem.test = self$friedman_posthoc(meas, p.value)
+      nem.test = self$friedman_posthoc(meas, p.value) # nolint
       # calculate critical difference(s)
       if (test == "nemenyi") {
         cd = (qtukey(1 - p.value, self$nlrns, 1e+06) / sqrt(2L)) *
@@ -259,7 +259,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
       }
 
       # Store Info for plotting the critical differences
-      cd.info = list("test" = test,
+      cd.info = list("test" = test, # nolint
                      "cd" = cd,
                      "x" = df$mean.rank[df$learner_id == baseline],
                      "y" = 0.1)
@@ -273,15 +273,15 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
         # Get start and end point of all possible bars
         xstart = round(apply(mat + sub, 1, min), 3)
         xend = round(apply(mat + sub, 1, max), 3)
-        nem.df = data.table(xstart, xend, "diff" = xend - xstart)
+        nem.df = data.table(xstart, xend, "diff" = xend - xstart) # nolint
         # For each unique endpoint of a bar keep only the longest bar
-        nem.df = nem.df[, .SD[which.max(.SD$diff)], by = "xend"]
+        nem.df = nem.df[, .SD[which.max(.SD$diff)], by = "xend"] # nolint
         # Take only bars with length > 0
-        nem.df = nem.df[nem.df$xend - nem.df$xstart > 0, ]
+        nem.df = nem.df[nem.df$xend - nem.df$xstart > 0, ] # nolint
         # Y-value for bars is between 0.1 and 0..35 hardcoded
         # Descriptive lines for learners start at 0.5, 1.5, ...
         nem.df$y = seq(from = 0.1, by = 0.2, length.out = dim(nem.df)[1])
-        cd.info$nemenyi.data = as.data.frame(nem.df)
+        cd.info$nemenyi.data = as.data.frame(nem.df) # nolint
       }
 
       list("data" = df,
@@ -318,7 +318,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
   )
 )
 
-.plot_crittdiff = function(obj, meas, p.value, ...) {
+.plot_crittdiff = function(obj, meas, p.value, ...) { # nolint
   obj = obj$crit_differences(meas = meas, p.value = p.value, ...)
 
   # Plot descriptive lines and learner names
@@ -350,8 +350,8 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
                 plot.background = element_blank())
 
   # Write some values into shorter names as they are used numerous times.
-  cd.x = obj$cd.info$x
-  cd.y = obj$cd.info$y
+  cd.x = obj$cd.info$x # nolint
+  cd.y = obj$cd.info$y # nolint
   cd = obj$cd.info$cd
 
   # Add crit difference test (descriptive)
@@ -368,7 +368,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 
   # Plot the critical difference bars
   if (obj$cd.info$test == "bd") {
-    cd.x = obj$data$mean.rank[obj$data$learner_id == obj$baseline]
+    cd.x = obj$data$mean.rank[obj$data$learner_id == obj$baseline] # nolint
     # Add horizontal bar around baseline
     p = p + annotate("segment", x = cd.x + cd,
                      xend = ifelse(cd.x - cd < 0, 0, cd.x - cd), y = cd.y, yend = cd.y,
@@ -381,7 +381,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     # Add point at learner
     p = p + annotate("point", x = cd.x, y = cd.y, alpha = 0.6, color = "black")
   } else {
-    nemenyi.data = obj$cd.info$nemenyi.data
+    nemenyi.data = obj$cd.info$nemenyi.data # nolint
     if (!(nrow(nemenyi.data) == 0L)) {
       # Add connecting bars
       p = p + geom_segment(aes_string("xstart", "y", xend = "xend", yend = "y"),
@@ -445,8 +445,8 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 #' autoplot(obj, type = "fn")
 #'
 #' @export
-autoplot.BenchmarkAggr = function(obj, type = c("mean", "box", "cd", "fn"), meas = NULL, level = 0.95,
-                                  p.value = 0.05, ...) {
+autoplot.BenchmarkAggr = function(obj, type = c("mean", "box", "cd", "fn"), meas = NULL, level = 0.95, # nolint
+                                  p.value = 0.05, ...) { # nolint
 
   type = match.arg(type)
 
@@ -459,9 +459,9 @@ autoplot.BenchmarkAggr = function(obj, type = c("mean", "box", "cd", "fn"), meas
       stop("At least two tasks required.")
     }
     loss = aggregate(as.formula(paste0(meas, " ~ learner_id")), obj$data, mean)
-    se = aggregate(as.formula(paste0(meas, " ~ learner_id")), obj$data, sd)[, 2]/sqrt(obj$ntasks)
-    loss$lower = loss[, meas] - se * qnorm(1 - (1 - level)/2)
-    loss$upper = loss[, meas] + se * qnorm(1 - (1 - level)/2)
+    se = aggregate(as.formula(paste0(meas, " ~ learner_id")), obj$data, sd)[, 2] / sqrt(obj$ntasks)
+    loss$lower = loss[, meas] - se * qnorm(1 - (1 - level) / 2)
+    loss$upper = loss[, meas] + se * qnorm(1 - (1 - level) / 2)
     ggplot(data = loss, aes_string(x = "learner_id", y = meas)) +
       geom_errorbar(aes(ymin = lower, ymax = upper),
                     width = .5) +
@@ -474,7 +474,7 @@ autoplot.BenchmarkAggr = function(obj, type = c("mean", "box", "cd", "fn"), meas
     p = reshape2::melt(p)
     p$value[is.na(p$value)] = 1
     p$value = factor(ifelse(p$value < p.value, "0", "1"))
-    ggplot(data = p, aes(x = Var1,y = Var2, fill = value)) +
+    ggplot(data = p, aes(x = Var1, y = Var2, fill = value)) +
       geom_tile(color = "black", size = 0.5) +
       scale_fill_manual(name = "col",
                           values = c("0" = "red", "1" = "white"),
@@ -496,11 +496,11 @@ autoplot.BenchmarkAggr = function(obj, type = c("mean", "box", "cd", "fn"), meas
 }
 
 #' @export
-as.BenchmarkAggr = function(obj, ...) UseMethod("as.BenchmarkAggr", obj)
+as.BenchmarkAggr = function(obj, ...) UseMethod("as.BenchmarkAggr", obj) # nolint
 #' @export
-as.BenchmarkAggr.default = function(obj, ...) BenchmarkAggr$new(obj)
+as.BenchmarkAggr.default = function(obj, ...) BenchmarkAggr$new(obj) # nolint
 #' @export
-as.BenchmarkAggr.BenchmarkResult = function(obj, ...) BenchmarkAggr$new(obj$aggregate(...))
+as.BenchmarkAggr.BenchmarkResult = function(obj, ...) BenchmarkAggr$new(obj$aggregate(...)) # nolint
 
 .check_meas = function(obj, meas) {
   if (is.null(meas)) {
