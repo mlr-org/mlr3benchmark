@@ -39,6 +39,8 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 
       # at the very least should include task_id, learner_id, and one measure
       checkmate::assert(all(c("task_id", "learner_id") %in% colnames(dt)))
+      dt$task_id = factor(checkmate::assert_character(dt$task_id))
+      dt$learner_id = factor(checkmate::assert_character(dt$learner_id))
 
       # TODO - The line below could be removed if there is a use for this extra data,
       # for now there isn't in this object.
@@ -50,8 +52,9 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
         stop("At least one measure must be included in `dt`.")
       }
 
-      dt$task_id = factor(dt$task_id)
-      dt$learner_id = factor(dt$learner_id)
+      # check measures are numeric
+      sapply(dt[, setdiff(colnames(dt), c("task_id", "learner_id")), with = FALSE], assert_numeric)
+
       private$.dt = dt
       invisible(self)
     },
@@ -60,6 +63,11 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' Prints the internal data via [data.table::print.data.table].
     #' @param ... Passed to [data.table::print.data.table].
     print = function(...) {
+      catf("<BenchmarkAggr> of %i %s with %i %s, %i %s and %i %s",
+           self$nrow, ifelse(self$nrow == 1, "row", "rows"),
+           self$ntasks, ifelse(self$ntasks == 1, "task", "tasks"),
+           self$nlrns, ifelse(self$nlrns == 1, "learner", "learners"),
+           self$nmeas, ifelse(self$nmeas == 1, "measure", "measures"))
       print(private$.dt, ...)
     },
 
@@ -183,6 +191,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 
     #' @description Generate critical differences for a critical difference diagram.
     #' Primarily should be used internally by [autoplot.BenchmarkAggr].
+    #' FIXME - CONSIDER MOVING TO PRIVATE HELPER FUNCTION - PROBABLY NOT USEFUL IN ISOLATION
     #' @details Copied from mlr:
     #' Bonferroni-Dunn usually yields higher power than Nemenyi as it does not
     #' compare all algorithms to each other, but all algorithms to a
@@ -299,7 +308,9 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' @field ntasks `(integers())` \cr Number of tasks.
     ntasks = function() length(self$tasks),
     #' @field nmeas `(integers())` \cr Number of measures.
-    nmeas = function() length(self$measures)
+    nmeas = function() length(self$measures),
+    #' @field nrow `(integers())` \cr Number of rows.
+    nrow = function() nrow(self$data)
   ),
 
   private = list(

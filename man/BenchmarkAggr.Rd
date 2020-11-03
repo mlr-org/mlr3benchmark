@@ -54,6 +54,8 @@ Multiple Data Sets, JMLR, 2006
 \item{\code{ntasks}}{\code{(integers())} \cr Number of tasks.}
 
 \item{\code{nmeas}}{\code{(integers())} \cr Number of measures.}
+
+\item{\code{nrow}}{\code{(integers())} \cr Number of rows.}
 }
 \if{html}{\out{</div>}}
 }
@@ -186,6 +188,7 @@ p.value for which the global test will be considered significant.}
 \subsection{Method \code{crit_differences()}}{
 Generate critical differences for a critical difference diagram.
 Primarily should be used internally by \link{autoplot.BenchmarkAggr}.
+FIXME - CONSIDER MOVING TO PRIVATE HELPER FUNCTION - PROBABLY NOT USEFUL IN ISOLATION
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BenchmarkAggr$crit_differences(
   meas = NULL,
