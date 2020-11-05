@@ -26,7 +26,9 @@ Imports:
 Suggests:
     lgr,
     mlr3learners,
+    PMCMR,
     reshape2,
+    rpart,
     testthat,
     xgboost
 Encoding: UTF-8

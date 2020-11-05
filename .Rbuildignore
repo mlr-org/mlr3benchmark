@@ -4,7 +4,7 @@
 ^tic\.R$
 ^LICENSE$
 ^\.ccache$
-^\.codecov\.yml$
+codecov
 cran-comments\.md
 ^CRAN-RELEASE$
 docs
