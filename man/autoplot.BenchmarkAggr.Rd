@@ -48,8 +48,11 @@ and plotting significant pairs in coloured squares and leaving non-significant p
 }
 }
 \examples{
+if (requireNamespace("mlr3learners", quietly = TRUE)) {
 library(mlr3)
 library(mlr3learners)
+library(ggplot2)
+
 set.seed(1)
 task = tsks(c("iris", "sonar", "wine", "zoo"))
 learns = lrns(c("classif.featureless", "classif.ranger", "classif.xgboost"))
@@ -64,6 +67,7 @@ autoplot(obj, type = "cd")
 
 # post-hoc friedman-nemenyi
 autoplot(obj, type = "fn")
+}
 
 }
 \references{

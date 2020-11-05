@@ -19,6 +19,6 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Sonabend Raphael \email{raphael.sonabend.15@ucl.acuk} (-13880)
+\strong{Maintainer}: Sonabend Raphael \email{raphael.sonabend.15@ucl.ac.uk} (0000-0001-9225-4654)
 
 }

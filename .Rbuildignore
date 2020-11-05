@@ -4,4 +4,12 @@
 ^tic\.R$
 ^LICENSE$
 ^\.ccache$
-^codecov\.yml$
+^\.codecov\.yml$
+cran-comments\.md
+^CRAN-RELEASE$
+docs
+pkgdown
+README\.Rmd
+man-roxygen
+^\.lintr
+^\.travis\.yml$

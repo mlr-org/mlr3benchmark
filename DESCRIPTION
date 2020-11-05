@@ -25,6 +25,7 @@ Imports:
     R6
 Suggests:
     lgr,
+    mlr3learners,
     reshape2,
     testthat,
     xgboost

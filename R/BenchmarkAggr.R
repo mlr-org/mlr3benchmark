@@ -427,8 +427,11 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 #' Multiple Data Sets, JMLR, 2006
 #'
 #' @examples
+#' if (requireNamespace("mlr3learners", quietly = TRUE)) {
 #' library(mlr3)
 #' library(mlr3learners)
+#' library(ggplot2)
+#'
 #' set.seed(1)
 #' task = tsks(c("iris", "sonar", "wine", "zoo"))
 #' learns = lrns(c("classif.featureless", "classif.ranger", "classif.xgboost"))
@@ -443,10 +446,14 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 #'
 #' # post-hoc friedman-nemenyi
 #' autoplot(obj, type = "fn")
+#' }
 #'
 #' @export
 autoplot.BenchmarkAggr = function(obj, type = c("mean", "box", "cd", "fn"), meas = NULL, level = 0.95, # nolint
                                   p.value = 0.05, ...) { # nolint
+
+  # fix no visible binding
+  lower = upper = Var1 = Var2 = value = NULL
 
   type = match.arg(type)
 
@@ -458,10 +465,10 @@ autoplot.BenchmarkAggr = function(obj, type = c("mean", "box", "cd", "fn"), meas
     if (obj$ntasks < 2) {
       stop("At least two tasks required.")
     }
-    loss = aggregate(as.formula(paste0(meas, " ~ learner_id")), obj$data, mean)
-    se = aggregate(as.formula(paste0(meas, " ~ learner_id")), obj$data, sd)[, 2] / sqrt(obj$ntasks)
-    loss$lower = loss[, meas] - se * qnorm(1 - (1 - level) / 2)
-    loss$upper = loss[, meas] + se * qnorm(1 - (1 - level) / 2)
+    loss = stats::aggregate(as.formula(paste0(meas, " ~ learner_id")), obj$data, mean)
+    se = stats::aggregate(as.formula(paste0(meas, " ~ learner_id")), obj$data, stats::sd)[, 2] / sqrt(obj$ntasks)
+    loss$lower = loss[, meas] - se * stats::qnorm(1 - (1 - level) / 2)
+    loss$upper = loss[, meas] + se * stats::qnorm(1 - (1 - level) / 2)
     ggplot(data = loss, aes_string(x = "learner_id", y = meas)) +
       geom_errorbar(aes(ymin = lower, ymax = upper),
                     width = .5) +
@@ -495,6 +502,10 @@ autoplot.BenchmarkAggr = function(obj, type = c("mean", "box", "cd", "fn"), meas
 
 }
 
+#' @title Coercions to BenchmarkAggr
+#' @description Coercion methods to [BenchmarkAggr]
+#' @param obj `([mlr3::BenchmarkResult]|matrix(1))` \cr Passed to `[BenchmarkAggr]$new()`.
+#' @param ... `ANY` \cr Passed to `[BenchmarkResult]$aggregate()`.
 #' @export
 as.BenchmarkAggr = function(obj, ...) UseMethod("as.BenchmarkAggr", obj) # nolint
 #' @export

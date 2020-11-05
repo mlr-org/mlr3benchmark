@@ -23,7 +23,7 @@ get_interaction_shaps <- function(model, task, data = NULL) {
 
   p = predict(model, data,
               predinteraction = TRUE)
-  p = p[, colnames(data) ,colnames(data)]
+  p = p[, colnames(data), colnames(data)]
 
   p = array(c(as.numeric(p), as.numeric(data)), dim = c(dim(p)[1:2], dim(p)[3] + 1),
             dimnames = list(NULL, colnames(data), c(colnames(data), "Truth")))
@@ -39,7 +39,9 @@ plot_shap_feature <- function(shaps, feature,
                               smooth_lwd = 0.5, smooth_level = 0.95,
                               points_color = "black") {
 
-  shaps = shaps[complete.cases(shaps), ]
+  Var = Truth = Shap = NULL
+
+  shaps = shaps[stats::complete.cases(shaps), ]
   type = match.arg(type)
   if (type == "b") {
     ggplot2::ggplot(subset(shaps, Var == feature),
@@ -82,10 +84,12 @@ plot_shap_summary <- function(shaps, low = "blue", high = "red",
                               show.legend = TRUE, # nolint
                               ord = NULL, violin = FALSE) {
 
-  shaps = shaps[complete.cases(shaps), ]
+  Shap = Var = relTruth = x = y = NULL # nolint
+
+  shaps = shaps[stats::complete.cases(shaps), ]
 
   if (is.null(ord)) {
-    ord = aggregate(Shap ~ Var, data = shaps, function(x) mean(abs(x)))
+    ord = stats::aggregate(Shap ~ Var, data = shaps, function(x) mean(abs(x)))
     shaps$Var = factor(shaps$Var, levels = as.character(ord[order(ord$Shap), 1]))
   } else {
     shaps$Var = factor(shaps$Var, levels = ord)
@@ -128,9 +132,9 @@ plot_shap_summary <- function(shaps, low = "blue", high = "red",
 
   if (show.mean) {
     if (mean.abs) {
-      shapmean = aggregate(Shap ~ Var, data = shaps, function(x) mean(abs(x)))[, 2]
+      shapmean = stats::aggregate(Shap ~ Var, data = shaps, function(x) mean(abs(x)))[, 2]
     } else {
-      shapmean = aggregate(Shap ~ Var, data = shaps, mean)[, 2]
+      shapmean = stats::aggregate(Shap ~ Var, data = shaps, mean)[, 2]
     }
 
     p = p + ggplot2::geom_text(aes(x = x, y = y, colour = NULL),
@@ -148,10 +152,13 @@ plot_shap_importance <- function(shaps, relative = TRUE, bar_width = 0.4,
                                  legend_limit = NULL, xlim = NULL,
                                  show.mean = TRUE, mean.round = 4) { # nolint
 
-  shaps = shaps[complete.cases(shaps), ]
+  # fix visible bindings
+  Shap = Var = Mean = NULL
 
-  agg = cbind(aggregate(Shap ~ Var, data = shaps, function(x) mean(abs(x))),
-              Mean = aggregate(Shap ~ Var, data = shaps, mean)[, 2])
+  shaps = shaps[stats::complete.cases(shaps), ]
+
+  agg = cbind(stats::aggregate(Shap ~ Var, data = shaps, function(x) mean(abs(x))),
+              Mean = stats::aggregate(Shap ~ Var, data = shaps, mean)[, 2])
 
   if (relative) {
     agg$Shap = (agg$Shap / sum(agg$Shap)) * 100
@@ -205,13 +212,16 @@ plot_shap_importance <- function(shaps, relative = TRUE, bar_width = 0.4,
 plot_shap_sidebyside_importance <- function(shaps, bar_width = 0.4, ylim = NULL, # nolint
                                             legend.position = "top") { # nolint
 
+  # fix visible binding
+  Shap = Var = Data = NULL
+
   agg <- data.frame()
   for (i in seq_along(shaps)) {
-    dat <- shaps[[i]][complete.cases(shaps[[i]]), ]
+    dat <- shaps[[i]][stats::complete.cases(shaps[[i]]), ]
     dat[dat == "NA", c(1, 3:5)] <- NA
     shapi <- cbind(Data = names(shaps)[[i]],
-                   aggregate(Shap ~ Var, data = dat, function(x) mean(abs(x)),
-                             na.action = na.pass))
+                   stats::aggregate(Shap ~ Var, data = dat, function(x) mean(abs(x)),
+                             na.action = stats::na.pass))
     shapi$Shap <- (shapi$Shap / sum(shapi$Shap, na.rm = TRUE)) * 100
     agg <- rbind(agg, shapi)
   }
@@ -250,6 +260,8 @@ plot_shap_interaction <- function(shaps, shap_feature, intX_feature, # nolint
                                   se = TRUE, smooth_color = "blue", smooth_fill = "lightblue",
                                   smooth_lwd = 0.5, smooth_level = 0.95,
                                   low = "blue", high = "red") {
+
+  XTruth = SHAPS = ZTruth = NULL
 
   type = match.arg(type)
 

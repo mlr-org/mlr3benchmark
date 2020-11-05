@@ -6,6 +6,7 @@
 #' @import paradox
 #' @import ggplot2
 #' @importFrom R6 R6Class
+#' @importFrom stats as.formula predict
 "_PACKAGE"
 # nolint end
 
