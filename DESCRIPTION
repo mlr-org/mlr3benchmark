@@ -21,10 +21,10 @@ Imports:
     ggplot2,
     mlr3,
     mlr3misc,
+    paradox,
     R6
 Suggests:
     lgr,
-    paradox,
     reshape2,
     testthat,
     xgboost
