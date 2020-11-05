@@ -28,6 +28,7 @@ Suggests:
     mlr3learners,
     PMCMR,
     reshape2,
+    ranger,
     rpart,
     testthat,
     xgboost
