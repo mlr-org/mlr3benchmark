@@ -19,17 +19,15 @@ Imports:
     checkmate,
     data.table,
     ggplot2,
-    lgr,
     mlr3,
     mlr3misc,
-    paradox,
     R6
 Suggests:
-    ggplot2,
+    lgr,
+    paradox,
     reshape2,
     testthat,
-    xgboost,
-    covr
+    xgboost
 Encoding: UTF-8
 NeedsCompilation: no
 Roxygen: list(markdown = TRUE)
