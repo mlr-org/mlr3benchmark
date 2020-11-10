@@ -32,15 +32,17 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #' @param dt `(matrix(1))` \cr
     #' `matrix` like object coercable to [data.table::data.table][data.table], should
-    #' include column names "task_id" and "learner_id", coerced to factors internally,
-    #' and at least one measure (numeric).
+    #' include column names "task_id" and "learner_id", and at least one measure (numeric).
+    #' If ids are not already factors then coerced internally.
     initialize = function(dt) {
       dt = as.data.table(dt)
 
       # at the very least should include task_id, learner_id, and one measure
       checkmate::assert(all(c("task_id", "learner_id") %in% colnames(dt)))
-      dt$task_id = factor(checkmate::assert_character(dt$task_id))
-      dt$learner_id = factor(checkmate::assert_character(dt$learner_id))
+      dt$task_id = ifelse(test_factor(dt$task_id), dt$task_id,
+                          factor(checkmate::assert_character(dt$task_id)))
+      dt$learner_id = ifelse(test_factor(dt$learner_id), dt$learner_id,
+                          factor(checkmate::assert_character(dt$learner_id)))
 
       # TODO - The line below could be removed if there is a use for this extra data,
       # for now there isn't in this object.
