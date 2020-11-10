@@ -38,11 +38,13 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
       dt = as.data.table(dt)
 
       # at the very least should include task_id, learner_id, and one measure
-      checkmate::assert(all(c("task_id", "learner_id") %in% colnames(dt)))
-      dt$task_id = ifelse(test_factor(dt$task_id), dt$task_id,
-                          factor(checkmate::assert_character(dt$task_id)))
-      dt$learner_id = ifelse(test_factor(dt$learner_id), dt$learner_id,
-                          factor(checkmate::assert_character(dt$learner_id)))
+      assert(all(c("task_id", "learner_id") %in% colnames(dt)))
+
+      if (!test_factor(dt$task_id))
+        dt$task_id = factor(assert_character(dt$task_id))
+
+      if (!test_factor(dt$learner_id))
+        dt$learner_id = factor(assert_character(dt$learner_id))
 
       # TODO - The line below could be removed if there is a use for this extra data,
       # for now there isn't in this object.
@@ -166,7 +168,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     friedman_posthoc = function(meas = NULL, p.value = 0.05) { # nolint
 
       meas = .check_meas(self, meas)
-      checkmate::assertNumeric(p.value, lower = 0, upper = 1, len = 1)
+      assertNumeric(p.value, lower = 0, upper = 1, len = 1)
       f.test = self$friedman_test(meas) # nolint
 
       if (!is.na(f.test$p.value)) {
@@ -222,7 +224,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 
       meas = .check_meas(self, meas)
       test = match.arg(test)
-      checkmate::assertNumeric(p.value, lower = 0, upper = 1, len = 1)
+      assertNumeric(p.value, lower = 0, upper = 1, len = 1)
 
       # Get Rankmatrix, transpose and get mean ranks
       mean.rank = rowMeans(self$rank_data(meas, minimize = minimize))
@@ -246,7 +248,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
       if (is.null(baseline)) {
         baseline = as.character(df$learner_id[which.min(df$rank)])
       } else {
-        checkmate::assert_choice(baseline, self$learners)
+        assert_choice(baseline, self$learners)
       }
 
       # Perform nemenyi test
