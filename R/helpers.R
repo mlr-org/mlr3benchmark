@@ -12,6 +12,10 @@
   return(meas)
 }
 
+#' @title Helper Vectorizing requireNamespace
+#' @description Internal helper function for documentation.
+#' @param x Packages to check.
+#' @export
 requireNamespaces = function(x) {
   if (all(map_lgl(x, requireNamespace, quietly = TRUE))) {
     return(TRUE)
