@@ -12,4 +12,3 @@ pkgdown
 README\.Rmd
 man-roxygen
 ^\.lintr
-^\.travis\.yml$

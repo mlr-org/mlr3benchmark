@@ -82,6 +82,7 @@ the white space around the image.
 if (requireNamespaces(c("mlr3learners", "mlr3", "rpart", "xgboost"))) {
 library(mlr3)
 library(mlr3learners)
+library(ggplot2)
 
 set.seed(1)
 task = tsks(c("iris", "sonar", "wine", "zoo"))

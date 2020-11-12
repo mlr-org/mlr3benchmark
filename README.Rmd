@@ -5,7 +5,7 @@ output: github_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-knitr::knit_hooks$set(crop = knitr::hook_pdfcrop)
+knitr::opts_chunk$set(fig.path = "man/figures/README-")
 library(mlr3benchmark)
 ```
 
@@ -35,16 +35,30 @@ Then **mlr3benchmark** is the answer, or at least will be once it's finished mat
 
 **mlr3benchmark** enables fast and efficient analysis of benchmark experiments in just a few lines of code and you are not limited to analysing experiments from [mlr3](https://github.com/mlr-org/mlr3). As long as you can coerce your results into a format fitting our classes (which have very few requirements), then you can perform your benchmark analysis with **mlr3benchmark**. 
 
+## Installation
+
+Install the last release from CRAN:
+```{r, eval = FALSE}
+install.packages("mlr3benchmark")
+```
+
+Install the development version from GitHub:
+```{r, eval = FALSE}
+remotes::install_github("mlr-org/mlr3benchmark")
+```
+
 ## Feature Overview
 
-Currently **mlr3benchmark** only supports analysis of multiple learners over multiple tasks. Below is an example of a complete analysis using a benchmark experiment from [mlr3](https://github.com/mlr-org/mlr3).
+Currently **mlr3benchmark** only supports analysis of multiple learners over multiple tasks. The current implemented features are best demonstrated by example!
 
 First we run a mlr3 benchmark experiment:
 
-```{r,echo=FALSE,results='hide'}
+```{r,results='hide'}
 library(mlr3)
 library(mlr3learners)
+library(ggplot2)
 set.seed(1)
+
 task = tsks(c("iris", "sonar", "wine", "zoo"))
 learns = lrns(c("classif.featureless", "classif.rpart", "classif.xgboost"))
 bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 3)))
@@ -107,18 +121,6 @@ The analysis is complete!
 * Extending `BenchmarkAggr` to single tasks
 * Adding `BenchmarkScore` for non-aggregated measures, e.g. observation-level scores
 * Bayesian methods for analysis
-
-## Installation
-
-Install the last release from CRAN:
-```{r, eval = FALSE}
-install.packages("mlr3benchmark")
-```
-
-Install the development version from GitHub:
-```{r, eval = FALSE}
-remotes::install_github("mlr-org/mlr3benchmark")
-```
 
 ## Bugs, Questions, Feedback
 
