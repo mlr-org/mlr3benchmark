@@ -1,6 +1,6 @@
 Package: mlr3benchmark
 Title: Analysis and Visualisation of Benchmark Experiments
-Version: 0.1.0.9000
+Version: 0.1.0
 Authors@R:
     c(person(given = "Sonabend",
            family = "Raphael",
@@ -13,7 +13,7 @@ Authors@R:
              email = "pfistererf@googlemail.com",
              comment = c(ORCID = "0000-0001-8867-762X")))
 Description: Implements methods for post-hoc analysis and
-    visualisation of benchmark objects in 'mlr3'.
+    visualisation of benchmark experiments, for 'mlr3' and beyond.
 License: LGPL-3
 URL: https://mlr3benchmark.mlr-org.com,
     https://github.com/mlr-org/mlr3benchmark

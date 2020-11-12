@@ -1,3 +1,3 @@
-# mlr3tuning 0.1.0.9000
+# mlr3benchmark 0.1.0
 
-* In development
+* Initial CRAN release
