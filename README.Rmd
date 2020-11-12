@@ -1,0 +1,125 @@
+---
+title: "README"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::knit_hooks$set(crop = knitr::hook_pdfcrop)
+library(mlr3benchmark)
+```
+
+# mlr3benchmark
+
+Analysis and tools for benchmarking in mlr3.
+
+<!-- badges: start -->
+[![tic](https://github.com/mlr-org/mlr3benchmark/workflows/tic/badge.svg?branch=master)](https://github.com/mlr-org/mlr3benchmark/actions)
+[![CRAN Status](https://www.r-pkg.org/badges/version-ago/mlr3benchmark)](https://cran.r-project.org/package=mlr3benchmark)
+[![CRAN checks](https://cranchecks.info/badges/worst/mlr3benchmark)](https://cran.r-project.org/web/checks/check_results_mlr3benchmark.html)
+
+[![CodeFactor](https://www.codefactor.io/repository/github/mlr-org/mlr3benchmark/badge)](https://www.codefactor.io/repository/github/mlr-org/mlr3benchmark)
+[![Codecov test coverage](https://codecov.io/gh/mlr-org/mlr3benchmark/branch/master/graph/badge.svg)](https://codecov.io/gh/mlr-org/mlr3benchmark?branch=master)
+
+[![StackOverflow](https://img.shields.io/badge/stackoverflow-mlr3-orange.svg)](https://stackoverflow.com/questions/tagged/mlr3)
+[![Mattermost](https://img.shields.io/badge/chat-mattermost-orange.svg)](https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/)
+<!-- badges: end -->
+
+## What is mlr3benchmark?
+
+Do you have a large benchmark experiment with many tasks, learners, and measures, and don't know where to begin with analysis?
+Do you want to perform a complete quantitative analysis of benchmark results to determine which learner truly is the 'best'?
+Do you want to visualise complex results for benchmark experiments in one line of code?
+
+Then **mlr3benchmark** is the answer, or at least will be once it's finished maturing.
+
+**mlr3benchmark** enables fast and efficient analysis of benchmark experiments in just a few lines of code and you are not limited to analysing experiments from [mlr3](https://github.com/mlr-org/mlr3). As long as you can coerce your results into a format fitting our classes (which have very few requirements), then you can perform your benchmark analysis with **mlr3benchmark**. 
+
+## Feature Overview
+
+Currently **mlr3benchmark** only supports analysis of multiple learners over multiple tasks. Below is an example of a complete analysis using a benchmark experiment from [mlr3](https://github.com/mlr-org/mlr3).
+
+First we run a mlr3 benchmark experiment:
+
+```{r,echo=FALSE,results='hide'}
+library(mlr3)
+library(mlr3learners)
+set.seed(1)
+task = tsks(c("iris", "sonar", "wine", "zoo"))
+learns = lrns(c("classif.featureless", "classif.rpart", "classif.xgboost"))
+bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 3)))
+```
+
+Now we create a `BenchmarkAggr` object for our analysis, these objects store measure results after being *aggregated* over all resamplings:
+
+```{r}
+# these measures are the same but we'll continue for the example
+aggr = bm$aggregate(msrs(c("classif.acc", "classif.ce")))
+ba = BenchmarkAggr$new(aggr)
+ba
+```
+
+Now we can begin our analysis! In **mlr3benchmark**, analysis of multiple learners over multiple independent tasks follows the guidelines of Demsar (2006). So we begin by checking if the global Friedman test is significant: is there are a significant difference in the rankings of the learners over all the tasks?
+
+```{r}
+ba$friedman_test()
+```
+
+Both measures are significant, so now we can proceed with the post-hoc tests. Now comparing each learner to each other with post-hoc Friedman-Nemenyi tests:
+
+```{r}
+ba$friedman_posthoc(meas = "acc")
+```
+
+The results tell us that xgboost is significantly different from the featureless model, but all other comparisons are non-significant. This doesn't tell us *which* of xgboost and featureless is better though, the most detailed information is given in a critical difference diagram, note we include
+`minimize = FALSE` as accuracy should be maximised:
+
+```{r,fig.height=2,fig.width=11}
+autoplot(ba, type = "cd", meas = "acc", minimize = FALSE)
+```
+
+We read the diagram from left to right, so that learners to the left have the highest rank
+and are the best performing, and decrease going right. The thick horizontal lines connect learners
+that are *not* significantly difference in ranked performance, so this tells us:
+
+i) xgboost is significantly better than featureless
+ii) xgboost is not significantly better than rpart
+iii) rpart is not significantly better than featureless
+
+Now we visualise two much simpler plots which display similar information, the first is the mean and standard error of the results across all tasks, the second is a boxplot results across all tasks:
+
+```{r}
+autoplot(ba, meas = "acc")
+autoplot(ba, type = "box", meas = "acc")
+```
+
+We conclude that xgboost is significantly better than the baseline but not significantly better 
+than the decision tree but the decision tree is not significantly better than the baseline, so
+we will recommend xgboost for now.
+
+The analysis is complete!
+
+## Roadmap
+
+**mlr3benchmark** is in its early stages and the interface is still maturing, near-future updates will include:
+
+* Extending `BenchmarkAggr` to non-independent tasks
+* Extending `BenchmarkAggr` to single tasks
+* Adding `BenchmarkScore` for non-aggregated measures, e.g. observation-level scores
+* Bayesian methods for analysis
+
+## Installation
+
+Install the last release from CRAN:
+```{r, eval = FALSE}
+install.packages("mlr3benchmark")
+```
+
+Install the development version from GitHub:
+```{r, eval = FALSE}
+remotes::install_github("mlr-org/mlr3benchmark")
+```
+
+## Bugs, Questions, Feedback
+
+**mlr3benchmark** is a free and open source software project that encourages participation and feedback. If you have any issues, questions, suggestions or feedback, please do not hesitate to open an "issue" about it on the [GitHub page](https://github.com/mlr-org/mlr3benchmark/issues)\! In case of problems / bugs, it is often helpful if you provide a "minimum working example" that showcases the behaviour (but don't worry about this if the bug is obvious).

@@ -8,6 +8,9 @@
 #'
 #' Currently supported for multiple independent datasets only.
 #'
+#' @references Janez Demsar, Statistical Comparisons of Classifiers over
+#' Multiple Data Sets, JMLR, 2006
+#'
 #' @examples
 #' # Not restricted to mlr3 objects
 #' df = data.frame(task_id = rep(c("A", "B"), each = 5),
@@ -335,7 +338,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
           assert_choice(baseline, self$learners)
         }
 
-        df$baseline = as.numeric(baseline == df$learner_id)
+        out$data$baseline = as.numeric(baseline == df$learner_id)
       }
 
       out

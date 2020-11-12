@@ -11,7 +11,7 @@
   level = 0.95,
   p.value = 0.05,
   minimize = TRUE,
-  test = "bd",
+  test = "nem",
   baseline = NULL,
   style = 1L,
   ratio = 1/7,
@@ -38,7 +38,7 @@ For \code{type = "cd"}, indicates if the measure is optimally minimized. Default
 \item{test}{(\verb{character(1))}) \cr
 For \code{type = "cd"}, critical differences are either computed between all learners
 (\code{test = "nemenyi"}), or to a baseline (\code{test = "bd"}). Bonferroni-Dunn usually yields higher
-power than Nemenyi as it only compares algorithms to one baseline. Default is Bonferroni-Dunn.}
+power than Nemenyi as it only compares algorithms to one baseline. Default is Nemenyi.}
 
 \item{baseline}{\code{(character(1))} \cr
 For \code{type = "cd"} and \code{test = "bd"} a baseline learner to compare the other learners to,
@@ -82,7 +82,6 @@ the white space around the image.
 if (requireNamespaces(c("mlr3learners", "mlr3", "rpart", "xgboost"))) {
 library(mlr3)
 library(mlr3learners)
-library(ggplot2)
 
 set.seed(1)
 task = tsks(c("iris", "sonar", "wine", "zoo"))

@@ -31,7 +31,7 @@
 #' @param test (`character(1))`) \cr
 #' For `type = "cd"`, critical differences are either computed between all learners
 #' (`test = "nemenyi"`), or to a baseline (`test = "bd"`). Bonferroni-Dunn usually yields higher
-#' power than Nemenyi as it only compares algorithms to one baseline. Default is Bonferroni-Dunn.
+#' power than Nemenyi as it only compares algorithms to one baseline. Default is Nemenyi.
 #' @param baseline `(character(1))` \cr
 #' For `type = "cd"` and `test = "bd"` a baseline learner to compare the other learners to,
 #' should be in `$learners`, if `NULL` then differences are compared to the best performing
@@ -53,7 +53,6 @@
 #' if (requireNamespaces(c("mlr3learners", "mlr3", "rpart", "xgboost"))) {
 #' library(mlr3)
 #' library(mlr3learners)
-#' library(ggplot2)
 #'
 #' set.seed(1)
 #' task = tsks(c("iris", "sonar", "wine", "zoo"))
@@ -77,7 +76,7 @@
 #' @export
 autoplot.BenchmarkAggr = function(obj, type = c("mean", "box", "fn", "cd"), meas = NULL, # nolint
                                   level = 0.95, p.value = 0.05, minimize = TRUE, # nolint
-                                  test = "bd", baseline = NULL, style = 1L,
+                                  test = "nem", baseline = NULL, style = 1L,
                                   ratio = 1/7, col = "red", ...) { # nolint
 
   # fix no visible binding

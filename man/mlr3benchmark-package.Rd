@@ -7,7 +7,7 @@
 \title{mlr3benchmark: Analysis and Visualisation of Benchmark Experiments}
 \description{
 Implements methods for post-hoc analysis and
-    visualisation of benchmark objects in 'mlr3'.
+    visualisation of benchmark experiments, for 'mlr3' and beyond.
 }
 \seealso{
 Useful links:
