@@ -23,7 +23,7 @@ test_that("autoplot.BenchmarkAggr cd", {
   ba = BenchmarkAggr$new(df)
 
   expect_error(is.ggplot(autoplot(ba, type = "fn")))
-  expect_silent(is.ggplot(autoplot(ba, type = "fn", p.value = 1)))
+  expect_silent(is.ggplot(autoplot(ba, type = "fn", p.value = 1, test = "bd")))
   expect_error(is.ggplot(autoplot(ba, type = "cd")))
-  expect_silent(is.ggplot(autoplot(ba, type = "cd", p.value = 1)))
+  expect_silent(is.ggplot(autoplot(ba, type = "cd", p.value = 1, test = "bd")))
 })
