@@ -1,12 +1,17 @@
 Package: mlr3benchmark
-Title: Benchmarking analysis for 'mlr3'
+Title: Analysis and Visualisation of Benchmark Experiments
 Version: 0.1.0.9000
 Authors@R:
-    person(given = "Sonabend",
+    c(person(given = "Sonabend",
            family = "Raphael",
            role = c("cre", "aut"),
            email = "raphael.sonabend.15@ucl.ac.uk",
-           comment = "0000-0001-9225-4654")
+           comment = c(ORCID = "0000-0001-9225-4654")),
+      person(given = "Florian",
+             family = "Pfisterer",
+             role = "aut",
+             email = "pfistererf@googlemail.com",
+             comment = c(ORCID = "0000-0001-8867-762X")))
 Description: Implements methods for post-hoc analysis and
     visualisation of benchmark objects in 'mlr3'.
 License: LGPL-3
@@ -21,13 +26,10 @@ Imports:
     ggplot2,
     mlr3misc,
     R6
-Suggests:
-    lgr,
+Suggests: 
     mlr3,
     mlr3learners,
     PMCMR,
-    reshape2,
-    ranger,
     rpart,
     testthat,
     xgboost

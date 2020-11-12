@@ -5,7 +5,17 @@
     } else {
       meas = obj$measures
     }
+  } else {
+    assert_choice(meas, obj$measures)
   }
 
   return(meas)
+}
+
+requireNamespaces = function(x) {
+  if (all(map_lgl(x, requireNamespace, quietly = TRUE))) {
+    return(TRUE)
+  } else {
+    return(FALSE)
+  }
 }

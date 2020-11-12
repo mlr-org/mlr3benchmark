@@ -9,25 +9,24 @@
 #' Currently supported for multiple independent datasets only.
 #'
 #' @examples
-#' library(mlr3)
-#' task = tsks(c("boston_housing", "mtcars"))
-#' learns = lrns(c("regr.featureless", "regr.rpart"))
-#' bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
-#'
-#' # direct coercion
-#' # default measure
-#' as.BenchmarkAggr(bm)
-#' # custom measure
-#' as.BenchmarkAggr(bm, msr("regr.rmse"))
-#'
-#' # construct manually
-#' BenchmarkAggr$new(bm$aggregate())
-#'
-#' # construct from non-mlr object
+#' # Not restricted to mlr3 objects
 #' df = data.frame(task_id = rep(c("A", "B"), each = 5),
 #'                 learner_id = paste0("L", 1:5),
-#'                 RMSE = runif(10))
+#'                 RMSE = runif(10), MAE = runif(10))
 #' BenchmarkAggr$new(df)
+#'
+#' if (requireNamespaces(c("mlr3", "rpart"))) {
+#'   library(mlr3)
+#'   task = tsks(c("boston_housing", "mtcars"))
+#'   learns = lrns(c("regr.featureless", "regr.rpart"))
+#'   bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
+#'
+#'   # coercion
+#'   as.BenchmarkAggr(bm)
+#'
+#'   # initialize
+#'   BenchmarkAggr$new(bm$aggregate())
+#' }
 #' @export
 BenchmarkAggr = R6Class("BenchmarkAggr",
   public = list(
@@ -59,12 +58,6 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
         stop("Multiple results for a learner-task combination detected. There should be exactly one row for each learner-task combination.") # nolint
       }
 
-      if (!test_factor(dt$task_id))
-        dt$task_id = factor(assert_character(dt$task_id))
-
-      if (!test_factor(dt$learner_id))
-        dt$learner_id = factor(assert_character(dt$learner_id))
-
       # TODO - The line below could be removed if there is a use for this extra data,
       # for now there isn't in this object.
       dt = subset(dt, select = setdiff(colnames(dt),
@@ -79,8 +72,18 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
       sapply(dt[, setdiff(colnames(dt), c("task_id", "learner_id")), with = FALSE], assert_numeric)
 
       if (strip_prefix) {
-        dt$learner_id = gsub("regr\\.|classif\\.|surv\\.|dens\\.|clust\\.", "", dt$learner_id)
+        if (!test_factor(dt$learner_id)) {
+          dt$learner_id = gsub("regr\\.|classif\\.|surv\\.|dens\\.|clust\\.", "", dt$learner_id)
+        }
         colnames(dt) = gsub("regr\\.|classif\\.|surv\\.|dens\\.|clust\\.", "", colnames(dt))
+      }
+
+      if (!test_factor(dt$task_id)) {
+        dt$task_id = factor(assert_character(dt$task_id), levels = unique(dt$task_id))
+      }
+
+      if (!test_factor(dt$learner_id)) {
+        dt$learner_id = factor(assert_character(dt$learner_id), levels = unique(dt$learner_id))
       }
 
       private$.dt = dt
@@ -204,6 +207,15 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' p.value for which the global test will be considered significant.
     friedman_posthoc = function(meas = NULL, p.value = 0.05) { # nolint
 
+      if (!requireNamespace("PMCMR", quietly = TRUE)) {
+        stop("Package PMCMR required for post-hoc Friedman tests.")
+      }
+
+      if (self$nlrns == 2) {
+        warning("Only two learners available, returning global test.")
+        self$friedman_test(meas)
+      }
+
       meas = .check_meas(self, meas)
       assertNumeric(p.value, lower = 0, upper = 1, len = 1)
       f.test = self$friedman_test(meas) # nolint
@@ -211,8 +223,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
       if (!is.na(f.test$p.value)) {
         f.rejnull = f.test$p.value < p.value # nolint
         if (!f.rejnull) {
-          warning("Cannot reject null hypothesis of overall Friedman test,
-             returning overall Friedman test.")
+          warning("Cannot reject null hypothesis of overall Friedman test, returning overall Friedman test.") # nolint
         }
       } else {
         f.rejnull = FALSE # nolint
@@ -263,11 +274,11 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
       assertNumeric(p.value, lower = 0, upper = 1, len = 1)
 
       # Get Rankmatrix, transpose and get mean ranks
-      mean.rank = rowMeans(self$rank_data(meas, minimize = minimize))
+      mean_rank = rowMeans(self$rank_data(meas, minimize = minimize))
       # Gather Info for plotting the descriptive part.
-      df = data.frame(mean.rank,
-                      learner_id = names(mean.rank),
-                      rank = rank(mean.rank, ties.method = "average"))
+      df = data.frame(mean_rank,
+                      learner_id = names(mean_rank),
+                      rank = rank(mean_rank, ties.method = "average"))
       # Orientation of descriptive lines yend(=y-value of horizontal line)
       right = df$rank > median(df$rank)
       # Better learners are ranked ascending
@@ -278,15 +289,6 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
       df$xend = ifelse(!right, 0L, max(df$rank) + 1L)
       # Save orientation, can be used for vjust of text later on
       df$right = as.numeric(right)
-
-      # Get a baseline
-      if (is.null(baseline)) {
-        baseline = as.character(df$learner_id[which.min(df$rank)])
-      } else {
-        assert_choice(baseline, self$learners)
-      }
-
-      df$baseline = as.numeric(baseline == df$learner_id)
 
       # Perform nemenyi test
       nem_test = tryCatch(self$friedman_posthoc(meas, p.value),
@@ -306,21 +308,34 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 
       # Create data for connecting bars (only nemenyi test)
       if (test == "nemenyi") {
-        sub = sort(df$mean.rank)
+        sub = sort(df$mean_rank)
         # Compute a matrix of all possible bars
         mat = apply(t(outer(sub, sub, `-`)), c(1, 2),
                     FUN = function(x) ifelse(x > 0 && x < cd, x, 0))
         # Get start and end point of all possible bars
         xstart = round(apply(mat + sub, 1, min), 3)
         xend = round(apply(mat + sub, 1, max), 3)
-        nem.df = data.table(xstart, xend, "diff" = xend - xstart) # nolint
+        nem_df = data.table(xstart, xend, "diff" = xend - xstart) # nolint
         # For each unique endpoint of a bar keep only the longest bar
-        nem.df = nem.df[, .SD[which.max(.SD$diff)], by = "xend"] # nolint
+        nem_df = nem_df[, .SD[which.max(.SD$diff)], by = "xend"] # nolint
         # Take only bars with length > 0
-        nem.df = nem.df[nem.df$xend - nem.df$xstart > 0, ] # nolint
+        nem_df = nem_df[nem_df$diff > 0, ] # nolint
         # Descriptive lines for learners start at 0.5, 1.5, ...
-        nem.df$y = seq(from = 0.5, by = 0.5, length.out = dim(nem.df)[1])
-        out$nemenyi.data = as.data.frame(nem.df) # nolint
+        nem_df$y = c(seq(from = 0.5, by = 0.5,
+                         length.out = sum(nem_df$xstart <= median(df$mean_rank))),
+                     seq(from = 0.5, by = 0.5,
+                         length.out = sum(nem_df$xstart > median(df$mean_rank))))
+
+        out$nemenyi_data = as.data.frame(nem_df) # nolint
+      } else {
+        # Get a baseline
+        if (is.null(baseline)) {
+          baseline = as.character(df$learner_id[which.min(df$rank)])
+        } else {
+          assert_choice(baseline, self$learners)
+        }
+
+        df$baseline = as.numeric(baseline == df$learner_id)
       }
 
       out
@@ -332,8 +347,29 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 #' @description Coercion methods to [BenchmarkAggr]. For [mlr3::BenchmarkResult] this is a simple
 #' wrapper around the [BenchmarkAggr] constructor called with `[BenchmarkResult]$aggregate()`.
 #' @param obj `([mlr3::BenchmarkResult]|matrix(1))` \cr Passed to `[BenchmarkAggr]$new()`.
-#' @param independent,strp_prefix See `[BenchmarkAggr]$initialize()`.
+#' @param independent,strip_prefix See `[BenchmarkAggr]$initialize()`.
 #' @param ... `ANY` \cr Passed to `[BenchmarkResult]$aggregate()`.
+#' @examples
+#' df = data.frame(task_id = rep(c("A", "B"), each = 5),
+#'                 learner_id = paste0("L", 1:5),
+#'                 RMSE = runif(10), MAE = runif(10))
+#'
+#' as.BenchmarkAggr(df)
+#'
+#'
+#' if (requireNamespaces(c("mlr3", "rpart"))) {
+#'   library(mlr3)
+#'   task = tsks(c("boston_housing", "mtcars"))
+#'   learns = lrns(c("regr.featureless", "regr.rpart"))
+#'   bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
+#'
+#'   # default measure
+#'   as.BenchmarkAggr(bm)
+#'
+#'   # change measure
+#'   as.BenchmarkAggr(bm, measure = msr("regr.rmse"))
+#' }
+#'
 #' @export
 as.BenchmarkAggr = function(obj, independent = TRUE, strip_prefix = TRUE, ...) { # nolint
   UseMethod("as.BenchmarkAggr", obj)

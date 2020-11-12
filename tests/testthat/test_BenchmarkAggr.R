@@ -23,7 +23,7 @@ test_that("construction", {
 
   df = data.frame(task_id = rep(c("A"), each = 5),
                   learner_id = paste0("L", 1:5),
-                  RMSE = runif(10))
+                  RMSE = runif(5))
   expect_warning(as.BenchmarkAggr(df), "multiple tasks")
 
   df = data.frame(task_id = rep(c("A", "B"), each = 5),
@@ -43,6 +43,8 @@ test_that("public methods", {
   expect_output(ba$summary(), "10 rows with 2 tasks, 5 learners and 1 measure")
   expect_equal(as.numeric(ba$rank_data(ties.method = "first")), c(1, 2, 4, 5, 3, 4, 5, 2, 3, 1))
   expect_silent(ba$friedman_test())
+
+  skip_if_not_installed("PMCMR")
   expect_warning(ba$friedman_posthoc(), "Cannot reject")
   expect_silent(ba$friedman_posthoc(p.value = 0.9))
 })
@@ -65,6 +67,8 @@ test_that("active bindings", {
 
 test_that("mlr3 coercions", {
   skip_if_not_installed("mlr3")
+  skip_if_not_installed("rpart")
+
   library(mlr3)
   task = tsks(c("boston_housing", "mtcars"))
   learns = lrns(c("regr.featureless", "regr.rpart"))

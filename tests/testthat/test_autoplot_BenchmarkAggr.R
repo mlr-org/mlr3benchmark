@@ -7,11 +7,15 @@ test_that("autoplot.BenchmarkAggr", {
 
   expect_true(is.ggplot(autoplot(ba, type = "mean")))
   expect_true(is.ggplot(autoplot(ba, type = "box")))
+
+  skip_if_not_installed("PMCMR")
   expect_true(is.ggplot(autoplot(ba, type = "fn")))
   expect_true(is.ggplot(autoplot(ba, type = "cd")))
 })
 
 test_that("autoplot.BenchmarkAggr cd", {
+  skip_if_not_installed("PMCMR")
+
   set.seed(1)
   df = data.frame(task_id = rep(c("A", "B"), each = 5),
                   learner_id = paste0("L", 1:5),

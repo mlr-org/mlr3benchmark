@@ -16,25 +16,24 @@ column names \code{learner_id} (for models) and \code{task_id} (for datasets).
 Currently supported for multiple independent datasets only.
 }
 \examples{
-library(mlr3)
-task = tsks(c("boston_housing", "mtcars"))
-learns = lrns(c("regr.featureless", "regr.rpart"))
-bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
-
-# direct coercion
-# default measure
-as.BenchmarkAggr(bm)
-# custom measure
-as.BenchmarkAggr(bm, msr("regr.rmse"))
-
-# construct manually
-BenchmarkAggr$new(bm$aggregate())
-
-# construct from non-mlr object
+# Not restricted to mlr3 objects
 df = data.frame(task_id = rep(c("A", "B"), each = 5),
                 learner_id = paste0("L", 1:5),
-                RMSE = runif(10))
+                RMSE = runif(10), MAE = runif(10))
 BenchmarkAggr$new(df)
+
+if (requireNamespaces(c("mlr3", "rpart"))) {
+  library(mlr3)
+  task = tsks(c("boston_housing", "mtcars"))
+  learns = lrns(c("regr.featureless", "regr.rpart"))
+  bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
+
+  # coercion
+  as.BenchmarkAggr(bm)
+
+  # initialize
+  BenchmarkAggr$new(bm$aggregate())
+}
 }
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}

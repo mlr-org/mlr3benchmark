@@ -15,6 +15,7 @@
   baseline = NULL,
   style = 1L,
   ratio = 1/7,
+  col = "red",
   ...
 )
 }
@@ -52,6 +53,9 @@ otherwise the data can be accessed via the returned ggplot.}
 For \code{type = "cd"} and \code{style = 1}, passed to \code{\link[ggplot2:coord_fixed]{ggplot2::coord_fixed()}}, useful for quickly
 specifying the aspect ratio of the plot, best used with \code{\link[=ggsave]{ggsave()}}.}
 
+\item{col}{(\code{character(1)})\cr
+For \code{type = "fn"}, specifies color to fill significant tiles, default is \code{"red"}.}
+
 \item{...}{\code{ANY} \cr Additional arguments, currently unused.}
 }
 \description{
@@ -70,29 +74,33 @@ right. Any learners not connected by a horizontal bar are significantly differen
 Critical differences are calculated as:
 \deqn{CD = q_{\alpha} \sqrt{\left(\frac{k(k+1)}{6N}\right)}}{CD = q_alpha sqrt(k(k+1)/(6N))}
 Where \eqn{q_\alpha} is based on the studentized range statistic.
-See references for further details.
+See references for further details. It's recommended to use \code{\link[magick:transform]{magick::image_trim()}} to crop
+the white space around the image.
 }
 }
 \examples{
-if (requireNamespace("mlr3learners", quietly = TRUE)) {
+if (requireNamespaces(c("mlr3learners", "mlr3", "rpart", "xgboost"))) {
 library(mlr3)
 library(mlr3learners)
 library(ggplot2)
 
 set.seed(1)
 task = tsks(c("iris", "sonar", "wine", "zoo"))
-learns = lrns(c("classif.featureless", "classif.ranger", "classif.xgboost"))
+learns = lrns(c("classif.featureless", "classif.rpart", "classif.xgboost"))
 bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 3)))
 obj = as.BenchmarkAggr(bm)
 
 # mean and error bars
 autoplot(obj, type = "mean")
 
-# critical differences
-autoplot(obj, type = "cd")
+if (requireNamespace("PMCMR", quietly = TRUE)) {
+  # critical differences
+  autoplot(obj, type = "cd")
 
-# post-hoc friedman-nemenyi
-autoplot(obj, type = "fn")
+  # post-hoc friedman-nemenyi
+  autoplot(obj, type = "fn")
+}
+
 }
 
 }

@@ -4,7 +4,7 @@
 \name{mlr3benchmark-package}
 \alias{mlr3benchmark}
 \alias{mlr3benchmark-package}
-\title{mlr3benchmark: Benchmarking analysis for 'mlr3'}
+\title{mlr3benchmark: Analysis and Visualisation of Benchmark Experiments}
 \description{
 Implements methods for post-hoc analysis and
     visualisation of benchmark objects in 'mlr3'.
@@ -19,6 +19,11 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Sonabend Raphael \email{raphael.sonabend.15@ucl.ac.uk} (0000-0001-9225-4654)
+\strong{Maintainer}: Sonabend Raphael \email{raphael.sonabend.15@ucl.ac.uk} (\href{https://orcid.org/0000-0001-9225-4654}{ORCID})
+
+Authors:
+\itemize{
+  \item Florian Pfisterer \email{pfistererf@googlemail.com} (\href{https://orcid.org/0000-0001-8867-762X}{ORCID})
+}
 
 }

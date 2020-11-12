@@ -9,11 +9,33 @@ as.BenchmarkAggr(obj, independent = TRUE, strip_prefix = TRUE, ...)
 \arguments{
 \item{obj}{\verb{([mlr3::BenchmarkResult]|matrix(1))} \cr Passed to \verb{[BenchmarkAggr]$new()}.}
 
-\item{independent, strp_prefix}{See \verb{[BenchmarkAggr]$initialize()}.}
+\item{independent, strip_prefix}{See \verb{[BenchmarkAggr]$initialize()}.}
 
 \item{...}{\code{ANY} \cr Passed to \verb{[BenchmarkResult]$aggregate()}.}
 }
 \description{
 Coercion methods to \link{BenchmarkAggr}. For \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} this is a simple
 wrapper around the \link{BenchmarkAggr} constructor called with \verb{[BenchmarkResult]$aggregate()}.
+}
+\examples{
+df = data.frame(task_id = rep(c("A", "B"), each = 5),
+                learner_id = paste0("L", 1:5),
+                RMSE = runif(10), MAE = runif(10))
+
+as.BenchmarkAggr(df)
+
+
+if (requireNamespaces(c("mlr3", "rpart"))) {
+  library(mlr3)
+  task = tsks(c("boston_housing", "mtcars"))
+  learns = lrns(c("regr.featureless", "regr.rpart"))
+  bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
+
+  # default measure
+  as.BenchmarkAggr(bm)
+
+  # change measure
+  as.BenchmarkAggr(bm, measure = msr("regr.rmse"))
+}
+
 }

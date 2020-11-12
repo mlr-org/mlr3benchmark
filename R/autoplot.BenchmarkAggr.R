@@ -16,7 +16,8 @@
 #' Critical differences are calculated as:
 #' \deqn{CD = q_{\alpha} \sqrt{\left(\frac{k(k+1)}{6N}\right)}}{CD = q_alpha sqrt(k(k+1)/(6N))}
 #' Where \eqn{q_\alpha} is based on the studentized range statistic.
-#' See references for further details.
+#' See references for further details. It's recommended to use [magick::image_trim()] to crop
+#' the white space around the image.
 #'
 #' @param obj [BenchmarkAggr]
 #' @param type `(character(1))` \cr Type of plot, see description.
@@ -41,38 +42,43 @@
 #' @param ratio (`numeric(1)`) \cr
 #' For `type = "cd"` and `style = 1`, passed to [ggplot2::coord_fixed()], useful for quickly
 #' specifying the aspect ratio of the plot, best used with [ggsave()].
+#' @param col (`character(1)`)\cr
+#' For `type = "fn"`, specifies color to fill significant tiles, default is `"red"`.
 #' @param ... `ANY` \cr Additional arguments, currently unused.
 #'
 #' @references Janez Demsar, Statistical Comparisons of Classifiers over
 #' Multiple Data Sets, JMLR, 2006
 #'
 #' @examples
-#' if (requireNamespace("mlr3learners", quietly = TRUE)) {
+#' if (requireNamespaces(c("mlr3learners", "mlr3", "rpart", "xgboost"))) {
 #' library(mlr3)
 #' library(mlr3learners)
 #' library(ggplot2)
 #'
 #' set.seed(1)
 #' task = tsks(c("iris", "sonar", "wine", "zoo"))
-#' learns = lrns(c("classif.featureless", "classif.ranger", "classif.xgboost"))
+#' learns = lrns(c("classif.featureless", "classif.rpart", "classif.xgboost"))
 #' bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 3)))
 #' obj = as.BenchmarkAggr(bm)
 #'
 #' # mean and error bars
 #' autoplot(obj, type = "mean")
 #'
-#' # critical differences
-#' autoplot(obj, type = "cd")
+#' if (requireNamespace("PMCMR", quietly = TRUE)) {
+#'   # critical differences
+#'   autoplot(obj, type = "cd")
 #'
-#' # post-hoc friedman-nemenyi
-#' autoplot(obj, type = "fn")
+#'   # post-hoc friedman-nemenyi
+#'   autoplot(obj, type = "fn")
+#' }
+#'
 #' }
 #'
 #' @export
 autoplot.BenchmarkAggr = function(obj, type = c("mean", "box", "fn", "cd"), meas = NULL, # nolint
                                   level = 0.95, p.value = 0.05, minimize = TRUE, # nolint
                                   test = "bd", baseline = NULL, style = 1L,
-                                  ratio = 1/7, ...) { # nolint
+                                  ratio = 1/7, col = "red", ...) { # nolint
 
   # fix no visible binding
   lower = upper = Var1 = Var2 = value = NULL
@@ -102,22 +108,28 @@ autoplot.BenchmarkAggr = function(obj, type = c("mean", "box", "fn", "cd"), meas
                  warning = function(w)
                    stopf("Global Friedman test non-significant (p > %s), try type = 'mean' instead.", p.value)) # nolint
 
-    p = reshape2::melt(p)
-    p$value[is.na(p$value)] = 1
+    p = p[rev(seq_len(nrow(p))), ]
+    p = t(p)
+
+    p = cbind(expand.grid(rownames(p), colnames(p)), value = as.numeric(p))
+
     p$value = factor(ifelse(p$value < p.value, "0", "1"))
     ggplot(data = p, aes(x = Var1, y = Var2, fill = value)) +
-      geom_tile(color = "black", size = 0.5) +
-      scale_fill_manual(name = "col",
-                        values = c("0" = "red", "1" = "white"),
-                        labels = c("0", "1"),
-                        aesthetics = c("colour", "fill")) +
+      geom_tile(size = 0.5, color = !is.na(p$value)) +
+      scale_fill_manual(name = "p-value",
+                        values = c("0" = col, "1" = "white"),
+                        breaks = c("0", "1"),
+                        labels = c(paste0("<= ", p.value), paste0("> ", p.value))) +
       theme(axis.title = element_blank(),
             axis.text.y = element_text(angle = 45),
             axis.text.x = element_text(angle = 45, vjust = 0.8, hjust = 0.7),
             panel.grid = element_blank(),
             panel.background = element_rect(fill = "white"),
-            legend.position = "none") +
-      labs(title = paste0("Pairwise Nemenyi Post-Hoc of ", meas))
+            legend.background = element_rect(color = "black"),
+            legend.key = element_rect(color = "black"),
+            legend.position = c(1, 0.9),
+            legend.justification = "right")
+
   } else if (type == "box") {
     ggplot(data = obj$data,
            aes_string(x = "learner_id", y = meas)) +
