@@ -4,13 +4,16 @@
 \alias{as.BenchmarkAggr}
 \title{Coercions to BenchmarkAggr}
 \usage{
-as.BenchmarkAggr(obj, ...)
+as.BenchmarkAggr(obj, independent = TRUE, strip_prefix = TRUE, ...)
 }
 \arguments{
 \item{obj}{\verb{([mlr3::BenchmarkResult]|matrix(1))} \cr Passed to \verb{[BenchmarkAggr]$new()}.}
 
+\item{independent, strp_prefix}{See \verb{[BenchmarkAggr]$initialize()}.}
+
 \item{...}{\code{ANY} \cr Passed to \verb{[BenchmarkResult]$aggregate()}.}
 }
 \description{
-Coercion methods to \link{BenchmarkAggr}
+Coercion methods to \link{BenchmarkAggr}. For \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} this is a simple
+wrapper around the \link{BenchmarkAggr} constructor called with \verb{[BenchmarkResult]$aggregate()}.
 }

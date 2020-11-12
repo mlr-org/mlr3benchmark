@@ -19,12 +19,11 @@ Imports:
     checkmate,
     data.table,
     ggplot2,
-    mlr3,
     mlr3misc,
-    paradox,
     R6
 Suggests:
     lgr,
+    mlr3,
     mlr3learners,
     PMCMR,
     reshape2,
