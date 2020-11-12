@@ -40,7 +40,8 @@
 
 
 <meta property="og:title" content="Coercions to BenchmarkAggr — as.BenchmarkAggr" />
-<meta property="og:description" content="Coercion methods to BenchmarkAggr" />
+<meta property="og:description" content="Coercion methods to BenchmarkAggr. For mlr3::BenchmarkResult this is a simple
+wrapper around the BenchmarkAggr constructor called with [BenchmarkResult]$aggregate()." />
 
 
 
@@ -117,10 +118,11 @@
     </div>
 
     <div class="ref-description">
-    <p>Coercion methods to <a href='BenchmarkAggr.html'>BenchmarkAggr</a></p>
+    <p>Coercion methods to <a href='BenchmarkAggr.html'>BenchmarkAggr</a>. For <a href='https://mlr3.mlr-org.com/reference/BenchmarkResult.html'>mlr3::BenchmarkResult</a> this is a simple
+wrapper around the <a href='BenchmarkAggr.html'>BenchmarkAggr</a> constructor called with <code>[BenchmarkResult]$aggregate()</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>as.BenchmarkAggr</span><span class='op'>(</span><span class='va'>obj</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>as.BenchmarkAggr</span><span class='op'>(</span><span class='va'>obj</span>, independent <span class='op'>=</span> <span class='cn'>TRUE</span>, strip_prefix <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -130,12 +132,54 @@
       <td><p><code>([mlr3::BenchmarkResult]|matrix(1))</code> <br /> Passed to <code>[BenchmarkAggr]$new()</code>.</p></td>
     </tr>
     <tr>
+      <th>independent, strip_prefix</th>
+      <td><p>See <code>[BenchmarkAggr]$initialize()</code>.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p><code>ANY</code> <br /> Passed to <code>[BenchmarkResult]$aggregate()</code>.</p></td>
     </tr>
     </table>
 
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='va'>df</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>task_id <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"A"</span>, <span class='st'>"B"</span><span class='op'>)</span>, each <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>,
+                learner_id <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"L"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span>,
+                RMSE <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span>, MAE <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='fu'>as.BenchmarkAggr</span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; &lt;BenchmarkAggr&gt; of 10 rows with 2 tasks, 5 learners and 2 measures
+#&gt;     task_id learner_id      RMSE        MAE
+#&gt;  1:       A         L1 0.1218646 0.62292278
+#&gt;  2:       A         L2 0.3188480 0.46074751
+#&gt;  3:       A         L3 0.6230610 0.16341228
+#&gt;  4:       A         L4 0.4469974 0.51386686
+#&gt;  5:       A         L5 0.7082934 0.14326644
+#&gt;  6:       B         L1 0.8900290 0.65029870
+#&gt;  7:       B         L2 0.1043065 0.15529453
+#&gt;  8:       B         L3 0.6304117 0.50830986
+#&gt;  9:       B         L4 0.8415589 0.08587044
+#&gt; 10:       B         L5 0.3642624 0.50302666</div><div class='input'>
+
+<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='requireNamespaces.html'>requireNamespaces</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mlr3"</span>, <span class='st'>"rpart"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://mlr3.mlr-org.com'>mlr3</a></span><span class='op'>)</span>
+  <span class='va'>task</span> <span class='op'>=</span> <span class='fu'><a href='https://mlr3.mlr-org.com/reference/mlr_sugar.html'>tsks</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"boston_housing"</span>, <span class='st'>"mtcars"</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='va'>learns</span> <span class='op'>=</span> <span class='fu'><a href='https://mlr3.mlr-org.com/reference/mlr_sugar.html'>lrns</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"regr.featureless"</span>, <span class='st'>"regr.rpart"</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='va'>bm</span> <span class='op'>=</span> <span class='fu'><a href='https://mlr3.mlr-org.com/reference/benchmark.html'>benchmark</a></span><span class='op'>(</span><span class='fu'><a href='https://mlr3.mlr-org.com/reference/benchmark_grid.html'>benchmark_grid</a></span><span class='op'>(</span><span class='va'>task</span>, <span class='va'>learns</span>, <span class='fu'><a href='https://mlr3.mlr-org.com/reference/mlr_sugar.html'>rsmp</a></span><span class='op'>(</span><span class='st'>"cv"</span>, folds <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+
+  <span class='co'># default measure</span>
+  <span class='fu'>as.BenchmarkAggr</span><span class='op'>(</span><span class='va'>bm</span><span class='op'>)</span>
+
+  <span class='co'># change measure</span>
+  <span class='fu'>as.BenchmarkAggr</span><span class='op'>(</span><span class='va'>bm</span>, measure <span class='op'>=</span> <span class='fu'><a href='https://mlr3.mlr-org.com/reference/mlr_sugar.html'>msr</a></span><span class='op'>(</span><span class='st'>"regr.rmse"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div><div class='output co'>#&gt; &lt;BenchmarkAggr&gt; of 4 rows with 2 tasks, 2 learners and 1 measure
+#&gt;           task_id  learner_id     rmse
+#&gt; 1: boston_housing featureless 9.284509
+#&gt; 2: boston_housing       rpart 1.710210
+#&gt; 3:         mtcars featureless 5.973315
+#&gt; 4:         mtcars       rpart 5.973315</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -147,7 +191,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Sonabend Raphael.</p>
+  <p>Developed by Sonabend Raphael, Florian Pfisterer.</p>
 </div>
 
 <div class="pkgdown">
