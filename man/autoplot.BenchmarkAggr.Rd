@@ -91,11 +91,12 @@ bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 3)))
 obj = as.BenchmarkAggr(bm)
 
 # mean and error bars
-autoplot(obj, type = "mean")
+autoplot(obj, type = "mean", level = 0.95)
 
 if (requireNamespace("PMCMR", quietly = TRUE)) {
   # critical differences
-  autoplot(obj, type = "cd")
+  autoplot(obj, type = "cd",style = 1)
+  autoplot(obj, type = "cd",style = 2)
 
   # post-hoc friedman-nemenyi
   autoplot(obj, type = "fn")
