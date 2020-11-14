@@ -96,11 +96,11 @@ We read the diagram from left to right, so that learners to the left have the hi
 and are the best performing, and decrease going right. The thick horizontal lines connect learners
 that are *not* significantly difference in ranked performance, so this tells us:
 
-i) xgboost is significantly better than featureless
-ii) xgboost is not significantly better than rpart
-iii) rpart is not significantly better than featureless
+1. xgboost is significantly better than featureless
+1. xgboost is not significantly better than rpart
+1. rpart is not significantly better than featureless
 
-Now we visualise two much simpler plots which display similar information, the first is the mean and standard error of the results across all tasks, the second is a boxplot results across all tasks:
+Now we visualise two much simpler plots which display similar information, the first is the mean and standard error of the results across all tasks, the second is a boxplot across all tasks:
 
 ```{r}
 autoplot(ba, meas = "acc")
