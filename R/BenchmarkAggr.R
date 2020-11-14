@@ -37,7 +37,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #' @param dt `(matrix(1))` \cr
-    #' `matrix` like object coercable to [data.table::data.table][data.table], should
+    #' `matrix` like object coercible to [data.table::data.table][data.table], should
     #' include column names "task_id" and "learner_id", and at least one measure (numeric).
     #' If ids are not already factors then coerced internally.
     #' @param independent `(logical(1))` \cr
@@ -49,16 +49,16 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     initialize = function(dt, independent = TRUE, strip_prefix = TRUE, ...) {
       dt = as.data.table(dt)
 
-      private$.independent = assert_logical(independent)
+      private$.independent = assert_flag(independent)
       if (!independent) {
         warning("Currently only methods for independent datasets are supported.")
       }
 
       # at the very least should include task_id, learner_id, and one measure
-      assert(all(c("task_id", "learner_id") %in% colnames(dt)))
+      assert_names(colnames(dt), must.include = c("task_id", "learner_id"))
 
 
-      if (any(duplicated(dt[, c("task_id", "learner_id")]))) {
+      if (anyDuplicated(dt[, c("task_id", "learner_id")])) {
         stop("Multiple results for a learner-task combination detected. There should be exactly one row for each learner-task combination.") # nolint
       }
 
@@ -75,7 +75,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
       # check measures are numeric
       sapply(dt[, setdiff(colnames(dt), c("task_id", "learner_id")), with = FALSE], assert_numeric)
 
-      if (strip_prefix) {
+      if (assert_flag(strip_prefix)) {
         if (!test_factor(dt$learner_id)) {
           dt$learner_id = gsub("regr\\.|classif\\.|surv\\.|dens\\.|clust\\.", "", dt$learner_id)
         }
