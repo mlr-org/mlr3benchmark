@@ -2,7 +2,7 @@
 #' @description An R6 class for aggregated benchmark results.
 #' @details This class is used to easily carry out and guide analysis of models after aggregating
 #' the results after resampling. This can either be constructed using \CRANpkg{mlr3} objects,
-#' for example the result of `[mlr3::BenchmarkResult]$aggregate` or via [as.BenchmarkAggr],
+#' for example the result of [mlr3::BenchmarkResult]`$aggregate` or via [as.BenchmarkAggr],
 #' or by passing in a custom dataset of results. Custom datasets must include at the very least,
 #' column names `learner_id` (for models) and `task_id` (for datasets).
 #'
@@ -44,7 +44,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' @param strip_prefix (`logical(1)`) \cr
     #' If `TRUE` (default) then mlr prefixes, e.g. `regr.`, `classif.`, are automatically
     #' stripped from the `learner_id`.
-    #' @param ... `ANY` Additional arguments, currently unused.
+    #' @param ... `ANY` \cr Additional arguments, currently unused.
     initialize = function(dt, independent = TRUE, strip_prefix = TRUE, ...) {
       dt = as.data.table(dt)
 
@@ -100,7 +100,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 
     #' @description
     #' Prints the internal data via [data.table::print.data.table].
-    #' @param ... Passed to [data.table::print.data.table].
+    #' @param ... `ANY` \cr Passed to [data.table::print.data.table].
     print = function(...) {
       catf("<BenchmarkAggr> of %i %s with %i %s, %i %s and %i %s",
            self$nrow, ifelse(self$nrow == 1, "row", "rows"),
@@ -112,7 +112,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 
     #' @description
     #' Prints the internal data via [data.table::print.data.table].
-    #' @param ... Passed to [data.table::print.data.table].
+    #' @param ... `ANY` \cr Passed to [data.table::print.data.table].
     summary = function(...) {
       self$print(...)
     },
@@ -127,7 +127,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' If `NULL` then returns a matrix of ranks where columns are tasks and rows are
     #' learners, otherwise returns a one-column matrix of a specified task, should
     #' be in `$tasks`.
-    #' @param ... `ANY` Passed to [data.table::frank()].
+    #' @param ... `ANY` `ANY` \cr Passed to [data.table::frank()].
     rank_data = function(meas = NULL, minimize = TRUE, task = NULL, ...) {
       meas = .check_meas(self, meas)
       df = subset(private$.dt, select = c("task_id", meas))
@@ -246,7 +246,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
   ),
 
   active = list(
-    #' @field data `([data.table::data.table])` \cr Aggregated data.
+    #' @field data ([data.table::data.table]) \cr Aggregated data.
     data = function() private$.dt,
     #' @field learners `(character())` \cr Unique learner names.
     learners = function() as.character(unique(private$.dt$learner_id)),
@@ -348,10 +348,10 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 
 #' @title Coercions to BenchmarkAggr
 #' @description Coercion methods to [BenchmarkAggr]. For [mlr3::BenchmarkResult] this is a simple
-#' wrapper around the [BenchmarkAggr] constructor called with `[BenchmarkResult]$aggregate()`.
-#' @param obj `([mlr3::BenchmarkResult]|matrix(1))` \cr Passed to `[BenchmarkAggr]$new()`.
-#' @param independent,strip_prefix See `[BenchmarkAggr]$initialize()`.
-#' @param ... `ANY` \cr Passed to `[BenchmarkResult]$aggregate()`.
+#' wrapper around the [BenchmarkAggr] constructor called with [mlr3::BenchmarkResult]`$aggregate()`.
+#' @param obj ([mlr3::BenchmarkResult]|`matrix(1)`) \cr Passed to [BenchmarkAggr]`$new()`.
+#' @param independent,strip_prefix See [BenchmarkAggr]`$initialize()`.
+#' @param ... `ANY` \cr Passed to [mlr3::BenchmarkResult]`$aggregate()`.
 #' @examples
 #' df = data.frame(task_id = rep(c("A", "B"), each = 5),
 #'                 learner_id = paste0("L", 1:5),

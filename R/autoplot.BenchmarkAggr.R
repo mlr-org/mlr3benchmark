@@ -6,9 +6,9 @@
 #'
 #' * `"mean"` (default): Assumes there are at least two independent tasks. Plots the sample mean
 #' of the measure for all learners with error bars computed with the standard error of the mean.
-#' * `"box"`: Boxplots for each learners calculated over all tasks for a given measure.
-#' * `"fn"`: Plots post-hoc Friedman-Nemenyi by first calling `[BenchmarkAggr]$friedman_posthoc`
-#' and plotting significant pairs in red squares and leaving non-significant pairs blank,
+#' * `"box"`: Boxplots for each learner calculated over all tasks for a given measure.
+#' * `"fn"`: Plots post-hoc Friedman-Nemenyi by first calling [BenchmarkAggr]`$friedman_posthoc`
+#' and plotting significant pairs in coloured squares and leaving non-significant pairs blank,
 #' useful for simply visualising pair-wise comparisons.
 #' * `"cd"`: Critical difference plots (Demsar, 2006). Learners are drawn on the x-axis according
 #' to their average rank with the best performing on the left and decreasing performance going
@@ -31,7 +31,7 @@
 #' @param test (`character(1))`) \cr
 #' For `type = "cd"`, critical differences are either computed between all learners
 #' (`test = "nemenyi"`), or to a baseline (`test = "bd"`). Bonferroni-Dunn usually yields higher
-#' power than Nemenyi as it only compares algorithms to one baseline. Default is Nemenyi.
+#' power than Nemenyi as it only compares algorithms to one baseline. Default is `"nemenyi"`.
 #' @param baseline `(character(1))` \cr
 #' For `type = "cd"` and `test = "bd"` a baseline learner to compare the other learners to,
 #' should be in `$learners`, if `NULL` then differences are compared to the best performing

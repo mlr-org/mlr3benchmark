@@ -6,6 +6,8 @@
 \alias{mlr3benchmark-package}
 \title{mlr3benchmark: Analysis and Visualisation of Benchmark Experiments}
 \description{
+\if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
+
 Implements methods for post-hoc analysis and
     visualisation of benchmark experiments, for 'mlr3' and beyond.
 }
@@ -24,6 +26,12 @@ Useful links:
 Authors:
 \itemize{
   \item Florian Pfisterer \email{pfistererf@googlemail.com} (\href{https://orcid.org/0000-0001-8867-762X}{ORCID})
+}
+
+Other contributors:
+\itemize{
+  \item Michel Lang \email{michellang@gmail.com} (\href{https://orcid.org/0000-0001-9754-0393}{ORCID}) [contributor]
+  \item Bernd Bischl \email{bernd_bischl@gmx.net} (\href{https://orcid.org/0000-0001-6002-6980}{ORCID}) [contributor]
 }
 
 }

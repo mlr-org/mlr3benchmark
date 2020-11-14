@@ -11,7 +11,17 @@ Authors@R:
              family = "Pfisterer",
              role = "aut",
              email = "pfistererf@googlemail.com",
-             comment = c(ORCID = "0000-0001-8867-762X")))
+             comment = c(ORCID = "0000-0001-8867-762X")),
+      person(given = "Michel",
+             family = "Lang",
+             role = "ctb",
+             email = "michellang@gmail.com",
+             comment = c(ORCID = "0000-0001-9754-0393")),
+      person(given = "Bernd",
+             family = "Bischl",
+             role = "ctb",
+             email = "bernd_bischl@gmx.net",
+             comment = c(ORCID = "0000-0001-6002-6980")))
 Description: Implements methods for post-hoc analysis and
     visualisation of benchmark experiments, for 'mlr3' and beyond.
 License: LGPL-3

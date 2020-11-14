@@ -9,7 +9,7 @@ An R6 class for aggregated benchmark results.
 \details{
 This class is used to easily carry out and guide analysis of models after aggregating
 the results after resampling. This can either be constructed using \CRANpkg{mlr3} objects,
-for example the result of \verb{[mlr3::BenchmarkResult]$aggregate} or via \link{as.BenchmarkAggr},
+for example the result of \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}\verb{$aggregate} or via \link{as.BenchmarkAggr},
 or by passing in a custom dataset of results. Custom datasets must include at the very least,
 column names \code{learner_id} (for models) and \code{task_id} (for datasets).
 
@@ -42,7 +42,7 @@ Multiple Data Sets, JMLR, 2006
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{data}}{\verb{([data.table::data.table])} \cr Aggregated data.}
+\item{\code{data}}{(\link[data.table:data.table]{data.table::data.table}) \cr Aggregated data.}
 
 \item{\code{learners}}{\code{(character())} \cr Unique learner names.}
 
@@ -96,7 +96,7 @@ Are tasks independent of one another? Affects which tests can be used for analys
 If \code{TRUE} (default) then mlr prefixes, e.g. \code{regr.}, \code{classif.}, are automatically
 stripped from the \code{learner_id}.}
 
-\item{\code{...}}{\code{ANY} Additional arguments, currently unused.}
+\item{\code{...}}{\code{ANY} \cr Additional arguments, currently unused.}
 }
 \if{html}{\out{</div>}}
 }
@@ -113,7 +113,7 @@ Prints the internal data via \link[data.table:print.data.table]{data.table::prin
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Passed to \link[data.table:print.data.table]{data.table::print.data.table}.}
+\item{\code{...}}{\code{ANY} \cr Passed to \link[data.table:print.data.table]{data.table::print.data.table}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -130,7 +130,7 @@ Prints the internal data via \link[data.table:print.data.table]{data.table::prin
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Passed to \link[data.table:print.data.table]{data.table::print.data.table}.}
+\item{\code{...}}{\code{ANY} \cr Passed to \link[data.table:print.data.table]{data.table::print.data.table}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -159,7 +159,7 @@ If \code{NULL} then returns a matrix of ranks where columns are tasks and rows a
 learners, otherwise returns a one-column matrix of a specified task, should
 be in \verb{$tasks}.}
 
-\item{\code{...}}{\code{ANY} Passed to \code{\link[data.table:frank]{data.table::frank()}}.}
+\item{\code{...}}{\code{ANY} \code{ANY} \cr Passed to \code{\link[data.table:frank]{data.table::frank()}}.}
 }
 \if{html}{\out{</div>}}
 }

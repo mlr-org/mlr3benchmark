@@ -38,7 +38,7 @@ For \code{type = "cd"}, indicates if the measure is optimally minimized. Default
 \item{test}{(\verb{character(1))}) \cr
 For \code{type = "cd"}, critical differences are either computed between all learners
 (\code{test = "nemenyi"}), or to a baseline (\code{test = "bd"}). Bonferroni-Dunn usually yields higher
-power than Nemenyi as it only compares algorithms to one baseline. Default is Nemenyi.}
+power than Nemenyi as it only compares algorithms to one baseline. Default is \code{"nemenyi"}.}
 
 \item{baseline}{\code{(character(1))} \cr
 For \code{type = "cd"} and \code{test = "bd"} a baseline learner to compare the other learners to,
@@ -64,9 +64,9 @@ Choices depending on the argument \code{type}:
 \itemize{
 \item \code{"mean"} (default): Assumes there are at least two independent tasks. Plots the sample mean
 of the measure for all learners with error bars computed with the standard error of the mean.
-\item \code{"box"}: Boxplots for each learners calculated over all tasks for a given measure.
-\item \code{"fn"}: Plots post-hoc Friedman-Nemenyi by first calling \verb{[BenchmarkAggr]$friedman_posthoc}
-and plotting significant pairs in red squares and leaving non-significant pairs blank,
+\item \code{"box"}: Boxplots for each learner calculated over all tasks for a given measure.
+\item \code{"fn"}: Plots post-hoc Friedman-Nemenyi by first calling \link{BenchmarkAggr}\verb{$friedman_posthoc}
+and plotting significant pairs in coloured squares and leaving non-significant pairs blank,
 useful for simply visualising pair-wise comparisons.
 \item \code{"cd"}: Critical difference plots (Demsar, 2006). Learners are drawn on the x-axis according
 to their average rank with the best performing on the left and decreasing performance going
