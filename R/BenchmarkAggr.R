@@ -33,9 +33,9 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
   public = list(
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
-    #' @param dt `(data.table())` \cr
-    #' [data.table::data.table][data.table] with columns "task_id" and "learner_id", and at
-    #' least one measure (numeric).
+    #' @param dt `(matrix(1))` \cr'
+    #' `matrix` like object coercable to [data.table::data.table][data.table], should
+    #' include column names "task_id" and "learner_id", and at least one measure (numeric).
     #' If ids are not already factors then coerced internally.
     #' @param independent `(logical(1))` \cr
     #' Are tasks independent of one another? Affects which tests can be used for analysis.
