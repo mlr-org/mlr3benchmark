@@ -52,9 +52,9 @@
 Choices depending on the argument type:
 &quot;mean&quot; (default): Assumes there are at least two independent tasks. Plots the sample mean
 of the measure for all learners with error bars computed with the standard error of the mean.
-&quot;box&quot;: Boxplots for each learners calculated over all tasks for a given measure.
-&quot;fn&quot;: Plots post-hoc Friedman-Nemenyi by first calling [BenchmarkAggr]$friedman_posthoc
-and plotting significant pairs in red squares and leaving non-significant pairs blank,
+&quot;box&quot;: Boxplots for each learner calculated over all tasks for a given measure.
+&quot;fn&quot;: Plots post-hoc Friedman-Nemenyi by first calling BenchmarkAggr$friedman_posthoc
+and plotting significant pairs in coloured squares and leaving non-significant pairs blank,
 useful for simply visualising pair-wise comparisons.
 &quot;cd&quot;: Critical difference plots (Demsar, 2006). Learners are drawn on the x-axis according
 to their average rank with the best performing on the left and decreasing performance going
@@ -165,9 +165,9 @@ the white space around the image.
 Choices depending on the argument <code>type</code>:</p><ul>
 <li><p><code>"mean"</code> (default): Assumes there are at least two independent tasks. Plots the sample mean
 of the measure for all learners with error bars computed with the standard error of the mean.</p></li>
-<li><p><code>"box"</code>: Boxplots for each learners calculated over all tasks for a given measure.</p></li>
-<li><p><code>"fn"</code>: Plots post-hoc Friedman-Nemenyi by first calling <code>[BenchmarkAggr]$friedman_posthoc</code>
-and plotting significant pairs in red squares and leaving non-significant pairs blank,
+<li><p><code>"box"</code>: Boxplots for each learner calculated over all tasks for a given measure.</p></li>
+<li><p><code>"fn"</code>: Plots post-hoc Friedman-Nemenyi by first calling <a href='BenchmarkAggr.html'>BenchmarkAggr</a><code>$friedman_posthoc</code>
+and plotting significant pairs in coloured squares and leaving non-significant pairs blank,
 useful for simply visualising pair-wise comparisons.</p></li>
 <li><p><code>"cd"</code>: Critical difference plots (Demsar, 2006). Learners are drawn on the x-axis according
 to their average rank with the best performing on the left and decreasing performance going
@@ -232,7 +232,7 @@ For <code>type = "cd"</code>, indicates if the measure is optimally minimized. D
       <td><p>(<code>character(1))</code>) <br />
 For <code>type = "cd"</code>, critical differences are either computed between all learners
 (<code>test = "nemenyi"</code>), or to a baseline (<code>test = "bd"</code>). Bonferroni-Dunn usually yields higher
-power than Nemenyi as it only compares algorithms to one baseline. Default is Nemenyi.</p></td>
+power than Nemenyi as it only compares algorithms to one baseline. Default is <code>"nemenyi"</code>.</p></td>
     </tr>
     <tr>
       <th>baseline</th>

@@ -153,7 +153,7 @@
 
     <p>This class is used to easily carry out and guide analysis of models after aggregating
 the results after resampling. This can either be constructed using <a href='https://CRAN.R-project.org/package=mlr3'><span class="pkg">mlr3</span></a> objects,
-for example the result of <code>[mlr3::BenchmarkResult]$aggregate</code> or via <a href='as.BenchmarkAggr.html'>as.BenchmarkAggr</a>,
+for example the result of <a href='https://mlr3.mlr-org.com/reference/BenchmarkResult.html'>mlr3::BenchmarkResult</a><code>$aggregate</code> or via <a href='as.BenchmarkAggr.html'>as.BenchmarkAggr</a>,
 or by passing in a custom dataset of results. Custom datasets must include at the very least,
 column names <code>learner_id</code> (for models) and <code>task_id</code> (for datasets).</p>
 <p>Currently supported for multiple independent datasets only.</p>
@@ -164,7 +164,7 @@ Multiple Data Sets, JMLR, 2006</p>
     <h2 class="hasAnchor" id="active-bindings"><a class="anchor" href="#active-bindings"></a>Active bindings</h2>
 
     <p><div class="r6-active-bindings"></p><dl>
-<dt><code>data</code></dt><dd><p><code>([data.table::data.table])</code> <br /> Aggregated data.</p></dd>
+<dt><code>data</code></dt><dd><p>(<a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table::data.table</a>) <br /> Aggregated data.</p></dd>
 
 <dt><code>learners</code></dt><dd><p><code>(character())</code> <br /> Unique learner names.</p></dd>
 
@@ -214,7 +214,7 @@ Are tasks independent of one another? Affects which tests can be used for analys
 If <code>TRUE</code> (default) then mlr prefixes, e.g. <code>regr.</code>, <code>classif.</code>, are automatically
 stripped from the <code>learner_id</code>.</p></dd>
 
-<dt><code>...</code></dt><dd><p><code>ANY</code> Additional arguments, currently unused.</p></dd>
+<dt><code>...</code></dt><dd><p><code>ANY</code> <br /> Additional arguments, currently unused.</p></dd>
 
 </dl><p></div></p>
 <p><hr>
@@ -224,7 +224,7 @@ stripped from the <code>learner_id</code>.</p></dd>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
-<dt><code>...</code></dt><dd><p>Passed to <a href='https://Rdatatable.gitlab.io/data.table/reference/print.data.table.html'>data.table::print.data.table</a>.</p></dd>
+<dt><code>...</code></dt><dd><p><code>ANY</code> <br /> Passed to <a href='https://Rdatatable.gitlab.io/data.table/reference/print.data.table.html'>data.table::print.data.table</a>.</p></dd>
 
 </dl><p></div></p>
 <p><hr>
@@ -234,7 +234,7 @@ stripped from the <code>learner_id</code>.</p></dd>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
-<dt><code>...</code></dt><dd><p>Passed to <a href='https://Rdatatable.gitlab.io/data.table/reference/print.data.table.html'>data.table::print.data.table</a>.</p></dd>
+<dt><code>...</code></dt><dd><p><code>ANY</code> <br /> Passed to <a href='https://Rdatatable.gitlab.io/data.table/reference/print.data.table.html'>data.table::print.data.table</a>.</p></dd>
 
 </dl><p></div></p>
 <p><hr>
@@ -256,7 +256,7 @@ If <code>NULL</code> then returns a matrix of ranks where columns are tasks and 
 learners, otherwise returns a one-column matrix of a specified task, should
 be in <code>$tasks</code>.</p></dd>
 
-<dt><code>...</code></dt><dd><p><code>ANY</code> Passed to <code><a href='https://Rdatatable.gitlab.io/data.table/reference/frank.html'>data.table::frank()</a></code>.</p></dd>
+<dt><code>...</code></dt><dd><p><code>ANY</code> <code>ANY</code> <br /> Passed to <code><a href='https://Rdatatable.gitlab.io/data.table/reference/frank.html'>data.table::frank()</a></code>.</p></dd>
 
 </dl><p></div></p>
 <p><hr>
