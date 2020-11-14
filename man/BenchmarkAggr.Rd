@@ -80,9 +80,9 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{dt}}{\code{(data.table())} \cr
-\link[=data.table]{data.table::data.table} with columns "task_id" and "learner_id", and at
-least one measure (numeric).
+\item{\code{dt}}{\code{(matrix(1))} \cr'
+\code{matrix} like object coercable to \link[=data.table]{data.table::data.table}, should
+include column names "task_id" and "learner_id", and at least one measure (numeric).
 If ids are not already factors then coerced internally.}
 
 \item{\code{independent}}{\code{(logical(1))} \cr

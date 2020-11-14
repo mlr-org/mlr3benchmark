@@ -48,8 +48,8 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
       private$.independent = assert_flag(independent)
       assert_flag(strip_prefix)
       assert_names(colnames(dt), must.include = c("task_id", "learner_id"))
-      dt[, task_id := as.factor(task_id)]
-      dt[, learner_id := as.factor(learner_id)]
+      dt$task_id = as.factor(dt$task_id)
+      dt$learner_id = as.factor(dt$learner_id)
       measure_ids = setdiff(colnames(dt), c("task_id", "learner_id"))
       if (length(measure_ids) == 0L) {
         stop("At least one measure must be included in `dt`.")
@@ -372,7 +372,8 @@ as.BenchmarkAggr.default = function(obj, independent = TRUE, strip_prefix = TRUE
 }
 
 #' @export
-as.BenchmarkAggr.BenchmarkResult = function(obj, independent = TRUE, strip_prefix = TRUE, measures = NULL) { # nolint
+as.BenchmarkAggr.BenchmarkResult = function(obj, independent = TRUE, strip_prefix = TRUE, measures = NULL, ...) { # nolint
+  requireNamespaces("mlr3")
   measures = mlr3::as_measures(measures, task_type = obj$task_type)
   tab = obj$aggregate(measures = measures)
   cols = c("task_id", "learner_id", map_chr(measures, "id"))
