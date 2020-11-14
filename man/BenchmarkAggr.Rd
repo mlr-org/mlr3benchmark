@@ -20,7 +20,7 @@ Currently supported for multiple independent datasets only.
 df = data.frame(task_id = rep(c("A", "B"), each = 5),
                 learner_id = paste0("L", 1:5),
                 RMSE = runif(10), MAE = runif(10))
-BenchmarkAggr$new(df)
+as.BenchmarkAggr(df)
 
 if (requireNamespaces(c("mlr3", "rpart"))) {
   library(mlr3)
@@ -30,9 +30,6 @@ if (requireNamespaces(c("mlr3", "rpart"))) {
 
   # coercion
   as.BenchmarkAggr(bm)
-
-  # initialize
-  BenchmarkAggr$new(bm$aggregate())
 }
 }
 \references{
@@ -77,15 +74,15 @@ if (requireNamespaces(c("mlr3", "rpart"))) {
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BenchmarkAggr$new(dt, independent = TRUE, strip_prefix = TRUE, ...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{BenchmarkAggr$new(dt, independent = TRUE, strip_prefix = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{dt}}{\code{(matrix(1))} \cr
-\code{matrix} like object coercable to \link[=data.table]{data.table::data.table}, should
-include column names "task_id" and "learner_id", and at least one measure (numeric).
+\item{\code{dt}}{\code{(data.table())} \cr
+\link[=data.table]{data.table::data.table} with columns "task_id" and "learner_id", and at
+least one measure (numeric).
 If ids are not already factors then coerced internally.}
 
 \item{\code{independent}}{\code{(logical(1))} \cr
@@ -94,8 +91,6 @@ Are tasks independent of one another? Affects which tests can be used for analys
 \item{\code{strip_prefix}}{(\code{logical(1)}) \cr
 If \code{TRUE} (default) then mlr prefixes, e.g. \code{regr.}, \code{classif.}, are automatically
 stripped from the \code{learner_id}.}
-
-\item{\code{...}}{\code{ANY} \cr Additional arguments, currently unused.}
 }
 \if{html}{\out{</div>}}
 }
