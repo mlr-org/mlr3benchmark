@@ -1,4 +1,5 @@
 #' @title Aggregated Benchmark Result Object
+#'
 #' @description An R6 class for aggregated benchmark results.
 #' @details This class is used to easily carry out and guide analysis of models after aggregating
 #' the results after resampling. This can either be constructed using \CRANpkg{mlr3} objects,
@@ -8,8 +9,8 @@
 #'
 #' Currently supported for multiple independent datasets only.
 #'
-#' @references Janez Demsar, Statistical Comparisons of Classifiers over
-#' Multiple Data Sets, JMLR, 2006
+#' @references
+#' `r format_bib("demsar_2006")
 #'
 #' @examples
 #' # Not restricted to mlr3 objects

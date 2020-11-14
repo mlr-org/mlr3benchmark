@@ -36,8 +36,7 @@ if (requireNamespaces(c("mlr3", "rpart"))) {
 }
 }
 \references{
-Janez Demsar, Statistical Comparisons of Classifiers over
-Multiple Data Sets, JMLR, 2006
+`r format_bib("demsar_2006")
 }
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}

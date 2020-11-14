@@ -16,8 +16,8 @@
 #' Critical differences are calculated as:
 #' \deqn{CD = q_{\alpha} \sqrt{\left(\frac{k(k+1)}{6N}\right)}}{CD = q_alpha sqrt(k(k+1)/(6N))}
 #' Where \eqn{q_\alpha} is based on the studentized range statistic.
-#' See references for further details. It's recommended to use [magick::image_trim()] to crop
-#' the white space around the image.
+#' See references for further details.
+#' It's recommended to crop white space using external tools, or function `image_trim()` from package \CRANpkg{magick}.
 #'
 #' @param obj [BenchmarkAggr]
 #' @param type `(character(1))` \cr Type of plot, see description.
@@ -46,8 +46,8 @@
 #' For `type = "fn"`, specifies color to fill significant tiles, default is `"red"`.
 #' @param ... `ANY` \cr Additional arguments, currently unused.
 #'
-#' @references Janez Demsar, Statistical Comparisons of Classifiers over
-#' Multiple Data Sets, JMLR, 2006
+#' @references
+#' `r format_bib("demsar_2006")`
 #'
 #' @examples
 #' if (requireNamespaces(c("mlr3learners", "mlr3", "rpart", "xgboost"))) {
