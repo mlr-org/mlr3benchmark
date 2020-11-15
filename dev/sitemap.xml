@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://mlr3benchmark.mlr-org.com/index.html</loc>
+  </url>
+  <url>
+    <loc>https://mlr3benchmark.mlr-org.com/reference/BenchmarkAggr.html</loc>
+  </url>
+  <url>
+    <loc>https://mlr3benchmark.mlr-org.com/reference/as.BenchmarkAggr.html</loc>
+  </url>
+  <url>
+    <loc>https://mlr3benchmark.mlr-org.com/reference/autoplot.BenchmarkAggr.html</loc>
+  </url>
+  <url>
+    <loc>https://mlr3benchmark.mlr-org.com/reference/mlr3benchmark-package.html</loc>
+  </url>
+  <url>
+    <loc>https://mlr3benchmark.mlr-org.com/reference/requireNamespaces.html</loc>
+  </url>
+</urlset>
