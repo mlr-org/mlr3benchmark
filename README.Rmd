@@ -3,8 +3,9 @@ output: github_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_chunk$set(fig.path = "man/figures/README-")
+knitr::opts_chunk$set(echo = TRUE,
+                      fig.path = "man/figures/README-",
+                      dpi = 300)
 library(mlr3benchmark)
 ```
 

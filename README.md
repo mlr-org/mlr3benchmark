@@ -1,5 +1,3 @@
-README
-================
 
 # mlr3benchmark
 
@@ -148,13 +146,13 @@ have the highest rank and are the best performing, and decrease going
 right. The thick horizontal lines connect learners that are *not*
 significantly difference in ranked performance, so this tells us:
 
-1)  xgboost is significantly better than featureless
-2)  xgboost is not significantly better than rpart
-3)  rpart is not significantly better than featureless
+1.  xgboost is significantly better than featureless
+2.  xgboost is not significantly better than rpart
+3.  rpart is not significantly better than featureless
 
 Now we visualise two much simpler plots which display similar
 information, the first is the mean and standard error of the results
-across all tasks, the second is a boxplot results across all tasks:
+across all tasks, the second is a boxplot across all tasks:
 
 ``` r
 autoplot(ba, meas = "acc")
