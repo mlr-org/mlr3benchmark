@@ -172,7 +172,8 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
         stop("At least two tasks are required")
       }
 
-      if (!is.null(meas)) {
+      if (!is.null(meas) || (is.null(meas) && self$nmeas == 1)) {
+        if (is.null(meas)) meas = self$measures
         return(friedman.test(as.formula(paste0(meas, " ~ learner_id | task_id", sep = "")),
                       data = private$.dt))
       } else {
