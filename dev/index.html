@@ -97,14 +97,9 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-
-<div id="readme" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#readme" class="anchor"></a>README</h1></div>
-</div>
 <div id="mlr3benchmark" class="section level1">
-<h1 class="hasAnchor">
-<a href="#mlr3benchmark" class="anchor"></a>mlr3benchmark</h1>
+<div class="page-header"><h1 class="hasAnchor">
+<a href="#mlr3benchmark" class="anchor"></a>mlr3benchmark</h1></div>
 <p>Analysis and tools for benchmarking in mlr3.</p>
 <!-- badges: start -->
 <p><a href="https://github.com/mlr-org/mlr3benchmark/actions"><img src="https://github.com/mlr-org/mlr3benchmark/workflows/tic/badge.svg?branch=master" alt="tic"></a> <a href="https://cran.r-project.org/package=mlr3benchmark"><img src="https://www.r-pkg.org/badges/version-ago/mlr3benchmark" alt="CRAN Status"></a> <a href="https://cran.r-project.org/web/checks/check_results_mlr3benchmark.html"><img src="https://cranchecks.info/badges/worst/mlr3benchmark" alt="CRAN checks"></a></p>
@@ -186,8 +181,12 @@
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">ba</span>, type <span class="op">=</span> <span class="st">"cd"</span>, meas <span class="op">=</span> <span class="st">"acc"</span>, minimize <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-7-1.png"><!-- --></p>
 <p>We read the diagram from left to right, so that learners to the left have the highest rank and are the best performing, and decrease going right. The thick horizontal lines connect learners that are <em>not</em> significantly difference in ranked performance, so this tells us:</p>
-<p>1) xgboost is significantly better than featureless 2) xgboost is not significantly better than rpart 3) rpart is not significantly better than featureless</p>
-<p>Now we visualise two much simpler plots which display similar information, the first is the mean and standard error of the results across all tasks, the second is a boxplot results across all tasks:</p>
+<ol>
+<li>xgboost is significantly better than featureless</li>
+<li>xgboost is not significantly better than rpart</li>
+<li>rpart is not significantly better than featureless</li>
+</ol>
+<p>Now we visualise two much simpler plots which display similar information, the first is the mean and standard error of the results across all tasks, the second is a boxplot across all tasks:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">ba</span>, meas <span class="op">=</span> <span class="st">"acc"</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-8-1.png"><!-- --></p>
@@ -214,7 +213,6 @@
 <p><strong>mlr3benchmark</strong> is a free and open source software project that encourages participation and feedback. If you have any issues, questions, suggestions or feedback, please do not hesitate to open an “issue” about it on the <a href="https://github.com/mlr-org/mlr3benchmark/issues">GitHub page</a>! In case of problems / bugs, it is often helpful if you provide a “minimum working example” that showcases the behaviour (but don’t worry about this if the bug is obvious).</p>
 </div>
 </div>
-
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
