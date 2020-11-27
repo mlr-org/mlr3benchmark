@@ -311,8 +311,8 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
         # Take only bars with length > 0
         nem_df = nem_df[nem_df$diff > 0, ] # nolint
         # Descriptive lines for learners start at 0.5, 1.5, ...
-        rank_y = rank(c(seq.int(sum(nem_df$xstart <= median(df$mean_rank))),
-                     seq.int(sum(nem_df$xstart > median(df$mean_rank)))),
+        rank_y = rank(c(seq.int(length.out = sum(nem_df$xstart <= median(df$mean_rank))),
+                     seq.int(length.out = sum(nem_df$xstart > median(df$mean_rank)))),
                      ties.method = "first")
         nem_df$y = seq.int(from = 0.5, by = 0.5, length.out = nrow(nem_df))[rank_y]
 
