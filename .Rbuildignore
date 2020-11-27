@@ -12,3 +12,5 @@ pkgdown
 README\.Rmd
 man-roxygen
 ^\.lintr
+^.editorconfig$
+^.ignore$

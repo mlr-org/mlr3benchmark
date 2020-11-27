@@ -35,7 +35,7 @@ if (requireNamespaces(c("mlr3", "rpart"))) {
   as.BenchmarkAggr(bm)
 
   # change measure
-  as.BenchmarkAggr(bm, measure = msr("regr.rmse"))
+  as.BenchmarkAggr(bm, measures = msr("regr.rmse"))
 }
 
 }
