@@ -8,4 +8,4 @@
 "_PACKAGE"
 # nolint end
 
-# leanify_package()
+leanify_package()

@@ -326,9 +326,9 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
         nem_df = nem_df[nem_df$diff > 0, ] # nolint
         # Descriptive lines for learners start at 0.5, 1.5, ...
         nem_df$y = c(seq(from = 0.5, by = 0.5,
-                         length.out = sum(nem_df$xstart <= median(df$mean_rank))),
+                         length.out = sum(nem_df$xstart <= nem_df$xend[1])),
                      seq(from = 0.5, by = 0.5,
-                         length.out = sum(nem_df$xstart > median(df$mean_rank))))
+                         length.out = sum(nem_df$xstart > nem_df$xend[1])))
 
         out$nemenyi_data = as.data.frame(nem_df) # nolint
       } else {
