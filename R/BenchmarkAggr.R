@@ -50,10 +50,15 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
       assert_names(colnames(dt), must.include = c("task_id", "learner_id"))
       dt$task_id = as.factor(dt$task_id)
       dt$learner_id = as.factor(dt$learner_id)
-      measure_ids = setdiff(colnames(dt), c("task_id", "learner_id"))
+      measure_ids = setdiff(colnames(dt), c("task_id", "learner_id", "nr", "resample_result",
+                                            "resampling_id", "iters"))
+
       if (length(measure_ids) == 0L) {
         stop("At least one measure must be included in `dt`.")
       }
+
+      dt = subset(dt, select = c("task_id", "learner_id", measure_ids))
+      # confirm all measures numeric
       assert_data_frame(dt[, measure_ids, with = FALSE], types = "numeric")
 
       if (!independent) {
@@ -64,9 +69,9 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
         stop("Multiple results for a learner-task combination detected. There should be exactly one row for each learner-task combination.") # nolint
       }
 
-      if (assert_flag(strip_prefix)) {
+      if (strip_prefix) {
         if (isNamespaceLoaded("mlr3")) {
-          types = mlr3::mlr_reflections$task_type$type
+          types = mlr3::mlr_reflections$task_types$type
         } else {
           types = c("regr", "classif", "surv", "dens", "clust")
         }
@@ -241,7 +246,8 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     tasks = function() levels(private$.dt$task_id),
     #' @field measures `(character())` \cr Unique measure names.
     measures = function() {
-      setdiff(colnames(private$.dt), c("task_id", "learner_id"))
+      setdiff(colnames(private$.dt), c("task_id", "learner_id", "nr", "resample_result",
+                              "resampling_id", "iters"))
     },
     #' @field nlrns `(integers())` \cr Number of learners.
     nlrns = function() nlevels(private$.dt$learner_id),

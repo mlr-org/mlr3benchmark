@@ -75,4 +75,8 @@ test_that("mlr3 coercions", {
   bm = benchmark(benchmark_grid(task, learns, rsmp("holdout")))
   expect_equal(class(as.BenchmarkAggr(bm))[1], "BenchmarkAggr")
   expect_equal(class(as.BenchmarkAggr(bm, meas = msr("regr.mae")))[1], "BenchmarkAggr")
+  aggr = bm$aggregate(msrs(c("regr.rmse", "regr.mae")))
+  ba = BenchmarkAggr$new(aggr)
+  expect_equal(class(as.BenchmarkAggr(bm))[1], "BenchmarkAggr")
+  expect_equal(ba$measures, c("rmse", "mae"))
 })
