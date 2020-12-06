@@ -129,6 +129,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
         df[[meas]] = -df[[meas]]
       }
 
+      task_id = NULL # fix global binding note
       if (!is.null(task)) {
         df = subset(df, task_id == task)
         rdf = matrix(data.table::frank(subset(df, select = meas), ...), ncol = 1)
@@ -165,18 +166,18 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 
       if (!is.null(meas) || (is.null(meas) && self$nmeas == 1)) {
         if (is.null(meas)) meas = self$measures
-        return(friedman.test(as.formula(paste0(meas, " ~ learner_id | task_id", sep = "")),
+        return(stats::friedman.test(as.formula(paste0(meas, " ~ learner_id | task_id", sep = "")),
                       data = private$.dt))
       } else {
         x = sapply(self$measures, function(x)
-          friedman.test(as.formula(paste0(x, " ~ learner_id | task_id", sep = "")),
+          stats::friedman.test(as.formula(paste0(x, " ~ learner_id | task_id", sep = "")),
                        data = private$.dt))
         x = data.frame(t(x[1:3, ]))
         colnames(x) = c("X2", "df", "p.value")
         rownames(x) = self$measures
 
         if (!is.null(p.adjust.method)) {
-          x$p.adj.value = p.adjust(x$p.value, p.adjust.method) # nolint
+          x$p.adj.value = stats::p.adjust(x$p.value, p.adjust.method) # nolint
           x$p.signif = ifelse(x$p.adj.value <= 0.001, "***", # nolint
                               ifelse(x$p.adj.value <= 0.01, "**",
                                      ifelse(x$p.adj.value <= 0.05, "*",
@@ -276,7 +277,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
                       learner_id = names(mean_rank),
                       rank = rank(mean_rank, ties.method = "average"))
       # Orientation of descriptive lines yend(=y-value of horizontal line)
-      right = df$rank > median(df$rank)
+      right = df$rank > stats::median(df$rank)
       # Better learners are ranked ascending
       df$yend[!right] = rank(df$rank[!right], ties.method = "first") + 1
       # Worse learners ranked descending
@@ -293,10 +294,10 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 
       # calculate critical difference(s)
       if (test == "nemenyi") {
-        cd = (qtukey(1 - p.value, self$nlrns, 1e+06) / sqrt(2L)) *
+        cd = (stats::qtukey(1 - p.value, self$nlrns, 1e+06) / sqrt(2L)) *
           sqrt(self$nlrns * (self$nlrns + 1L) / (6L * self$ntasks))
       } else {
-        cd = (qtukey(1L - (p.value / (self$nlrns - 1L)), 2L, 1e+06) / sqrt(2L)) *
+        cd = (stats::qtukey(1L - (p.value / (self$nlrns - 1L)), 2L, 1e+06) / sqrt(2L)) *
           sqrt(self$nlrns * (self$nlrns + 1L) / (6L * self$ntasks))
       }
 
@@ -317,8 +318,8 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
         # Take only bars with length > 0
         nem_df = nem_df[nem_df$diff > 0, ] # nolint
         # Descriptive lines for learners start at 0.5, 1.5, ...
-        rank_y = rank(c(seq.int(length.out = sum(nem_df$xstart <= median(df$mean_rank))),
-                     seq.int(length.out = sum(nem_df$xstart > median(df$mean_rank)))),
+        rank_y = rank(c(seq.int(length.out = sum(nem_df$xstart <= stats::median(df$mean_rank))),
+                     seq.int(length.out = sum(nem_df$xstart > stats::median(df$mean_rank)))),
                      ties.method = "first")
         nem_df$y = seq.int(from = 0.5, by = 0.5, length.out = nrow(nem_df))[rank_y]
 

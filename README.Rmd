@@ -11,7 +11,7 @@ library(mlr3benchmark)
 
 # mlr3benchmark
 
-Analysis and tools for benchmarking in mlr3.
+Analysis and tools for benchmarking in [mlr3](https://github.com/mlr-org/mlr3).
 
 <!-- badges: start -->
 [![tic](https://github.com/mlr-org/mlr3benchmark/workflows/tic/badge.svg?branch=master)](https://github.com/mlr-org/mlr3benchmark/actions)

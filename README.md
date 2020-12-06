@@ -1,7 +1,8 @@
 
 # mlr3benchmark
 
-Analysis and tools for benchmarking in mlr3.
+Analysis and tools for benchmarking in
+[mlr3](https://github.com/mlr-org/mlr3).
 
 <!-- badges: start -->
 
