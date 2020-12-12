@@ -148,6 +148,9 @@
 <ul>
 <li>BenchmarkAggr$friedman_test now returns the full test object if only a single measure exists in the object</li>
 <li>Fixed plotting in <code>autoplot.BenchmarkAggr</code> for CD-plots, previously bars were overlapping and giving misleading results.</li>
+<li>
+<code>BenchmarkAggr</code> is now more flexible in construction. Instead of being forced to name columns <code>task_id</code> and <code>learner_id</code>, instead any name can be used if passed to the respective arguments in the constructor.</li>
+<li>Adds <code>$subset</code> public method to <code>BenchmarkAggr</code> as a thin wrapper around <code>subset</code> for <code>data.table</code>. Returns subsetted data.table.</li>
 </ul>
 </div>
     <div id="mlr3benchmark-010" class="section level1">
