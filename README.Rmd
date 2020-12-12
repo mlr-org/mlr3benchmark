@@ -33,7 +33,7 @@ Do you want to visualise complex results for benchmark experiments in one line o
 
 Then **mlr3benchmark** is the answer, or at least will be once it's finished maturing.
 
-**mlr3benchmark** enables fast and efficient analysis of benchmark experiments in just a few lines of code and you are not limited to analysing experiments from [mlr3](https://github.com/mlr-org/mlr3). As long as you can coerce your results into a format fitting our classes (which have very few requirements), then you can perform your benchmark analysis with **mlr3benchmark**. 
+**mlr3benchmark** enables fast and efficient analysis of benchmark experiments in just a few lines of code. As long as you can coerce your results into a format fitting our classes (which have very few requirements), then you can perform your benchmark analysis with **mlr3benchmark**.
 
 ## Installation
 
