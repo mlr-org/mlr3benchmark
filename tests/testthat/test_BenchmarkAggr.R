@@ -5,11 +5,12 @@ test_that("construction", {
   expect_silent(BenchmarkAggr$new(df))
   expect_warning(BenchmarkAggr$new(df, independent = FALSE), "independent datasets")
 
-  df = data.frame(task_id = rep(c("A", "B"), each = 5),
-                  learner_id = paste0("regr.", 1:5),
+  df = data.frame(tasks = rep(c("A", "B"), each = 5),
+                  learners = paste0("regr.", 1:5),
                   regr.rmse = runif(10), stringsAsFactors = FALSE)
-  expect_equal(BenchmarkAggr$new(df)$learners, as.character(1:5))
-  expect_equal(BenchmarkAggr$new(df)$measures, "rmse")
+  expect_equal(BenchmarkAggr$new(df, task_id = "tasks", learner_id = "learners")$learners,
+               as.character(1:5))
+  expect_equal(BenchmarkAggr$new(df, task_id = "tasks", learner_id = "learners")$measures, "rmse")
 
   df = data.frame(task_id = rep(c("A", "B"), each = 5),
                   learner_id = paste0("regr.", 1:5),
@@ -35,14 +36,19 @@ test_that("construction", {
 test_that("public methods", {
   set.seed(1)
   rmse = round(runif(10, 1, 5))
-  df = data.frame(task_id = rep(c("A", "B"), each = 5),
-                  learner_id = paste0("L", 1:5),
+  df = data.frame(tasks = rep(c("A", "B"), each = 5),
+                  learners = paste0("L", 1:5),
                   RMSE = rmse)
-  ba = BenchmarkAggr$new(df)
+  ba = BenchmarkAggr$new(df, task_id = "tasks", learner_id = "learners")
   expect_output(print(ba), "10 rows with 2 tasks, 5 learners and 1 measure")
   expect_output(ba$summary(), "10 rows with 2 tasks, 5 learners and 1 measure")
   expect_equal(as.numeric(ba$rank_data(ties.method = "first")), c(1, 2, 4, 5, 3, 4, 5, 2, 3, 1))
   expect_silent(ba$friedman_test())
+  expect_equal(ba$subset(task = "A", learner = "L1"),
+               data.table(tasks = factor("A"), learners = factor("L1"), RMSE = 2))
+  expect_equal(ba$subset(learner = "L3"),
+               data.table(tasks = factor(c("A", "B")), learners = factor(c("L3", "L3")),
+                          RMSE = c(3, 4)))
 
   skip_if_not_installed("PMCMR")
   expect_warning(ba$friedman_posthoc(), "Cannot reject")

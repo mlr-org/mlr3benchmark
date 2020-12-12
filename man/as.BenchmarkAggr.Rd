@@ -4,12 +4,19 @@
 \alias{as.BenchmarkAggr}
 \title{Coercions to BenchmarkAggr}
 \usage{
-as.BenchmarkAggr(obj, independent = TRUE, strip_prefix = TRUE, ...)
+as.BenchmarkAggr(
+  obj,
+  task_id = "task_id",
+  learner_id = "learner_id",
+  independent = TRUE,
+  strip_prefix = TRUE,
+  ...
+)
 }
 \arguments{
 \item{obj}{(\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}|\code{matrix(1)}) \cr Passed to \link{BenchmarkAggr}\verb{$new()}.}
 
-\item{independent, strip_prefix}{See \link{BenchmarkAggr}\verb{$initialize()}.}
+\item{task_id, learner_id, independent, strip_prefix}{See \link{BenchmarkAggr}\verb{$initialize()}.}
 
 \item{...}{\code{ANY} \cr Passed to \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}\verb{$aggregate()}.}
 }
@@ -18,11 +25,11 @@ Coercion methods to \link{BenchmarkAggr}. For \link[mlr3:BenchmarkResult]{mlr3::
 wrapper around the \link{BenchmarkAggr} constructor called with \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}\verb{$aggregate()}.
 }
 \examples{
-df = data.frame(task_id = rep(c("A", "B"), each = 5),
-                learner_id = paste0("L", 1:5),
+df = data.frame(tasks = rep(c("A", "B"), each = 5),
+                learners = paste0("L", 1:5),
                 RMSE = runif(10), MAE = runif(10))
 
-as.BenchmarkAggr(df)
+as.BenchmarkAggr(df, task_id = "tasks", learner_id = "learners")
 
 
 if (requireNamespaces(c("mlr3", "rpart"))) {

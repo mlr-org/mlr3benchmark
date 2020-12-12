@@ -95,11 +95,13 @@ autoplot.BenchmarkAggr = function(obj, type = c("mean", "box", "fn", "cd"), meas
     if (obj$ntasks < 2) {
       stop("At least two tasks required.")
     }
-    loss = stats::aggregate(as.formula(paste0(meas, " ~ learner_id")), obj$data, mean)
-    se = stats::aggregate(as.formula(paste0(meas, " ~ learner_id")), obj$data, stats::sd)[, 2] / sqrt(obj$ntasks)
+    loss = stats::aggregate(as.formula(paste0(meas, " ~ ", obj$col_roles$learner_id)),
+                            obj$data, mean)
+    se = stats::aggregate(as.formula(paste0(meas, " ~ ", obj$col_roles$learner_id)), obj$data,
+                          stats::sd)[, 2] / sqrt(obj$ntasks)
     loss$lower = loss[, meas] - se * stats::qnorm(1 - (1 - level) / 2)
     loss$upper = loss[, meas] + se * stats::qnorm(1 - (1 - level) / 2)
-    ggplot(data = loss, aes_string(x = "learner_id", y = meas)) +
+    ggplot(data = loss, aes_string(x = obj$col_roles$learner_id, y = meas)) +
       geom_errorbar(aes(ymin = lower, ymax = upper),
                     width = .5) +
       geom_point()
@@ -133,7 +135,7 @@ autoplot.BenchmarkAggr = function(obj, type = c("mean", "box", "fn", "cd"), meas
 
   } else if (type == "box") {
     ggplot(data = obj$data,
-           aes_string(x = "learner_id", y = meas)) +
+           aes_string(x = obj$col_roles$learner_id, y = meas)) +
       geom_boxplot()
   }
 }

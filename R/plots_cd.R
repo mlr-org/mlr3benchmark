@@ -33,7 +33,7 @@
   # Vertical descriptive bar
   p = p + geom_segment(aes_string("mean_rank", "yend", xend = "xend", yend = "yend"))
   # Plot Learner name
-  p = p + geom_text(aes_string("xend", "yend", label = "learner_id",
+  p = p + geom_text(aes_string("xend", "yend", label = obj$col_roles$learner_id,
                                hjust = "right"), vjust = -0.5)
 
   p = p + xlab("Average Rank")
@@ -81,15 +81,16 @@
   # Plot descriptive lines and learner names
   p = ggplot(obj$data)
   # Point at mean rank
-  p = p + geom_point(aes_string("mean_rank", 0, colour = "learner_id"), size = 3)
+  p = p + geom_point(aes_string("mean_rank", 0, colour = obj$col_roles$learner_id), size = 3)
   # Horizontal descriptive bar
   p = p + geom_segment(aes_string("mean_rank", 0, xend = "mean_rank", yend = "yend",
-                                  color = "learner_id"), size = 1)
+                                  color = obj$col_roles$learner_id), size = 1)
   # Vertical descriptive bar
   p = p + geom_segment(aes_string("mean_rank", "yend", xend = "xend",
-                                  yend = "yend", color = "learner_id"), size = 1)
+                                  yend = "yend", color = obj$col_roles$learner_id), size = 1)
   # Plot Learner name
-  p = p + geom_text(aes_string("xend", "yend", label = "learner_id", color = "learner_id",
+  p = p + geom_text(aes_string("xend", "yend", label = obj$col_roles$learner_id,
+                               color = obj$col_roles$learner_id,
                                hjust = "right"), vjust = -1)
 
   p = p + xlab("Average Rank")
