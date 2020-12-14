@@ -1,10 +1,9 @@
-## tic GitHub Actions template: linux-deploy
-## revision date: 2020-11-14
-# [Custom header]
+## tic GitHub Actions template: linux-macos-windows-deploy
+## revision date: 2020-12-11
 on:
   workflow_dispatch:
   push:
-    branches:
+    branches: 
       - master
   pull_request:
   # for now, CRON jobs only run on the default branch of the repo (i.e. usually on master)
@@ -25,7 +24,10 @@ jobs:
       matrix:
         config:
           # use a different tic template type if you do not want to build on all listed platforms
-          - { os: ubuntu-latest, r: "release", pkgdown: "true" }
+          - { os: windows-latest, r: "release" }
+          - { os: macOS-latest, r: "release", pkgdown: "true", latex: "true" }
+          - { os: ubuntu-latest, r: "devel" }
+          - { os: ubuntu-latest, r: "release" }
 
     env:
       # otherwise remotes::fun() errors cause the build to fail. Example: Unavailability of binaries
@@ -76,12 +78,17 @@ jobs:
           key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{steps.date.outputs.date}}
           restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-${{steps.date.outputs.date}}
 
+      - name: "[Custom block] [macOS] Install xquartz"
+        if: runner.os == 'macOS'
+        run: |
+          brew cask install xquartz
+
       # for some strange Windows reason this step and the next one need to be decoupled
       - name: "[Stage] Prepare"
         run: |
           Rscript -e "if (!requireNamespace('remotes')) install.packages('remotes', type = 'source')"
           Rscript -e "if (getRversion() < '3.2' && !requireNamespace('curl')) install.packages('curl', type = 'source')"
-     
+
       - name: "[Stage] [Linux] Install curl and libgit2"
         if: runner.os == 'Linux'
         run: sudo apt install libcurl4-openssl-dev libgit2-dev
