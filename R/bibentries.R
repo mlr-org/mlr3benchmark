@@ -1,3 +1,4 @@
+# nocov start
 format_bib = function(...) {
   str = vapply(list(...), function(entry) tools::toRd(bibentries[[entry]]), FUN.VALUE = "")
   paste0(str, collapse = "\n\n")
@@ -16,3 +17,4 @@ bibentries = c(
     url     = "http://jmlr.org/papers/v7/demsar06a.html"
   )
 )
+# nocov end

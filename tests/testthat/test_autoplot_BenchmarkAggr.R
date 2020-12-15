@@ -26,4 +26,5 @@ test_that("autoplot.BenchmarkAggr cd", {
   expect_silent(is.ggplot(autoplot(ba, type = "fn", p.value = 1, test = "bd")))
   expect_error(is.ggplot(autoplot(ba, type = "cd")))
   expect_silent(is.ggplot(autoplot(ba, type = "cd", p.value = 1, test = "bd")))
+  expect_silent(is.ggplot(autoplot(ba, type = "cd", p.value = 1, test = "bd", style = 2)))
 })
