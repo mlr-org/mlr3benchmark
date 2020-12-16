@@ -109,5 +109,5 @@ if (requireNamespace("PMCMR", quietly = TRUE)) {
 Demšar J (2006).
 \dQuote{Statistical Comparisons of Classifiers over Multiple Data Sets.}
 \emph{Journal of Machine Learning Research}, \bold{7}(1), 1-30.
-\url{http://jmlr.org/papers/v7/demsar06a.html}.
+\url{https://jmlr.org/papers/v7/demsar06a.html}.
 }

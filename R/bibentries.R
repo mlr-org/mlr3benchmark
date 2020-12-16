@@ -14,7 +14,7 @@ bibentries = c(
     volume  = "7",
     number  = "1",
     pages   = "1-30",
-    url     = "http://jmlr.org/papers/v7/demsar06a.html"
+    url     = "https://jmlr.org/papers/v7/demsar06a.html"
   )
 )
 # nocov end
