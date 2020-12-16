@@ -62,8 +62,8 @@ right. Any learners not connected by a horizontal bar are significantly differen
 Critical differences are calculated as:
 $$CD = q_{\alpha} \sqrt{\left(\frac{k(k+1)}{6N}\right)}$$
 Where \(q_\alpha\) is based on the studentized range statistic.
-See references for further details. It's recommended to use magick::image_trim() to crop
-the white space around the image.
+See references for further details.
+It's recommended to crop white space using external tools, or function image_trim() from package magick.
 
 " />
 <meta property="og:image" content="https://mlr3benchmark.mlr-org.com/logo.svg" />
@@ -100,7 +100,7 @@ the white space around the image.
 
       <div class="navbar-brand-container">
         <a href="https://mlr-org.com"><img src="https://raw.githubusercontent.com/mlr-org/mlr3/master/man/figures/logo.png" id="hexlogo" alt="mlr-org" /></a>
-        <a class="navbar-brand" href="../index.html">mlr3benchmark <small>v0.1.0</small></a>
+        <a class="navbar-brand" href="../index.html">mlr3benchmark <small>v0.1.1</small></a>
       </div>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
@@ -120,7 +120,7 @@ the white space around the image.
 </li>
         <li>
   <a href="https://github.com/mlr-org/mlr3benchmark/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -132,13 +132,13 @@ the white space around the image.
 </li>
 <li>
   <a href="https://stackoverflow.com/questions/tagged/mlr3">
-    <span class="fab fa fab fa-stack-overflow"></span>
+    <span class="fab fa-stack-overflow"></span>
      
   </a>
 </li>
 <li>
   <a href="https://mlr-org.com/">
-    <span class="fa fa-rss"></span>
+    <span class="fas fa-rss"></span>
      
   </a>
 </li>
@@ -175,8 +175,8 @@ right. Any learners not connected by a horizontal bar are significantly differen
 Critical differences are calculated as:
 $$CD = q_{\alpha} \sqrt{\left(\frac{k(k+1)}{6N}\right)}$$
 Where \(q_\alpha\) is based on the studentized range statistic.
-See references for further details. It's recommended to use <code>magick::image_trim()</code> to crop
-the white space around the image.</p></li>
+See references for further details.
+It's recommended to crop white space using external tools, or function <code>image_trim()</code> from package <a href='https://CRAN.R-project.org/package=magick'><span class="pkg">magick</span></a>.</p></li>
 </ul>
 
     </div>
@@ -266,8 +266,10 @@ For <code>type = "fn"</code>, specifies color to fill significant tiles, default
 
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Janez Demsar, Statistical Comparisons of Classifiers over
-Multiple Data Sets, JMLR, 2006</p>
+    <p>Demšar J (2006).
+&#8220;Statistical Comparisons of Classifiers over Multiple Data Sets.&#8221;
+<em>Journal of Machine Learning Research</em>, <b>7</b>(1), 1-30.
+<a href='https://jmlr.org/papers/v7/demsar06a.html'>https://jmlr.org/papers/v7/demsar06a.html</a>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='requireNamespaces.html'>requireNamespaces</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mlr3learners"</span>, <span class='st'>"mlr3"</span>, <span class='st'>"rpart"</span>, <span class='st'>"xgboost"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
