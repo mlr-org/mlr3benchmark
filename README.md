@@ -6,7 +6,7 @@ Analysis and tools for benchmarking in
 
 <!-- badges: start -->
 
-[![tic](https://github.com/mlr-org/mlr3benchmark/workflows/tic/badge.svg?branch=master)](https://github.com/mlr-org/mlr3benchmark/actions)
+[![tic](https://github.com/mlr-org/mlr3benchmark/workflows/tic/badge.svg?branch=main)](https://github.com/mlr-org/mlr3benchmark/actions)
 [![CRAN
 Status](https://www.r-pkg.org/badges/version-ago/mlr3benchmark)](https://cran.r-project.org/package=mlr3benchmark)
 [![CRAN
@@ -14,7 +14,7 @@ checks](https://cranchecks.info/badges/worst/mlr3benchmark)](https://cran.r-proj
 
 [![CodeFactor](https://www.codefactor.io/repository/github/mlr-org/mlr3benchmark/badge)](https://www.codefactor.io/repository/github/mlr-org/mlr3benchmark)
 [![Codecov test
-coverage](https://codecov.io/gh/mlr-org/mlr3benchmark/branch/master/graph/badge.svg)](https://codecov.io/gh/mlr-org/mlr3benchmark?branch=master)
+coverage](https://codecov.io/gh/mlr-org/mlr3benchmark/branch/main/graph/badge.svg)](https://codecov.io/gh/mlr-org/mlr3benchmark?branch=main)
 
 [![StackOverflow](https://img.shields.io/badge/stackoverflow-mlr3-orange.svg)](https://stackoverflow.com/questions/tagged/mlr3)
 [![Mattermost](https://img.shields.io/badge/chat-mattermost-orange.svg)](https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/)
