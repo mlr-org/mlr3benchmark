@@ -1,3 +1,8 @@
+# mlr3benchmark 0.1.1.9000
+
+- Internal changes only.
+
+
 # mlr3benchmark 0.1.1
 
 * BenchmarkAggr$friedman_test now returns the full test object if only a single measure exists in the object
