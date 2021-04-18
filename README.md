@@ -55,7 +55,7 @@ remotes::install_github("mlr-org/mlr3benchmark")
 
 Currently **mlr3benchmark** only supports analysis of multiple learners
 over multiple tasks. The current implemented features are best
-demonstrated by example\!
+demonstrated by example!
 
 First we run a mlr3 benchmark experiment:
 
@@ -95,7 +95,7 @@ ba
     ## 11:     zoo       rpart 0.8309566 0.16904337
     ## 12:     zoo     xgboost 0.9099822 0.09001783
 
-Now we can begin our analysis\! In **mlr3benchmark**, analysis of
+Now we can begin our analysis! In **mlr3benchmark**, analysis of
 multiple learners over multiple independent tasks follows the guidelines
 of Demsar (2006). So we begin by checking if the global Friedman test is
 significant: is there are a significant difference in the rankings of
@@ -171,18 +171,18 @@ not significantly better than the decision tree but the decision tree is
 not significantly better than the baseline, so we will recommend xgboost
 for now.
 
-The analysis is complete\!
+The analysis is complete!
 
 ## Roadmap
 
 **mlr3benchmark** is in its early stages and the interface is still
 maturing, near-future updates will include:
 
-  - Extending `BenchmarkAggr` to non-independent tasks
-  - Extending `BenchmarkAggr` to single tasks
-  - Adding `BenchmarkScore` for non-aggregated measures,
+-   Extending `BenchmarkAggr` to non-independent tasks
+-   Extending `BenchmarkAggr` to single tasks
+-   Adding `BenchmarkScore` for non-aggregated measures,
     e.g. observation-level scores
-  - Bayesian methods for analysis
+-   Bayesian methods for analysis
 
 ## Bugs, Questions, Feedback
 
@@ -190,7 +190,7 @@ maturing, near-future updates will include:
 encourages participation and feedback. If you have any issues,
 questions, suggestions or feedback, please do not hesitate to open an
 “issue” about it on the [GitHub
-page](https://github.com/mlr-org/mlr3benchmark/issues)\! In case of
+page](https://github.com/mlr-org/mlr3benchmark/issues)! In case of
 problems / bugs, it is often helpful if you provide a “minimum working
 example” that showcases the behaviour (but don’t worry about this if the
 bug is obvious).

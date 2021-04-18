@@ -1,31 +1,31 @@
 .plot_critdiff_1 = function(obj, meas, p.value, minimize, test, baseline, ratio) { # nolint
-  obj = obj$.__enclos_env__$private$.crit_differences(meas, minimize, p.value, baseline, test)
+  cd = obj$.__enclos_env__$private$.crit_differences(meas, minimize, p.value, baseline, test)
 
   # Plot descriptive lines and learner names
-  obj$data$yend = -obj$data$yend
-  p = ggplot(obj$data)
+  cd$data$yend = -cd$data$yend
+  p = ggplot(cd$data)
 
   # visible binding hack
   x = NULL
 
   # Add bar (descriptive)
   p = p + annotate("segment",
-                   x = mean(obj$data$mean_rank) - 0.5 * obj$cd,
-                   xend = mean(obj$data$mean_rank) + 0.5 * obj$cd,
+                   x = mean(cd$data$mean_rank) - 0.5 * cd$cd,
+                   xend = mean(cd$data$mean_rank) + 0.5 * cd$cd,
                    y = 1.5,
                    yend = 1.5,
                    size = 1)
 
   # Add crit difference test (descriptive)
   p = p + annotate("text",
-                   label = paste("Critical Difference =", round(obj$cd, 2), sep = " "),
-                   y = 2, x = mean(obj$data$mean_rank))
+                   label = paste("Critical Difference =", round(cd$cd, 2), sep = " "),
+                   y = 2, x = mean(cd$data$mean_rank))
 
   # manually build axis
   p = p + geom_segment(aes(x = 0, xend = max(rank) + 1, y = 0, yend = 0)) +
-    geom_text(data = data.frame(x = seq.int(0, max(obj$data$rank) + 1)),
+    geom_text(data = data.frame(x = seq.int(0, max(cd$data$rank) + 1)),
               aes(x = x, label = x, y = 0.7)) +
-    geom_segment(data = data.frame(x = seq.int(0, max(obj$data$rank) + 1)),
+    geom_segment(data = data.frame(x = seq.int(0, max(cd$data$rank) + 1)),
                  aes(x = x, xend = x, y = 0, yend = 0.3))
 
   # Horizontal descriptive bar
@@ -49,17 +49,17 @@
                 plot.background = element_blank())
 
   # Plot the critical difference bars
-  if (obj$test == "bd") {
-    cdx = as.numeric(unlist(subset(obj$data, baseline == 1, "mean_rank")))
+  if (cd$test == "bd") {
+    cdx = as.numeric(unlist(subset(cd$data, baseline == 1, "mean_rank")))
     # Add horizontal bar around baseline
-    p = p + annotate("segment", x = cdx + obj$cd,
+    p = p + annotate("segment", x = cdx + cd$cd,
                      xend = cdx, y = -1, yend = -1,
                      color = "black", size = 1.3)
     # Add interval limiting bar's
-    p = p + annotate("segment", x = cdx + obj$cd, xend = cdx + obj$cd, y = -0.7,
+    p = p + annotate("segment", x = cdx + cd$cd, xend = cdx + cd$cd, y = -0.7,
                      yend = -1.3, color = "black", size = 1.3)
   } else {
-    nemenyi_data = obj$nemenyi_data # nolint
+    nemenyi_data = cd$nemenyi_data # nolint
     if (!(nrow(nemenyi_data) == 0L)) {
       # Add connecting bars
       nemenyi_data$y = -nemenyi_data$y
@@ -70,16 +70,16 @@
     }
   }
 
-  p = p + coord_fixed(ratio = ratio, ylim = c(min(obj$data$yend), 2))
+  p = p + coord_fixed(ratio = ratio, ylim = c(min(cd$data$yend), 2))
 
   return(p)
 }
 
 .plot_critdiff_2 = function(obj, meas, p.value, minimize, test, baseline) { # nolint
-  obj = obj$.__enclos_env__$private$.crit_differences(meas, minimize, p.value, baseline, test)
+  cd = obj$.__enclos_env__$private$.crit_differences(meas, minimize, p.value, baseline, test)
 
   # Plot descriptive lines and learner names
-  p = ggplot(obj$data)
+  p = ggplot(cd$data)
   # Point at mean rank
   p = p + geom_point(aes_string("mean_rank", 0, colour = obj$col_roles$learner_id), size = 3)
   # Horizontal descriptive bar
@@ -95,7 +95,7 @@
 
   p = p + xlab("Average Rank")
   # Change appearance
-  p = p + scale_x_continuous(breaks = c(0:max(obj$data$xend)))
+  p = p + scale_x_continuous(breaks = c(0:max(cd$data$xend)))
   p = p + theme(axis.text.y = element_blank(),
                 axis.ticks.y = element_blank(),
                 axis.title.y = element_blank(),
@@ -109,30 +109,30 @@
 
   # Add crit difference test (descriptive)
   p = p + annotate("text",
-                   label = paste("Critical Difference =", round(obj$cd, 2), sep = " "),
-                   y = max(obj$data$yend) + 0.8, x = mean(obj$data$mean_rank))
+                   label = paste("Critical Difference =", round(cd$cd, 2), sep = " "),
+                   y = max(cd$data$yend) + 0.8, x = mean(cd$data$mean_rank))
   # Add bar (descriptive)
   p = p + annotate("segment",
-                   x = mean(obj$data$mean_rank) - 0.5 * obj$cd,
-                   xend = mean(obj$data$mean_rank) + 0.5 * obj$cd,
-                   y = max(obj$data$yend) + 0.7,
-                   yend = max(obj$data$yend) + 0.7,
+                   x = mean(cd$data$mean_rank) - 0.5 * cd$cd,
+                   xend = mean(cd$data$mean_rank) + 0.5 * cd$cd,
+                   y = max(cd$data$yend) + 0.7,
+                   yend = max(cd$data$yend) + 0.7,
                    size = 1.3, alpha = 0.9)
 
   # Plot the critical difference bars
   if (test == "bd") {
-    cdx = as.numeric(unlist(subset(obj$data, baseline == 1, "mean_rank"))) # nolint
+    cdx = as.numeric(unlist(subset(cd$data, baseline == 1, "mean_rank"))) # nolint
     # Add horizontal bar around baseline
-    p = p + annotate("segment", x = cdx + obj$cd,
+    p = p + annotate("segment", x = cdx + cd$cd,
                      xend = cdx, y = 0.5, yend = 0.5,
                      alpha = 0.9, color = "dimgrey", size = 1.3)
     # Add interval limiting bar's
-    p = p + annotate("segment", x = cdx + obj$cd, xend = cdx + obj$cd, y = 0.3,
+    p = p + annotate("segment", x = cdx + cd$cd, xend = cdx + cd$cd, y = 0.3,
                      yend = 0.8, color = "dimgrey", size = 1.3, alpha = 0.9)
     # Add point at learner
     p = p + annotate("point", x = cdx, y = 0.5, alpha = 0.6, color = "black")
   } else {
-    nemenyi_data = obj$nemenyi_data # nolint
+    nemenyi_data = cd$nemenyi_data # nolint
     if (!(nrow(nemenyi_data) == 0L)) {
       # Add connecting bars
       p = p + geom_segment(aes_string("xstart", "y", xend = "xend", yend = "y"),
