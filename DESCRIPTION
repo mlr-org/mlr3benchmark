@@ -1,11 +1,11 @@
 Package: mlr3benchmark
 Title: Analysis and Visualisation of Benchmark Experiments
-Version: 0.1.1.9000
+Version: 0.1.2
 Authors@R:
     c(person(given = "Sonabend",
            family = "Raphael",
            role = c("cre", "aut"),
-           email = "raphael.sonabend.15@ucl.ac.uk",
+           email = "raphaelsonabend@gmail.com",
            comment = c(ORCID = "0000-0001-9225-4654")),
       person(given = "Florian",
              family = "Pfisterer",
