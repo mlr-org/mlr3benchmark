@@ -1,7 +1,7 @@
 test_that("autoplot.BenchmarkAggr", {
   set.seed(1)
-  df = data.frame(task_id = rep(c("A", "B"), each = 100),
-                  learner_id = paste0("L", 1:100),
+  df = data.frame(task_id = factor(rep(c("A", "B"), each = 100)),
+                  learner_id = factor(paste0("L", 1:100)),
                   RMSE = runif(100, 0, 1:100))
   ba = BenchmarkAggr$new(df)
 
@@ -17,8 +17,8 @@ test_that("autoplot.BenchmarkAggr cd", {
   skip_if_not_installed("PMCMR")
 
   set.seed(1)
-  df = data.frame(task_id = rep(c("A", "B"), each = 5),
-                  learner_id = paste0("L", 1:5),
+  df = data.frame(task_id = factor(rep(c("A", "B"), each = 5)),
+                  learner_id = factor(paste0("L", 1:5)),
                   RMSE = runif(5))
   ba = BenchmarkAggr$new(df)
 

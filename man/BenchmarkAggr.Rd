@@ -18,8 +18,9 @@ Currently supported for multiple independent datasets only.
 }
 \examples{
 # Not restricted to mlr3 objects
-df = data.frame(tasks = rep(c("A", "B"), each = 5),
-                learners = paste0("L", 1:5),
+df = data.frame(tasks = factor(rep(c("A", "B"), each = 5),
+                               levels = c("A", "B")),
+                learners = factor(paste0("L", 1:5)),
                 RMSE = runif(10), MAE = runif(10))
 as.BenchmarkAggr(df, task_id = "tasks", learner_id = "learners")
 

@@ -25,8 +25,9 @@ Coercion methods to \link{BenchmarkAggr}. For \link[mlr3:BenchmarkResult]{mlr3::
 wrapper around the \link{BenchmarkAggr} constructor called with \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}\verb{$aggregate()}.
 }
 \examples{
-df = data.frame(tasks = rep(c("A", "B"), each = 5),
-                learners = paste0("L", 1:5),
+df = data.frame(tasks = factor(rep(c("A", "B"), each = 5),
+                               levels = c("A", "B")),
+                learners = factor(paste0("L", 1:5)),
                 RMSE = runif(10), MAE = runif(10))
 
 as.BenchmarkAggr(df, task_id = "tasks", learner_id = "learners")
