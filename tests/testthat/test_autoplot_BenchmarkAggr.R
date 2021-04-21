@@ -28,3 +28,21 @@ test_that("autoplot.BenchmarkAggr cd", {
   expect_silent(is.ggplot(autoplot(ba, type = "cd", p.value = 1, test = "bd")))
   expect_silent(is.ggplot(autoplot(ba, type = "cd", p.value = 1, test = "bd", style = 2)))
 })
+
+test_that("autoplot with BenchmarkAggr from mlr3::benchmark()", {
+  skip_if_not_installed("PMCMR")
+  skip_if_not_installed("mlr3")
+  skip_if_not_installed("ggplot2")
+  skip_if_not_installed("mlr3learners")
+  skip_if_not_installed("rpart")
+  skip_if_not_installed("ranger")
+  set.seed(1)
+
+  library("mlr3")
+  task = tsks(c("iris", "sonar", "wine", "zoo"))
+  learns = lrns(c("classif.featureless", "classif.rpart", "classif.ranger"))
+  bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 3)))
+  ba = BenchmarkAggr$new(bm$aggregate())
+
+  expect_true(ggplot2::is.ggplot(autoplot(ba, type = "cd")))
+})
