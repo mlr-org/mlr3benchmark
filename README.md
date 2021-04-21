@@ -75,8 +75,7 @@ store measure results after being *aggregated* over all resamplings:
 
 ``` r
 # these measures are the same but we'll continue for the example
-aggr = bm$aggregate(msrs(c("classif.acc", "classif.ce")))
-ba = BenchmarkAggr$new(aggr)
+ba = as.BenchmarkAggr(bm, measures = msrs(c("classif.acc", "classif.ce")))
 ba
 ```
 
