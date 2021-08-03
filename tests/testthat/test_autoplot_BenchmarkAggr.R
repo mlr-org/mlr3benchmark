@@ -23,8 +23,10 @@ test_that("autoplot.BenchmarkAggr cd", {
   ba = BenchmarkAggr$new(df)
 
   expect_error(is.ggplot(autoplot(ba, type = "fn")))
+  expect_warning(is.ggplot(autoplot(ba, type = "fn", friedman_posthoc = FALSE)))
   expect_silent(is.ggplot(autoplot(ba, type = "fn", p.value = 1, test = "bd")))
   expect_error(is.ggplot(autoplot(ba, type = "cd")))
+  expect_warning(is.ggplot(autoplot(ba, type = "cd", friedman_posthoc = FALSE)))
   expect_silent(is.ggplot(autoplot(ba, type = "cd", p.value = 1, test = "bd")))
   expect_silent(is.ggplot(autoplot(ba, type = "cd", p.value = 1, test = "bd", style = 2)))
 })

@@ -44,6 +44,10 @@
 #' specifying the aspect ratio of the plot, best used with [ggsave()].
 #' @param col (`character(1)`)\cr
 #' For `type = "fn"`, specifies color to fill significant tiles, default is `"red"`.
+#' @param friedman_posthoc (`logical(1)`)\cr
+#' Should a friedman posthoc test be performed for`type = "cd"` and `type = "fn"`?
+#' If `FALSE`, a warning is issued in case the corresponding friedman posthoc test fails instead of an error.
+#' Default is `TRUE`.
 #' @param ... `ANY` \cr Additional arguments, currently unused.
 #'
 #' @references
@@ -79,7 +83,7 @@
 autoplot.BenchmarkAggr = function(obj, type = c("mean", "box", "fn", "cd"), meas = NULL, # nolint
                                   level = 0.95, p.value = 0.05, minimize = TRUE, # nolint
                                   test = "nem", baseline = NULL, style = 1L,
-                                  ratio = 1/7, col = "red", ...) { # nolint
+                                  ratio = 1/7, col = "red", friedman_posthoc = TRUE, ...) { # nolint
 
   # fix no visible binding
   lower = upper = Var1 = Var2 = value = NULL
@@ -89,8 +93,8 @@ autoplot.BenchmarkAggr = function(obj, type = c("mean", "box", "fn", "cd"), meas
   meas = .check_meas(obj, meas)
 
   if (type == "cd") {
-    if (style == 1L) .plot_critdiff_1(obj, meas, p.value, minimize, test, baseline, ratio)
-    else .plot_critdiff_2(obj, meas, p.value, minimize, test, baseline)
+    if (style == 1L) .plot_critdiff_1(obj, meas, p.value, minimize, test, baseline, ratio, friedman_posthoc)
+    else .plot_critdiff_2(obj, meas, p.value, minimize, test, baseline, friedman_posthoc)
   } else if (type == "mean") {
     if (obj$ntasks < 2) {
       stop("At least two tasks required.")
@@ -108,15 +112,21 @@ autoplot.BenchmarkAggr = function(obj, type = c("mean", "box", "fn", "cd"), meas
   } else if (type == "fn") {
 
     p = tryCatch(obj$friedman_posthoc(meas, p.value)$p.value,
-                 warning = function(w)
-                   stopf("Global Friedman test non-significant (p > %s), try type = 'mean' instead.", p.value)) # nolint
-
-    p = p[rev(seq_len(nrow(p))), ]
-    p = t(p)
-
-    p = cbind(expand.grid(rownames(p), colnames(p)), value = as.numeric(p))
-
+                 warning = function(w) {
+                   if (friedman_posthoc)
+                     stopf("Global Friedman test non-significant (p > %s), try type = 'mean' instead.", p.value) # nolint
+                   else
+                     warning(sprintf("Global Friedman test non-significant (p > %s), try type = 'mean' instead.", p.value)) # nolint))
+                 })
+    if (friedman_posthoc) {
+      p = p[rev(seq_len(nrow(p))), ]
+      p = t(p)
+      p = cbind(expand.grid(rownames(p), colnames(p)), value = as.numeric(p))
+    } else {
+      p = cbind(expand.grid(obj$data[[obj$col_roles$learner_id]],  obj$data[[obj$col_roles$task_id]]), value = 1)
+    }
     p$value = factor(ifelse(p$value < p.value, "0", "1"))
+
     ggplot(data = p, aes(x = Var1, y = Var2, fill = value)) +
       geom_tile(size = 0.5, color = !is.na(p$value)) +
       scale_fill_manual(name = "p-value",

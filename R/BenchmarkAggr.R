@@ -60,6 +60,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
       private$.independent = assert_flag(independent)
       assert_flag(strip_prefix)
       assert_subset(c(task_id, learner_id), colnames(dt))
+      dt = map_at(dt, c(task_id, learner_id), as.factor)
       assert_factor(unlist(subset(dt, select = task_id)))
       assert_factor(unlist(subset(dt, select = learner_id)))
 
@@ -298,7 +299,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     .dt = data.table(),
     .independent = logical(0),
     .crit_differences = function(meas = NULL, minimize = TRUE, p.value = 0.05, baseline = NULL, # nolint
-                                test = c("bd", "nemenyi")) {
+                                test = c("bd", "nemenyi"), friedman_posthoc = TRUE) {
 
       meas = .check_meas(self, meas)
       test = match.arg(test)
@@ -324,8 +325,12 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 
       # Perform nemenyi test
       nem_test = tryCatch(self$friedman_posthoc(meas, p.value),
-                   warning = function(w)
-                     stopf("Global Friedman test non-significant (p > %s), try type = 'mean' instead.", p.value)) # nolint
+                 warning = function(w) {
+                   if (friedman_posthoc)
+                     stopf("Global Friedman test non-significant (p > %s), try type = 'mean' instead.", p.value) # nolint
+                   else
+                     warning(sprintf("Global Friedman test non-significant (p > %s), try type = 'mean' instead.", p.value)) # nolint))
+                 })
 
       # calculate critical difference(s)
       if (test == "nemenyi") {

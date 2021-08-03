@@ -1,5 +1,5 @@
-.plot_critdiff_1 = function(obj, meas, p.value, minimize, test, baseline, ratio) { # nolint
-  cd = obj$.__enclos_env__$private$.crit_differences(meas, minimize, p.value, baseline, test)
+.plot_critdiff_1 = function(obj, meas, p.value, minimize, test, baseline, ratio, friedman_posthoc) { # nolint
+  cd = obj$.__enclos_env__$private$.crit_differences(meas, minimize, p.value, baseline, test, friedman_posthoc)
 
   # Plot descriptive lines and learner names
   cd$data$yend = -cd$data$yend
@@ -75,7 +75,7 @@
   return(p)
 }
 
-.plot_critdiff_2 = function(obj, meas, p.value, minimize, test, baseline) { # nolint
+.plot_critdiff_2 = function(obj, meas, p.value, minimize, test, baseline, friedman_posthoc) { # nolint
   cd = obj$.__enclos_env__$private$.crit_differences(meas, minimize, p.value, baseline, test)
 
   # Plot descriptive lines and learner names
