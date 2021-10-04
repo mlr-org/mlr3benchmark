@@ -1,6 +1,6 @@
 Package: mlr3benchmark
 Title: Analysis and Visualisation of Benchmark Experiments
-Version: 0.1.2.9000
+Version: 0.1.3
 Authors@R:
     c(person(given = "Sonabend",
            family = "Raphael",
@@ -36,10 +36,10 @@ Imports:
     ggplot2,
     mlr3misc,
     R6
-Suggests: 
+Suggests:
     mlr3,
     mlr3learners,
-    PMCMR,
+    PMCMRplus,
     rpart,
     testthat,
     xgboost

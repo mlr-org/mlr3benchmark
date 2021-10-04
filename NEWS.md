@@ -1,6 +1,7 @@
-# mlr3benchmark 0.1.2.9000
+# mlr3benchmark 0.1.3
 
 * Fix README
+* Fix for PMCMRplus
 
 # mlr3benchmark 0.1.2
 
