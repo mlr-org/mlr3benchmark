@@ -48,7 +48,9 @@ test_that("autoplot with BenchmarkAggr from mlr3::benchmark()", {
   bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 3)))
 
   ba = as.BenchmarkAggr(bm)
-  expect_true(ggplot2::is.ggplot(autoplot(ba, type = "cd")))
-
+  expect_warning(expect_true(ggplot2::is.ggplot(autoplot(ba,
+    type = "cd",
+    friedman_global = FALSE
+  ))))
   expect_true(ggplot2::is.ggplot(autoplot(ba, type = "cd", p.value = 0.2)))
 })

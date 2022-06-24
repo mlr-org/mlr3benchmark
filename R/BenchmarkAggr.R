@@ -214,7 +214,12 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' in data.
     #' @param p.value `(numeric(1))` \cr
     #' p.value for which the global test will be considered significant.
-    friedman_posthoc = function(meas = NULL, p.value = 0.05) { # nolint
+    #' @param friedman_global (`logical(1)`)\cr
+    #' Should a friedman global test be performed before conducting the posthoc
+    #' test? If `FALSE`, a warning is issued in case the corresponding friedman
+    #' global test fails instead of an error. Default is `TRUE` (raises an
+    #' error if global test fails).
+    friedman_posthoc = function(meas = NULL, p.value = 0.05, friedman_global = TRUE) { # nolint
 
       if (!requireNamespace("PMCMRplus", quietly = TRUE)) {
         stop("Package PMCMRplus required for post-hoc Friedman tests.")
@@ -227,19 +232,31 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 
       meas = .check_meas(self, meas)
       assertNumeric(p.value, lower = 0, upper = 1, len = 1)
+
       f.test = self$friedman_test(meas) # nolint
+
 
       if (!is.na(f.test$p.value)) {
         f.rejnull = f.test$p.value < p.value # nolint
         if (!f.rejnull) {
-          warning("Cannot reject null hypothesis of overall Friedman test, returning overall Friedman test.") # nolint
+          if (friedman_global) {
+            warning(sprintf(
+              "Global Friedman test non-significant (p = %s > %s). Returning overall Friedman test.",
+              round(f.test$p.value, 3), p.value
+            )) # nolint
+          } else {
+            warning(sprintf(
+          "Global Friedman test non-significant (p = %s > %s), posthoc results unreliable.",
+          round(f.test$p.value, 3), p.value
+            ))
+          }
         }
       } else {
         f.rejnull = FALSE # nolint
         warning("P-value not computable. Learner performances might be exactly equal.")
       }
 
-      if (f.rejnull) {
+      if (f.rejnull || !friedman_global) {
         form = as.formula(paste0(meas, " ~ ", self$col_roles$learner_id, " | ",
                                  self$col_roles$task_id))
         nem_test = PMCMRplus::frdAllPairsNemenyiTest(form, data = private$.dt) # nolint

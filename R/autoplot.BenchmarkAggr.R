@@ -111,20 +111,21 @@ autoplot.BenchmarkAggr = function(obj, type = c("mean", "box", "fn", "cd"), meas
       geom_point()
   } else if (type == "fn") {
 
-    p = tryCatch(obj$friedman_posthoc(meas, p.value)$p.value,
-                 warning = function(w) {
-                   if (friedman_global)
-                     stopf("Global Friedman test non-significant (p > %s), try type = 'mean' instead.", p.value) # nolint
-                   else
-                     warning(sprintf("Global Friedman test non-significant (p > %s), try type = 'mean' instead.", p.value)) # nolint))
-                 })
-    if (friedman_global) {
-      p = p[rev(seq_len(nrow(p))), ]
-      p = t(p)
-      p = cbind(expand.grid(rownames(p), colnames(p)), value = as.numeric(p))
-    } else {
-      p = cbind(expand.grid(obj$data[[obj$col_roles$learner_id]],  obj$data[[obj$col_roles$task_id]]), value = 1)
-    }
+    p = tryCatch(obj$friedman_posthoc(meas, p.value, FALSE)$p.value,
+      warning = function(w) {
+        if (friedman_global) {
+          stopf("Global Friedman test non-significant (p > %s), try type = 'mean' instead.", p.value)
+        } # nolint
+        else {
+          warning(sprintf("Global Friedman test non-significant (p > %s), try type = 'mean' instead.", p.value))
+          suppressWarnings(obj$friedman_posthoc(meas, p.value, FALSE)$p.value)
+        } # nolint))
+      }
+    )
+
+    p = p[rev(seq_len(nrow(p))), ]
+    p = t(p)
+    p = cbind(expand.grid(rownames(p), colnames(p)), value = as.numeric(p))
     p$value = factor(ifelse(p$value < p.value, "0", "1"))
 
     ggplot(data = p, aes(x = Var1, y = Var2, fill = value)) +
