@@ -47,7 +47,7 @@
 #' @param friedman_global (`logical(1)`)\cr
 #' Should a friedman global test be performed for`type = "cd"` and `type = "fn"`?
 #' If `FALSE`, a warning is issued in case the corresponding friedman posthoc test fails instead of an error.
-#' Default is `TRUE` (raises an error).
+#' Default is `TRUE` (raises an error if global test fails).
 #' @param ... `ANY` \cr Additional arguments, currently unused.
 #'
 #' @references
