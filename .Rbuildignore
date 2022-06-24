@@ -14,3 +14,4 @@ man-roxygen
 ^\.lintr
 ^.editorconfig$
 ^.ignore$
+^.vscode

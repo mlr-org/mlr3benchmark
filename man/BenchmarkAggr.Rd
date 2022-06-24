@@ -208,7 +208,7 @@ then no correction applied.}
 \if{latex}{\out{\hypertarget{method-friedman_posthoc}{}}}
 \subsection{Method \code{friedman_posthoc()}}{
 Posthoc Friedman Nemenyi tests. Computed with
-\link[PMCMR:posthoc.friedman.nemenyi.test]{PMCMR::posthoc.friedman.nemenyi.test}. If global \verb{$friedman_test} is non-significant then
+\link[PMCMRplus:frdAllPairsNemenyiTest]{PMCMRplus::frdAllPairsNemenyiTest}. If global \verb{$friedman_test} is non-significant then
 this is returned and no post-hocs computed. Also returns critical difference
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BenchmarkAggr$friedman_posthoc(meas = NULL, p.value = 0.05)}\if{html}{\out{</div>}}

@@ -68,7 +68,7 @@
 #' # mean and error bars
 #' autoplot(obj, type = "mean", level = 0.95)
 #'
-#' if (requireNamespace("PMCMR", quietly = TRUE)) {
+#' if (requireNamespace("PMCMRplus", quietly = TRUE)) {
 #'   # critical differences
 #'   autoplot(obj, type = "cd",style = 1)
 #'   autoplot(obj, type = "cd",style = 2)

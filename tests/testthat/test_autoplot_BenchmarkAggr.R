@@ -8,13 +8,13 @@ test_that("autoplot.BenchmarkAggr", {
   expect_true(is.ggplot(autoplot(ba, type = "mean")))
   expect_true(is.ggplot(autoplot(ba, type = "box")))
 
-  skip_if_not_installed("PMCMR")
+  skip_if_not_installed("PMCMRplus")
   expect_true(is.ggplot(autoplot(ba, type = "fn")))
   expect_true(is.ggplot(autoplot(ba, type = "cd")))
 })
 
 test_that("autoplot.BenchmarkAggr cd", {
-  skip_if_not_installed("PMCMR")
+  skip_if_not_installed("PMCMRplus")
 
   set.seed(1)
   df = data.frame(task_id = factor(rep(c("A", "B"), each = 5)),
@@ -32,21 +32,23 @@ test_that("autoplot.BenchmarkAggr cd", {
 })
 
 test_that("autoplot with BenchmarkAggr from mlr3::benchmark()", {
-  skip_if_not_installed("PMCMR")
+  skip_if_not_installed("PMCMRplus")
   skip_if_not_installed("mlr3")
   skip_if_not_installed("ggplot2")
   skip_if_not_installed("mlr3learners")
   skip_if_not_installed("rpart")
-  skip_if_not_installed("ranger")
   set.seed(1)
 
   library("mlr3")
-  task = tsks(c("iris", "sonar", "wine", "zoo"))
-  learns = lrns(c("classif.featureless", "classif.rpart", "classif.ranger"))
+
+  task = tsks(c("iris", "sonar"))
+  learns = c(lrns(c("classif.featureless", "classif.rpart")),
+    lrn("classif.rpart", id = "rpart2")
+  )
   bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 3)))
-  ba = BenchmarkAggr$new(bm$aggregate())
-  expect_true(ggplot2::is.ggplot(autoplot(ba, type = "cd")))
 
   ba = as.BenchmarkAggr(bm)
   expect_true(ggplot2::is.ggplot(autoplot(ba, type = "cd")))
+
+  expect_true(ggplot2::is.ggplot(autoplot(ba, type = "cd", p.value = 0.2)))
 })

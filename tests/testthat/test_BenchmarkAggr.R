@@ -63,7 +63,7 @@ test_that("public methods", {
                data.table(tasks = factor(c("A", "B")), learners = factor(c("L3", "L3")),
                           RMSE = c(3, 4), MSE = c(9, 16)))
 
-  skip_if_not_installed("PMCMR")
+  skip_if_not_installed("PMCMRplus")
   expect_error(ba$friedman_posthoc(), "measures")
   expect_warning(ba$friedman_posthoc(meas = "RMSE"), "Cannot reject")
   expect_silent(ba$friedman_posthoc(p.value = 0.9, meas = "RMSE"))

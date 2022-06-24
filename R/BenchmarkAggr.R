@@ -208,7 +208,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     },
 
     #' @description Posthoc Friedman Nemenyi tests. Computed with
-    #' [PMCMR::posthoc.friedman.nemenyi.test]. If global `$friedman_test` is non-significant then
+    #' [PMCMRplus::frdAllPairsNemenyiTest]. If global `$friedman_test` is non-significant then
     #' this is returned and no post-hocs computed. Also returns critical difference
     #' @param meas `(character(1))` \cr
     #' Measure to rank the data against, should be in `$measures`. Can be `NULL` if only one measure
@@ -217,8 +217,8 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' p.value for which the global test will be considered significant.
     friedman_posthoc = function(meas = NULL, p.value = 0.05) { # nolint
 
-      if (!requireNamespace("PMCMR", quietly = TRUE)) {
-        stop("Package PMCMR required for post-hoc Friedman tests.")
+      if (!requireNamespace("PMCMRplus", quietly = TRUE)) {
+        stop("Package PMCMRplus required for post-hoc Friedman tests.")
       }
 
       if (self$nlrns == 2) {
@@ -243,7 +243,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
       if (f.rejnull) {
         form = as.formula(paste0(meas, " ~ ", self$col_roles$learner_id, " | ",
                                  self$col_roles$task_id))
-        nem_test = PMCMR::posthoc.friedman.nemenyi.test(form, data = private$.dt) # nolint
+        nem_test = PMCMRplus::frdAllPairsNemenyiTest(form, data = private$.dt) # nolint
         nem_test$f.rejnull = f.rejnull # nolint
         return(nem_test)
       } else {
