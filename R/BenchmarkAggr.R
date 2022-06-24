@@ -60,7 +60,6 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
       private$.independent = assert_flag(independent)
       assert_flag(strip_prefix)
       assert_subset(c(task_id, learner_id), colnames(dt))
-      dt = map_at(dt, c(task_id, learner_id), as.factor)
       assert_factor(unlist(subset(dt, select = task_id)))
       assert_factor(unlist(subset(dt, select = learner_id)))
 
