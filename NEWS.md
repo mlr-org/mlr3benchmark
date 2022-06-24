@@ -1,3 +1,7 @@
+# mlr3benchmark 0.1.4
+
+* Add `friedman_global` argument to posthoc tests and to autoplots to allow methods and plots to run even if the global Friedman test fails (i.e. don't reject null)
+
 # mlr3benchmark 0.1.3
 
 * Fix README

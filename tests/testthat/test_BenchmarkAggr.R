@@ -65,7 +65,12 @@ test_that("public methods", {
 
   skip_if_not_installed("PMCMRplus")
   expect_error(ba$friedman_posthoc(), "measures")
-  expect_warning(ba$friedman_posthoc(meas = "RMSE"), "Cannot reject")
+  expect_warning(ba$friedman_posthoc(meas = "RMSE"), "Returning overall")
+  expect_equal(
+    class(expect_warning(ba$friedman_posthoc(meas = "RMSE",
+                                            friedman_global = FALSE),
+                        "unreliable")), "PMCMR"
+  )
   expect_silent(ba$friedman_posthoc(p.value = 0.9, meas = "RMSE"))
 })
 
