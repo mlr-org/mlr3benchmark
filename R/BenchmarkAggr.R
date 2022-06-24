@@ -298,7 +298,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     .dt = data.table(),
     .independent = logical(0),
     .crit_differences = function(meas = NULL, minimize = TRUE, p.value = 0.05, baseline = NULL, # nolint
-                                test = c("bd", "nemenyi"), friedman_posthoc = TRUE) {
+                                test = c("bd", "nemenyi"), friedman_global = TRUE) {
 
       meas = .check_meas(self, meas)
       test = match.arg(test)
@@ -325,7 +325,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
       # Perform nemenyi test
       nem_test = tryCatch(self$friedman_posthoc(meas, p.value),
                  warning = function(w) {
-                   if (friedman_posthoc)
+                   if (friedman_global)
                      stopf("Global Friedman test non-significant (p > %s), try type = 'mean' instead.", p.value) # nolint
                    else
                      warning(sprintf("Global Friedman test non-significant (p > %s), try type = 'mean' instead.", p.value)) # nolint))
