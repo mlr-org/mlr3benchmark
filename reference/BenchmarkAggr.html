@@ -363,17 +363,17 @@ Learner(s) to subset the data by.</p></dd>
 <span class="r-in"><span>                RMSE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>, MAE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="as.BenchmarkAggr.html">as.BenchmarkAggr</a></span><span class="op">(</span><span class="va">df</span>, task_id <span class="op">=</span> <span class="st">"tasks"</span>, learner_id <span class="op">=</span> <span class="st">"learners"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;BenchmarkAggr&gt; of 10 rows with 2 tasks, 5 learners and 2 measures</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     tasks learners       RMSE        MAE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:     A       L1 0.89123067 0.48968224</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:     A       L2 0.27578105 0.27247112</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:     A       L3 0.16278540 0.91196884</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:     A       L4 0.59496399 0.35676918</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:     A       L5 0.02071782 0.94077736</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:     B       L1 0.23331792 0.92107997</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:     B       L2 0.50047109 0.96060562</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:     B       L3 0.27718072 0.47908351</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:     B       L4 0.56751328 0.36486191</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:     B       L5 0.45612388 0.08950942</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     tasks learners      RMSE       MAE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:     A       L1 0.8654885 0.5153994</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:     A       L2 0.6704680 0.6755672</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:     A       L3 0.2204500 0.5876804</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:     A       L4 0.9593161 0.2731113</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:     A       L5 0.7193529 0.8666041</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:     B       L1 0.1804292 0.7311176</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:     B       L2 0.3482540 0.9314243</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:     B       L3 0.7873609 0.1284104</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:     B       L4 0.6042746 0.1857719</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:     B       L5 0.2618281 0.3766141</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="requireNamespaces.html">requireNamespaces</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mlr3"</span>, <span class="st">"rpart"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3.mlr-org.com" class="external-link">mlr3</a></span><span class="op">)</span></span></span>
@@ -385,11 +385,11 @@ Learner(s) to subset the data by.</p></dd>
 <span class="r-in"><span>  <span class="fu"><a href="as.BenchmarkAggr.html">as.BenchmarkAggr</a></span><span class="op">(</span><span class="va">bm</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;BenchmarkAggr&gt; of 4 rows with 2 tasks, 2 learners and 1 measure</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           task_id  learner_id      mse</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: boston_housing featureless 84.46845</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: boston_housing       rpart  3.56170</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:         mtcars featureless 35.20729</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:         mtcars       rpart 35.20729</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           task_id  learner_id       mse</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: boston_housing featureless 84.861451</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: boston_housing       rpart  3.874053</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:         mtcars featureless 35.253691</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:         mtcars       rpart 35.253691</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
