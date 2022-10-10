@@ -53,6 +53,9 @@
 #' @references
 #' `r format_bib("demsar_2006")`
 #'
+#' @return
+#' The generated plot.
+#'
 #' @examples
 #' if (requireNamespaces(c("mlr3learners", "mlr3", "rpart", "xgboost"))) {
 #' library(mlr3)

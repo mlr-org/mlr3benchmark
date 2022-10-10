@@ -64,6 +64,9 @@ Default is \code{TRUE} (raises an error if global test fails).}
 
 \item{...}{\code{ANY} \cr Additional arguments, currently unused.}
 }
+\value{
+The generated plot.
+}
 \description{
 Generates plots for \link{BenchmarkAggr}, all assume that there are multiple, independent, tasks.
 Choices depending on the argument \code{type}:
