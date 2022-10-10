@@ -22,7 +22,10 @@ Authors@R:
              role = "ctb",
              email = "bernd_bischl@gmx.net",
              comment = c(ORCID = "0000-0001-6002-6980")),
-      person("Sebastian", "Fischer", , "sebf.fischer@gmail.com", role = "cre",
+      person(given = "Sebastian",
+             family = "Fischer",
+             role = c("cre", "ctb"),
+             email = "sebf.fischer@gmail.com",
              comment = c(ORCID = "0000-0002-9609-3197")))
 Description: Implements methods for post-hoc analysis and
     visualisation of benchmark experiments, for 'mlr3' and beyond.
