@@ -6,10 +6,9 @@
 \alias{mlr3benchmark-package}
 \title{mlr3benchmark: Analysis and Visualisation of Benchmark Experiments}
 \description{
-\if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Implements methods for post-hoc analysis and
-    visualisation of benchmark experiments, for 'mlr3' and beyond.
+Implements methods for post-hoc analysis and visualisation of benchmark experiments, for 'mlr3' and beyond.
 }
 \seealso{
 Useful links:

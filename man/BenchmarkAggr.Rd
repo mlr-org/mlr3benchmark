@@ -64,19 +64,19 @@ Column roles, currently cannot be changed after construction.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{BenchmarkAggr$new()}}
-\item \href{#method-print}{\code{BenchmarkAggr$print()}}
-\item \href{#method-summary}{\code{BenchmarkAggr$summary()}}
-\item \href{#method-rank_data}{\code{BenchmarkAggr$rank_data()}}
-\item \href{#method-friedman_test}{\code{BenchmarkAggr$friedman_test()}}
-\item \href{#method-friedman_posthoc}{\code{BenchmarkAggr$friedman_posthoc()}}
-\item \href{#method-subset}{\code{BenchmarkAggr$subset()}}
-\item \href{#method-clone}{\code{BenchmarkAggr$clone()}}
+\item \href{#method-BenchmarkAggr-new}{\code{BenchmarkAggr$new()}}
+\item \href{#method-BenchmarkAggr-print}{\code{BenchmarkAggr$print()}}
+\item \href{#method-BenchmarkAggr-summary}{\code{BenchmarkAggr$summary()}}
+\item \href{#method-BenchmarkAggr-rank_data}{\code{BenchmarkAggr$rank_data()}}
+\item \href{#method-BenchmarkAggr-friedman_test}{\code{BenchmarkAggr$friedman_test()}}
+\item \href{#method-BenchmarkAggr-friedman_posthoc}{\code{BenchmarkAggr$friedman_posthoc()}}
+\item \href{#method-BenchmarkAggr-subset}{\code{BenchmarkAggr$subset()}}
+\item \href{#method-BenchmarkAggr-clone}{\code{BenchmarkAggr$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-BenchmarkAggr-new"></a>}}
+\if{latex}{\out{\hypertarget{method-BenchmarkAggr-new}{}}}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
@@ -118,8 +118,8 @@ Additional arguments, currently unused.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-print"></a>}}
-\if{latex}{\out{\hypertarget{method-print}{}}}
+\if{html}{\out{<a id="method-BenchmarkAggr-print"></a>}}
+\if{latex}{\out{\hypertarget{method-BenchmarkAggr-print}{}}}
 \subsection{Method \code{print()}}{
 Prints the internal data via \link[data.table:print.data.table]{data.table::print.data.table}.
 \subsection{Usage}{
@@ -135,8 +135,8 @@ Prints the internal data via \link[data.table:print.data.table]{data.table::prin
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-summary"></a>}}
-\if{latex}{\out{\hypertarget{method-summary}{}}}
+\if{html}{\out{<a id="method-BenchmarkAggr-summary"></a>}}
+\if{latex}{\out{\hypertarget{method-BenchmarkAggr-summary}{}}}
 \subsection{Method \code{summary()}}{
 Prints the internal data via \link[data.table:print.data.table]{data.table::print.data.table}.
 \subsection{Usage}{
@@ -152,8 +152,8 @@ Prints the internal data via \link[data.table:print.data.table]{data.table::prin
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-rank_data"></a>}}
-\if{latex}{\out{\hypertarget{method-rank_data}{}}}
+\if{html}{\out{<a id="method-BenchmarkAggr-rank_data"></a>}}
+\if{latex}{\out{\hypertarget{method-BenchmarkAggr-rank_data}{}}}
 \subsection{Method \code{rank_data()}}{
 Ranks the aggregated data given some measure.
 \subsection{Usage}{
@@ -181,8 +181,8 @@ be in \verb{$tasks}.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-friedman_test"></a>}}
-\if{latex}{\out{\hypertarget{method-friedman_test}{}}}
+\if{html}{\out{<a id="method-BenchmarkAggr-friedman_test"></a>}}
+\if{latex}{\out{\hypertarget{method-BenchmarkAggr-friedman_test}{}}}
 \subsection{Method \code{friedman_test()}}{
 Computes Friedman test over all tasks, assumes datasets are independent.
 \subsection{Usage}{
@@ -204,14 +204,18 @@ then no correction applied.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-friedman_posthoc"></a>}}
-\if{latex}{\out{\hypertarget{method-friedman_posthoc}{}}}
+\if{html}{\out{<a id="method-BenchmarkAggr-friedman_posthoc"></a>}}
+\if{latex}{\out{\hypertarget{method-BenchmarkAggr-friedman_posthoc}{}}}
 \subsection{Method \code{friedman_posthoc()}}{
 Posthoc Friedman Nemenyi tests. Computed with
 \link[PMCMRplus:frdAllPairsNemenyiTest]{PMCMRplus::frdAllPairsNemenyiTest}. If global \verb{$friedman_test} is non-significant then
 this is returned and no post-hocs computed. Also returns critical difference
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BenchmarkAggr$friedman_posthoc(meas = NULL, p.value = 0.05)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{BenchmarkAggr$friedman_posthoc(
+  meas = NULL,
+  p.value = 0.05,
+  friedman_global = TRUE
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -223,13 +227,19 @@ in data.}
 
 \item{\code{p.value}}{\code{(numeric(1))} \cr
 p.value for which the global test will be considered significant.}
+
+\item{\code{friedman_global}}{(\code{logical(1)})\cr
+Should a friedman global test be performed before conducting the posthoc
+test? If \code{FALSE}, a warning is issued in case the corresponding friedman
+global test fails instead of an error. Default is \code{TRUE} (raises an
+error if global test fails).}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-subset"></a>}}
-\if{latex}{\out{\hypertarget{method-subset}{}}}
+\if{html}{\out{<a id="method-BenchmarkAggr-subset"></a>}}
+\if{latex}{\out{\hypertarget{method-BenchmarkAggr-subset}{}}}
 \subsection{Method \code{subset()}}{
 Subsets the data by given tasks or learners.
 Returns data as \link[data.table:data.table]{data.table::data.table}.
@@ -250,8 +260,8 @@ Learner(s) to subset the data by.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-BenchmarkAggr-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-BenchmarkAggr-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{
