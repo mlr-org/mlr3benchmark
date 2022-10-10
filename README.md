@@ -9,12 +9,6 @@ Analysis and tools for benchmarking in
 [![tic](https://github.com/mlr-org/mlr3benchmark/workflows/tic/badge.svg?branch=main)](https://github.com/mlr-org/mlr3benchmark/actions)
 [![CRAN
 Status](https://www.r-pkg.org/badges/version-ago/mlr3benchmark)](https://cran.r-project.org/package=mlr3benchmark)
-[![CRAN
-checks](https://cranchecks.info/badges/worst/mlr3benchmark)](https://cran.r-project.org/web/checks/check_results_mlr3benchmark.html)
-
-[![CodeFactor](https://www.codefactor.io/repository/github/mlr-org/mlr3benchmark/badge)](https://www.codefactor.io/repository/github/mlr-org/mlr3benchmark)
-[![Codecov test
-coverage](https://codecov.io/gh/mlr-org/mlr3benchmark/branch/main/graph/badge.svg)](https://codecov.io/gh/mlr-org/mlr3benchmark?branch=main)
 
 [![StackOverflow](https://img.shields.io/badge/stackoverflow-mlr3-orange.svg)](https://stackoverflow.com/questions/tagged/mlr3)
 [![Mattermost](https://img.shields.io/badge/chat-mattermost-orange.svg)](https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/)
@@ -55,7 +49,7 @@ remotes::install_github("mlr-org/mlr3benchmark")
 
 Currently **mlr3benchmark** only supports analysis of multiple learners
 over multiple tasks. The current implemented features are best
-demonstrated by example!
+demonstrated by example\!
 
 First we run a mlr3 benchmark experiment:
 
@@ -81,6 +75,7 @@ ba
 
     ## <BenchmarkAggr> of 12 rows with 4 tasks, 3 learners and 2 measures
     ##     task_id  learner_id       acc         ce
+    ##      <fctr>      <fctr>     <num>      <num>
     ##  1:    iris featureless 0.2800000 0.72000000
     ##  2:    iris       rpart 0.9466667 0.05333333
     ##  3:    iris     xgboost 0.9600000 0.04000000
@@ -94,7 +89,7 @@ ba
     ## 11:     zoo       rpart 0.8309566 0.16904337
     ## 12:     zoo     xgboost 0.9099822 0.09001783
 
-Now we can begin our analysis! In **mlr3benchmark**, analysis of
+Now we can begin our analysis\! In **mlr3benchmark**, analysis of
 multiple learners over multiple independent tasks follows the guidelines
 of Demsar (2006). So we begin by checking if the global Friedman test is
 significant: is there are a significant difference in the rankings of
@@ -117,16 +112,16 @@ ba$friedman_posthoc(meas = "acc")
 ```
 
     ## 
-    ##  Pairwise comparisons using Nemenyi multiple comparison test 
-    ##              with q approximation for unreplicated blocked data 
-    ## 
-    ## data:  acc and learner_id and task_id 
-    ## 
+    ##  Pairwise comparisons using Nemenyi-Wilcoxon-Wilcox all-pairs test for a two-way balanced complete block design
+
+    ## data: acc and learner_id and task_id
+
     ##         featureless rpart
     ## rpart   0.181       -    
     ## xgboost 0.036       0.759
+
     ## 
-    ## P value adjustment method: none
+    ## P value adjustment method: single-step
 
 The results tell us that xgboost is significantly different from the
 featureless model, but all other comparisons are non-significant. This
@@ -170,18 +165,18 @@ not significantly better than the decision tree but the decision tree is
 not significantly better than the baseline, so we will recommend xgboost
 for now.
 
-The analysis is complete!
+The analysis is complete\!
 
 ## Roadmap
 
 **mlr3benchmark** is in its early stages and the interface is still
 maturing, near-future updates will include:
 
--   Extending `BenchmarkAggr` to non-independent tasks
--   Extending `BenchmarkAggr` to single tasks
--   Adding `BenchmarkScore` for non-aggregated measures,
+  - Extending `BenchmarkAggr` to non-independent tasks
+  - Extending `BenchmarkAggr` to single tasks
+  - Adding `BenchmarkScore` for non-aggregated measures,
     e.g. observation-level scores
--   Bayesian methods for analysis
+  - Bayesian methods for analysis
 
 ## Bugs, Questions, Feedback
 
@@ -189,7 +184,7 @@ maturing, near-future updates will include:
 encourages participation and feedback. If you have any issues,
 questions, suggestions or feedback, please do not hesitate to open an
 “issue” about it on the [GitHub
-page](https://github.com/mlr-org/mlr3benchmark/issues)! In case of
+page](https://github.com/mlr-org/mlr3benchmark/issues)\! In case of
 problems / bugs, it is often helpful if you provide a “minimum working
 example” that showcases the behaviour (but don’t worry about this if the
 bug is obvious).
