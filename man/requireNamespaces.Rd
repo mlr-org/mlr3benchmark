@@ -9,6 +9,9 @@ requireNamespaces(x)
 \arguments{
 \item{x}{Packages to check.}
 }
+\value{
+A \code{logical(1)}, indicating wether all required packages are available.
+}
 \description{
 Internal helper function for documentation.
 }
