@@ -1,6 +1,6 @@
 Package: mlr3benchmark
 Title: Analysis and Visualisation of Benchmark Experiments
-Version: 0.1.4
+Version: 0.1.4-9000
 Authors@R:
     c(person(given = "Sonabend",
            family = "Raphael",
