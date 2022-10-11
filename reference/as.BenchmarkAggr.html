@@ -113,17 +113,17 @@ wrapper around the <a href="BenchmarkAggr.html">BenchmarkAggr</a> constructor ca
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">as.BenchmarkAggr</span><span class="op">(</span><span class="va">df</span>, task_id <span class="op">=</span> <span class="st">"tasks"</span>, learner_id <span class="op">=</span> <span class="st">"learners"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;BenchmarkAggr&gt; of 10 rows with 2 tasks, 5 learners and 2 measures</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     tasks learners      RMSE       MAE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:     A       L1 0.4025003 0.8147494</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:     A       L2 0.1256644 0.9711063</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:     A       L3 0.3216295 0.4632087</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:     A       L4 0.3946061 0.6363783</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:     A       L5 0.7877744 0.2422802</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:     B       L1 0.2837815 0.9641790</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:     B       L2 0.6511361 0.8958151</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:     B       L3 0.4314747 0.4032209</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:     B       L4 0.4610967 0.9486171</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:     B       L5 0.4122785 0.9112783</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     tasks learners      RMSE        MAE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:     A       L1 0.2989377 0.22116564</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:     A       L2 0.5910478 0.08863749</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:     A       L3 0.5347024 0.44921759</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:     A       L4 0.2148177 0.51811261</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:     A       L5 0.9877592 0.13072319</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:     B       L1 0.5677898 0.17661535</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:     B       L2 0.4982838 0.29786660</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:     B       L3 0.8472095 0.89393082</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:     B       L4 0.5106459 0.18949208</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:     B       L5 0.2349015 0.50757862</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="requireNamespaces.html">requireNamespaces</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mlr3"</span>, <span class="st">"rpart"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
@@ -140,10 +140,10 @@ wrapper around the <a href="BenchmarkAggr.html">BenchmarkAggr</a> constructor ca
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;BenchmarkAggr&gt; of 4 rows with 2 tasks, 2 learners and 1 measure</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           task_id  learner_id     rmse</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: boston_housing featureless 9.240932</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: boston_housing       rpart 1.863215</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:         mtcars featureless 6.210581</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:         mtcars       rpart 6.210581</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: boston_housing featureless 9.262436</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: boston_housing       rpart 1.914168</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:         mtcars featureless 6.337651</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:         mtcars       rpart 6.337651</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -152,7 +152,7 @@ wrapper around the <a href="BenchmarkAggr.html">BenchmarkAggr</a> constructor ca
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Sonabend Raphael, Florian Pfisterer.</p>
+  <p></p><p>Developed by Sonabend Raphael, Florian Pfisterer, Sebastian Fischer.</p>
 </div>
 
 <div class="pkgdown-footer-right">

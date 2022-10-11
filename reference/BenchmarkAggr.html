@@ -136,15 +136,15 @@ Column roles, currently cannot be changed after construction.</p></dd>
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
-<ul><li><p><a href="#method-new"><code>BenchmarkAggr$new()</code></a></p></li>
-<li><p><a href="#method-print"><code>BenchmarkAggr$print()</code></a></p></li>
-<li><p><a href="#method-summary"><code>BenchmarkAggr$summary()</code></a></p></li>
-<li><p><a href="#method-rank_data"><code>BenchmarkAggr$rank_data()</code></a></p></li>
-<li><p><a href="#method-friedman_test"><code>BenchmarkAggr$friedman_test()</code></a></p></li>
-<li><p><a href="#method-friedman_posthoc"><code>BenchmarkAggr$friedman_posthoc()</code></a></p></li>
-<li><p><a href="#method-subset"><code>BenchmarkAggr$subset()</code></a></p></li>
-<li><p><a href="#method-clone"><code>BenchmarkAggr$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-new"></a><div class="section">
+<ul><li><p><a href="#method-BenchmarkAggr-new"><code>BenchmarkAggr$new()</code></a></p></li>
+<li><p><a href="#method-BenchmarkAggr-print"><code>BenchmarkAggr$print()</code></a></p></li>
+<li><p><a href="#method-BenchmarkAggr-summary"><code>BenchmarkAggr$summary()</code></a></p></li>
+<li><p><a href="#method-BenchmarkAggr-rank_data"><code>BenchmarkAggr$rank_data()</code></a></p></li>
+<li><p><a href="#method-BenchmarkAggr-friedman_test"><code>BenchmarkAggr$friedman_test()</code></a></p></li>
+<li><p><a href="#method-BenchmarkAggr-friedman_posthoc"><code>BenchmarkAggr$friedman_posthoc()</code></a></p></li>
+<li><p><a href="#method-BenchmarkAggr-subset"><code>BenchmarkAggr$subset()</code></a></p></li>
+<li><p><a href="#method-BenchmarkAggr-clone"><code>BenchmarkAggr$clone()</code></a></p></li>
+</ul></div><p></p><hr><a id="method-BenchmarkAggr-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>Creates a new instance of this <a href="https://r6.r-lib.org/reference/R6Class.html" class="external-link">R6</a> class.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
@@ -196,7 +196,7 @@ Additional arguments, currently unused.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-print"></a><div class="section">
+</div><p></p><hr><a id="method-BenchmarkAggr-print"></a><div class="section">
 <h3 id="method-print-">Method <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
 <p>Prints the internal data via <a href="https://Rdatatable.gitlab.io/data.table/reference/print.data.table.html" class="external-link">data.table::print.data.table</a>.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
@@ -212,7 +212,7 @@ Additional arguments, currently unused.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-summary"></a><div class="section">
+</div><p></p><hr><a id="method-BenchmarkAggr-summary"></a><div class="section">
 <h3 id="method-summary-">Method <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code><a class="anchor" aria-label="anchor" href="#method-summary-"></a></h3>
 <p>Prints the internal data via <a href="https://Rdatatable.gitlab.io/data.table/reference/print.data.table.html" class="external-link">data.table::print.data.table</a>.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
@@ -228,7 +228,7 @@ Additional arguments, currently unused.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-rank_data"></a><div class="section">
+</div><p></p><hr><a id="method-BenchmarkAggr-rank_data"></a><div class="section">
 <h3 id="method-rank-data-">Method <code>rank_data()</code><a class="anchor" aria-label="anchor" href="#method-rank-data-"></a></h3>
 <p>Ranks the aggregated data given some measure.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
@@ -262,7 +262,7 @@ be in <code>$tasks</code>.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-friedman_test"></a><div class="section">
+</div><p></p><hr><a id="method-BenchmarkAggr-friedman_test"></a><div class="section">
 <h3 id="method-friedman-test-">Method <code>friedman_test()</code><a class="anchor" aria-label="anchor" href="#method-friedman-test-"></a></h3>
 <p>Computes Friedman test over all tasks, assumes datasets are independent.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
@@ -286,13 +286,17 @@ then no correction applied.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-friedman_posthoc"></a><div class="section">
+</div><p></p><hr><a id="method-BenchmarkAggr-friedman_posthoc"></a><div class="section">
 <h3 id="method-friedman-posthoc-">Method <code>friedman_posthoc()</code><a class="anchor" aria-label="anchor" href="#method-friedman-posthoc-"></a></h3>
 <p>Posthoc Friedman Nemenyi tests. Computed with
 <a href="https://rdrr.io/pkg/PMCMRplus/man/frdAllPairsNemenyiTest.html" class="external-link">PMCMRplus::frdAllPairsNemenyiTest</a>. If global <code>$friedman_test</code> is non-significant then
 this is returned and no post-hocs computed. Also returns critical difference</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">BenchmarkAggr</span><span class="op">$</span><span class="fu">friedman_posthoc</span><span class="op">(</span>meas <span class="op">=</span> <span class="cn">NULL</span>, p.value <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">BenchmarkAggr</span><span class="op">$</span><span class="fu">friedman_posthoc</span><span class="op">(</span></span>
+<span>  meas <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  p.value <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  friedman_global <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -308,10 +312,18 @@ in data.</p></dd>
 p.value for which the global test will be considered significant.</p></dd>
 
 
+<dt><code>friedman_global</code></dt>
+<dd><p>(<code>logical(1)</code>)<br>
+Should a friedman global test be performed before conducting the posthoc
+test? If <code>FALSE</code>, a warning is issued in case the corresponding friedman
+global test fails instead of an error. Default is <code>TRUE</code> (raises an
+error if global test fails).</p></dd>
+
+
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-subset"></a><div class="section">
+</div><p></p><hr><a id="method-BenchmarkAggr-subset"></a><div class="section">
 <h3 id="method-subset-">Method <code><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset()</a></code><a class="anchor" aria-label="anchor" href="#method-subset-"></a></h3>
 <p>Subsets the data by given tasks or learners.
 Returns data as <a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table::data.table</a>.</p><div class="section">
@@ -334,7 +346,7 @@ Learner(s) to subset the data by.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-clone"></a><div class="section">
+</div><p></p><hr><a id="method-BenchmarkAggr-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
@@ -363,17 +375,17 @@ Learner(s) to subset the data by.</p></dd>
 <span class="r-in"><span>                RMSE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>, MAE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="as.BenchmarkAggr.html">as.BenchmarkAggr</a></span><span class="op">(</span><span class="va">df</span>, task_id <span class="op">=</span> <span class="st">"tasks"</span>, learner_id <span class="op">=</span> <span class="st">"learners"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;BenchmarkAggr&gt; of 10 rows with 2 tasks, 5 learners and 2 measures</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     tasks learners      RMSE        MAE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:     A       L1 0.1511645 0.32881179</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:     A       L2 0.7350983 0.99960369</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:     A       L3 0.1123922 0.99698802</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:     A       L4 0.4721573 0.51666308</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:     A       L5 0.7643271 0.81429837</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:     B       L1 0.4546451 0.85299213</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:     B       L2 0.1006960 0.09351581</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:     B       L3 0.8562113 0.18667266</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:     B       L4 0.7099861 0.85786959</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:     B       L5 0.7858389 0.40091823</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     tasks learners       RMSE        MAE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:     A       L1 0.46248907 0.71267613</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:     A       L2 0.28877518 0.35929822</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:     A       L3 0.59481655 0.61844890</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:     A       L4 0.03248231 0.77549273</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:     A       L5 0.39391412 0.91120847</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:     B       L1 0.59902610 0.38751514</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:     B       L2 0.30934688 0.73781896</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:     B       L3 0.32068674 0.45986395</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:     B       L4 0.63803766 0.08903126</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:     B       L5 0.37870537 0.82294266</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="requireNamespaces.html">requireNamespaces</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mlr3"</span>, <span class="st">"rpart"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3.mlr-org.com" class="external-link">mlr3</a></span><span class="op">)</span></span></span>
@@ -386,10 +398,10 @@ Learner(s) to subset the data by.</p></dd>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;BenchmarkAggr&gt; of 4 rows with 2 tasks, 2 learners and 1 measure</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           task_id  learner_id       mse</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: boston_housing featureless 84.425435</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: boston_housing       rpart  3.103514</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:         mtcars featureless 35.190410</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:         mtcars       rpart 35.190410</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: boston_housing featureless 84.549230</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: boston_housing       rpart  3.400725</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:         mtcars featureless 51.102129</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:         mtcars       rpart 51.102129</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -397,7 +409,7 @@ Learner(s) to subset the data by.</p></dd>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Sonabend Raphael, Florian Pfisterer.</p>
+  <p></p><p>Developed by Sonabend Raphael, Florian Pfisterer, Sebastian Fischer.</p>
 </div>
 
 <div class="pkgdown-footer-right">

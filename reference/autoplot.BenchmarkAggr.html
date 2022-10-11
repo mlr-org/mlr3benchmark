@@ -206,13 +206,19 @@ For <code>type = "fn"</code>, specifies color to fill significant tiles, default
 <dd><p>(<code>logical(1)</code>)<br>
 Should a friedman global test be performed for<code>type = "cd"</code> and <code>type = "fn"</code>?
 If <code>FALSE</code>, a warning is issued in case the corresponding friedman posthoc test fails instead of an error.
-Default is <code>TRUE</code> (raises an error).</p></dd>
+Default is <code>TRUE</code> (raises an error if global test fails).</p></dd>
 
 
 <dt>...</dt>
 <dd><p><code>ANY</code> <br> Additional arguments, currently unused.</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    
+
+<p>The generated plot.</p>
+    </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Demšar J (2006).
@@ -256,7 +262,7 @@ Default is <code>TRUE</code> (raises an error).</p></dd>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Sonabend Raphael, Florian Pfisterer.</p>
+  <p></p><p>Developed by Sonabend Raphael, Florian Pfisterer, Sebastian Fischer.</p>
 </div>
 
 <div class="pkgdown-footer-right">
