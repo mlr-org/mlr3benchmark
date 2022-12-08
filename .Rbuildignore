@@ -1,7 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.github$
-^tic\.R$
 ^LICENSE$
 ^\.ccache$
 codecov
@@ -10,6 +9,7 @@ cran-comments\.md
 docs
 pkgdown
 README\.Rmd
+README\.html
 man-roxygen
 ^\.lintr
 ^.editorconfig$
