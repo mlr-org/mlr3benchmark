@@ -14,9 +14,8 @@ library(mlr3benchmark)
 Analysis and tools for benchmarking in [mlr3](https://github.com/mlr-org/mlr3).
 
 <!-- badges: start -->
-[![tic](https://github.com/mlr-org/mlr3benchmark/workflows/tic/badge.svg?branch=main)](https://github.com/mlr-org/mlr3benchmark/actions)
+[![r-cmd-check](https://github.com/mlr-org/mlr3benchmark/actions/workflows/r-cmd-check.yml/badge.svg)](https://github.com/mlr-org/mlr3benchmark/actions/workflows/r-cmd-check.yml)
 [![CRAN Status](https://www.r-pkg.org/badges/version-ago/mlr3benchmark)](https://cran.r-project.org/package=mlr3benchmark)
-
 [![StackOverflow](https://img.shields.io/badge/stackoverflow-mlr3-orange.svg)](https://stackoverflow.com/questions/tagged/mlr3)
 [![Mattermost](https://img.shields.io/badge/chat-mattermost-orange.svg)](https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/)
 <!-- badges: end -->

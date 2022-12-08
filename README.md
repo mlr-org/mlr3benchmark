@@ -6,10 +6,9 @@ Analysis and tools for benchmarking in
 
 <!-- badges: start -->
 
-[![tic](https://github.com/mlr-org/mlr3benchmark/workflows/tic/badge.svg?branch=main)](https://github.com/mlr-org/mlr3benchmark/actions)
+[![r-cmd-check](https://github.com/mlr-org/mlr3benchmark/actions/workflows/r-cmd-check.yml/badge.svg)](https://github.com/mlr-org/mlr3benchmark/actions/workflows/r-cmd-check.yml)
 [![CRAN
 Status](https://www.r-pkg.org/badges/version-ago/mlr3benchmark)](https://cran.r-project.org/package=mlr3benchmark)
-
 [![StackOverflow](https://img.shields.io/badge/stackoverflow-mlr3-orange.svg)](https://stackoverflow.com/questions/tagged/mlr3)
 [![Mattermost](https://img.shields.io/badge/chat-mattermost-orange.svg)](https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/)
 <!-- badges: end -->
@@ -75,7 +74,6 @@ ba
 
     ## <BenchmarkAggr> of 12 rows with 4 tasks, 3 learners and 2 measures
     ##     task_id  learner_id       acc         ce
-    ##      <fctr>      <fctr>     <num>      <num>
     ##  1:    iris featureless 0.2800000 0.72000000
     ##  2:    iris       rpart 0.9466667 0.05333333
     ##  3:    iris     xgboost 0.9600000 0.04000000
