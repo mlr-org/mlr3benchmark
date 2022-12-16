@@ -135,26 +135,28 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' @param ... `ANY` `ANY` \cr Passed to [data.table::frank()].
     rank_data = function(meas = NULL, minimize = TRUE, task = NULL, ...) {
       meas = .check_meas(self, meas)
-      df = private$.dt[ , c(self$col_roles$task_id, meas), with = FALSE]
+      df = private$.dt[ , c(self$col_roles$task_id, self$col_roles$learner_id, meas), with = FALSE]
 
       if (!minimize) {
         df[[meas]] = -df[[meas]]
       }
 
-      if (!is.null(task)) {
-        df = df[get(self$col_roles$task_id) == task]
-        rdf = matrix(data.table::frank(subset(df, select = meas), ...), ncol = 1)
-        colnames(rdf) = task
-      } else {
-        rdf = matrix(nrow = self$nlrns, ncol = self$ntasks)
-        for (i in seq_along(self$tasks)) {
-          rdf[, i] = data.table::frank(subset(df, get(self$col_roles$task_id) == self$tasks[[i]],
-                                              select = meas), ...)
-        }
-        colnames(rdf) = self$tasks
+      if (is.null(task)) {
+        out = vapply(
+            self$tasks,
+            function(x) self$rank_data(meas, minimize, x, ...),
+            matrix(NA_real_, self$nlrns, 1)
+          )
+        out = array(out, dim(out)[c(1, 3)], dimnames(out)[c(1, 3)])
+        return(out)
       }
 
-      rownames(rdf) = self$learners
+      df = df[get(self$col_roles$task_id) == task]
+      rdf = matrix(data.table::frank(subset(df, select = meas), ...), ncol = 1)
+
+      colnames(rdf) = task
+      rownames(rdf) = unlist(subset(df, select = self$col_roles$learner_id))
+
       rdf
     },
 
