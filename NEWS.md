@@ -1,4 +1,6 @@
-# mlr3benchmark 0.1.4-9000
+# mlr3benchmark 0.1.5
+
+* Fix bug in `rank_data` caused by learner name mismatch
 
 # mlr3benchmark 0.1.4
 
