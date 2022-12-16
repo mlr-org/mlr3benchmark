@@ -144,7 +144,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
       if (is.null(task)) {
         out = vapply(
             self$tasks,
-            function(x) self$rank_data(meas, minimize, x),
+            function(x) self$rank_data(meas, minimize, x, ...),
             matrix(NA_real_, self$nlrns, 1)
           )
         out = array(out, dim(out)[c(1, 3)], dimnames(out)[c(1, 3)])
