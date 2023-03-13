@@ -21,6 +21,9 @@
 )
 }
 \arguments{
+\item{object}{(\link{BenchmarkAggr})\cr
+The benchmark aggregation object.}
+
 \item{type}{\code{(character(1))} \cr Type of plot, see description.}
 
 \item{meas}{\code{(character(1))} \cr Measure to plot, should be in \code{obj$measures}, can be \code{NULL} if

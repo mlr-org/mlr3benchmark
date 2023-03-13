@@ -19,6 +19,8 @@
 #' See references for further details.
 #' It's recommended to crop white space using external tools, or function `image_trim()` from package \CRANpkg{magick}.
 #'
+#' @param object ([BenchmarkAggr])\cr
+#'   The benchmark aggregation object.
 #' @param type `(character(1))` \cr Type of plot, see description.
 #' @param meas `(character(1))` \cr Measure to plot, should be in `obj$measures`, can be `NULL` if
 #' only one measure is in `obj`.
