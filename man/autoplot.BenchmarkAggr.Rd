@@ -5,7 +5,7 @@
 \title{Plots for BenchmarkAggr}
 \usage{
 \method{autoplot}{BenchmarkAggr}(
-  obj,
+  object,
   type = c("mean", "box", "fn", "cd"),
   meas = NULL,
   level = 0.95,
@@ -21,8 +21,6 @@
 )
 }
 \arguments{
-\item{obj}{\link{BenchmarkAggr}}
-
 \item{type}{\code{(character(1))} \cr Type of plot, see description.}
 
 \item{meas}{\code{(character(1))} \cr Measure to plot, should be in \code{obj$measures}, can be \code{NULL} if
