@@ -1,3 +1,7 @@
+# mlr3benchmark 0.1.6
+
+* Rename argument of autoplot function to comply with new CRAN check
+
 # mlr3benchmark 0.1.5
 
 * Fix bug in `rank_data` caused by learner name mismatch
