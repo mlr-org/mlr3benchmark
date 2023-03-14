@@ -5,7 +5,7 @@
 \title{Plots for BenchmarkAggr}
 \usage{
 \method{autoplot}{BenchmarkAggr}(
-  obj,
+  object,
   type = c("mean", "box", "fn", "cd"),
   meas = NULL,
   level = 0.95,
@@ -21,7 +21,8 @@
 )
 }
 \arguments{
-\item{obj}{\link{BenchmarkAggr}}
+\item{object}{(\link{BenchmarkAggr})\cr
+The benchmark aggregation object.}
 
 \item{type}{\code{(character(1))} \cr Type of plot, see description.}
 

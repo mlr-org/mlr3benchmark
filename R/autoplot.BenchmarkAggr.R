@@ -19,7 +19,8 @@
 #' See references for further details.
 #' It's recommended to crop white space using external tools, or function `image_trim()` from package \CRANpkg{magick}.
 #'
-#' @param obj [BenchmarkAggr]
+#' @param object ([BenchmarkAggr])\cr
+#'   The benchmark aggregation object.
 #' @param type `(character(1))` \cr Type of plot, see description.
 #' @param meas `(character(1))` \cr Measure to plot, should be in `obj$measures`, can be `NULL` if
 #' only one measure is in `obj`.
@@ -83,7 +84,7 @@
 #' }
 #'
 #' @export
-autoplot.BenchmarkAggr = function(obj, type = c("mean", "box", "fn", "cd"), meas = NULL, # nolint
+autoplot.BenchmarkAggr = function(object, type = c("mean", "box", "fn", "cd"), meas = NULL, # nolint
                                   level = 0.95, p.value = 0.05, minimize = TRUE, # nolint
                                   test = "nem", baseline = NULL, style = 1L,
                                   ratio = 1/7, col = "red", friedman_global = TRUE, ...) { # nolint
@@ -93,35 +94,35 @@ autoplot.BenchmarkAggr = function(obj, type = c("mean", "box", "fn", "cd"), meas
 
   type = match.arg(type)
 
-  meas = .check_meas(obj, meas)
+  meas = .check_meas(object, meas)
 
   if (type == "cd") {
-    if (style == 1L) .plot_critdiff_1(obj, meas, p.value, minimize, test, baseline, ratio, friedman_global)
-    else .plot_critdiff_2(obj, meas, p.value, minimize, test, baseline, friedman_global)
+    if (style == 1L) .plot_critdiff_1(object, meas, p.value, minimize, test, baseline, ratio, friedman_global)
+    else .plot_critdiff_2(object, meas, p.value, minimize, test, baseline, friedman_global)
   } else if (type == "mean") {
-    if (obj$ntasks < 2) {
+    if (object$ntasks < 2) {
       stop("At least two tasks required.")
     }
-    loss = stats::aggregate(as.formula(paste0(meas, " ~ ", obj$col_roles$learner_id)),
-                            obj$data, mean)
-    se = stats::aggregate(as.formula(paste0(meas, " ~ ", obj$col_roles$learner_id)), obj$data,
-                          stats::sd)[, 2] / sqrt(obj$ntasks)
+    loss = stats::aggregate(as.formula(paste0(meas, " ~ ", object$col_roles$learner_id)),
+                            object$data, mean)
+    se = stats::aggregate(as.formula(paste0(meas, " ~ ", object$col_roles$learner_id)), object$data,
+                          stats::sd)[, 2] / sqrt(object$ntasks)
     loss$lower = loss[, meas] - se * stats::qnorm(1 - (1 - level) / 2)
     loss$upper = loss[, meas] + se * stats::qnorm(1 - (1 - level) / 2)
-    ggplot(data = loss, aes_string(x = obj$col_roles$learner_id, y = meas)) +
+    ggplot(data = loss, aes_string(x = object$col_roles$learner_id, y = meas)) +
       geom_errorbar(aes(ymin = lower, ymax = upper),
                     width = .5) +
       geom_point()
   } else if (type == "fn") {
 
-    p = tryCatch(obj$friedman_posthoc(meas, p.value, FALSE)$p.value,
+    p = tryCatch(object$friedman_posthoc(meas, p.value, FALSE)$p.value,
       warning = function(w) {
         if (friedman_global) {
           stopf("Global Friedman test non-significant (p > %s), try type = 'mean' instead.", p.value)
         } # nolint
         else {
           warning(sprintf("Global Friedman test non-significant (p > %s), try type = 'mean' instead.", p.value))
-          suppressWarnings(obj$friedman_posthoc(meas, p.value, FALSE)$p.value)
+          suppressWarnings(object$friedman_posthoc(meas, p.value, FALSE)$p.value)
         } # nolint))
       }
     )
@@ -148,8 +149,8 @@ autoplot.BenchmarkAggr = function(obj, type = c("mean", "box", "fn", "cd"), meas
             legend.justification = "right")
 
   } else if (type == "box") {
-    ggplot(data = obj$data,
-           aes_string(x = obj$col_roles$learner_id, y = meas)) +
+    ggplot(data = object$data,
+           aes_string(x = object$col_roles$learner_id, y = meas)) +
       geom_boxplot()
   }
 }
