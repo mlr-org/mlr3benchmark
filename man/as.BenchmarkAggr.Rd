@@ -2,48 +2,15 @@
 % Please edit documentation in R/BenchmarkAggr.R
 \name{as.BenchmarkAggr}
 \alias{as.BenchmarkAggr}
-\title{Coercions to BenchmarkAggr}
+\title{Coercion to BenchmarkAggr}
 \usage{
-as.BenchmarkAggr(
-  obj,
-  task_id = "task_id",
-  learner_id = "learner_id",
-  independent = TRUE,
-  strip_prefix = TRUE,
-  ...
-)
+as.BenchmarkAggr(...)
 }
 \arguments{
-\item{obj}{(\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}|\code{matrix(1)}) \cr Passed to \link{BenchmarkAggr}\verb{$new()}.}
-
-\item{task_id, learner_id, independent, strip_prefix}{See \link{BenchmarkAggr}\verb{$initialize()}.}
-
-\item{...}{\code{ANY} \cr Passed to \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}\verb{$aggregate()}.}
+\item{...}{(any)\cr
+Passed to \code{\link[=as_benchmark_aggr]{as_benchmark_aggr()}}.}
 }
 \description{
-Coercion methods to \link{BenchmarkAggr}. For \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} this is a simple
-wrapper around the \link{BenchmarkAggr} constructor called with \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}\verb{$aggregate()}.
-}
-\examples{
-df = data.frame(tasks = factor(rep(c("A", "B"), each = 5),
-                               levels = c("A", "B")),
-                learners = factor(paste0("L", 1:5)),
-                RMSE = runif(10), MAE = runif(10))
-
-as.BenchmarkAggr(df, task_id = "tasks", learner_id = "learners")
-
-
-if (requireNamespaces(c("mlr3", "rpart"))) {
-  library(mlr3)
-  task = tsks(c("boston_housing", "mtcars"))
-  learns = lrns(c("regr.featureless", "regr.rpart"))
-  bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
-
-  # default measure
-  as.BenchmarkAggr(bm)
-
-  # change measure
-  as.BenchmarkAggr(bm, measures = msr("regr.rmse"))
-}
-
+Coercion method to \link{BenchmarkAggr}.
+Only there for backwards compatability. Use \code{\link[=as_benchmark_aggr]{as_benchmark_aggr()}} instead.
 }

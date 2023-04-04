@@ -63,7 +63,7 @@ Now we create a `BenchmarkAggr` object for our analysis, these objects store mea
 
 ```{r}
 # these measures are the same but we'll continue for the example
-ba = as.BenchmarkAggr(bm, measures = msrs(c("classif.acc", "classif.ce")))
+ba = as_benchmark_aggr(bm, measures = msrs(c("classif.acc", "classif.ce")))
 ba
 ```
 

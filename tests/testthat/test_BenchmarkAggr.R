@@ -27,13 +27,13 @@ test_that("construction", {
                   learner_id = paste0("L", 1:5),
                   RMSE = runif(5),
                   stringsAsFactors = TRUE)
-  expect_warning(as.BenchmarkAggr(df), "multiple tasks")
+  expect_warning(as_benchmark_aggr(df), "multiple tasks")
 
   df = data.frame(task_id = rep(c("A", "B"), each = 5),
                   learner_id = paste0("L", 1:5),
                   RMSE = runif(20),
                   stringsAsFactors = TRUE)
-  expect_error(as.BenchmarkAggr(df), "combination")
+  expect_error(as_benchmark_aggr(df), "combination")
 })
 
 test_that("public methods", {
@@ -99,12 +99,12 @@ test_that("mlr3 coercions", {
   task = tsks(c("boston_housing", "mtcars"))
   learns = lrns(c("regr.featureless", "regr.rpart"))
   bm = benchmark(benchmark_grid(task, learns, rsmp("holdout")))
-  expect_equal(class(as.BenchmarkAggr(bm))[1], "BenchmarkAggr")
-  expect_equal(class(as.BenchmarkAggr(bm, meas = msr("regr.mae")))[1], "BenchmarkAggr")
+  expect_equal(class(as_benchmark_aggr(bm))[1], "BenchmarkAggr")
+  expect_equal(class(as_benchmark_aggr(bm, meas = msr("regr.mae")))[1], "BenchmarkAggr")
   aggr = bm$aggregate(msrs(c("regr.rmse", "regr.mae")))
   aggr$task_id = factor(aggr$task_id)
   aggr$learner_id = factor(aggr$learner_id)
   ba = BenchmarkAggr$new(aggr)
-  expect_equal(class(as.BenchmarkAggr(bm))[1], "BenchmarkAggr")
+  expect_equal(class(as_benchmark_aggr(bm))[1], "BenchmarkAggr")
   expect_equal(ba$measures, c("rmse", "mae"))
 })

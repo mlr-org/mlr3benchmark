@@ -68,12 +68,13 @@ store measure results after being *aggregated* over all resamplings:
 
 ``` r
 # these measures are the same but we'll continue for the example
-ba = as.BenchmarkAggr(bm, measures = msrs(c("classif.acc", "classif.ce")))
+ba = as_benchmark_aggr(bm, measures = msrs(c("classif.acc", "classif.ce")))
 ba
 ```
 
     ## <BenchmarkAggr> of 12 rows with 4 tasks, 3 learners and 2 measures
     ##     task_id  learner_id       acc         ce
+    ##      <fctr>      <fctr>     <num>      <num>
     ##  1:    iris featureless 0.2800000 0.72000000
     ##  2:    iris       rpart 0.9466667 0.05333333
     ##  3:    iris     xgboost 0.9600000 0.04000000

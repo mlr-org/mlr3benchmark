@@ -3,7 +3,7 @@
 #' @description An R6 class for aggregated benchmark results.
 #' @details This class is used to easily carry out and guide analysis of models after aggregating
 #' the results after resampling. This can either be constructed using \CRANpkg{mlr3} objects,
-#' for example the result of [mlr3::BenchmarkResult]`$aggregate` or via [as.BenchmarkAggr],
+#' for example the result of [mlr3::BenchmarkResult]`$aggregate` or via [as_benchmark_aggr],
 #' or by passing in a custom dataset of results. Custom datasets must include at the very least,
 #' a character column for learner ids, a character column for task ids, and numeric columns for
 #' one or more measures.
@@ -19,7 +19,7 @@
 #'                                levels = c("A", "B")),
 #'                 learners = factor(paste0("L", 1:5)),
 #'                 RMSE = runif(10), MAE = runif(10))
-#' as.BenchmarkAggr(df, task_id = "tasks", learner_id = "learners")
+#' as_benchmark_aggr(df, task_id = "tasks", learner_id = "learners")
 #'
 #' if (requireNamespaces(c("mlr3", "rpart"))) {
 #'   library(mlr3)
@@ -28,7 +28,7 @@
 #'   bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
 #'
 #'   # coercion
-#'   as.BenchmarkAggr(bm)
+#'   as_benchmark_aggr(bm)
 #' }
 #' @export
 BenchmarkAggr = R6Class("BenchmarkAggr",
@@ -412,7 +412,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 #'                 learners = factor(paste0("L", 1:5)),
 #'                 RMSE = runif(10), MAE = runif(10))
 #'
-#' as.BenchmarkAggr(df, task_id = "tasks", learner_id = "learners")
+#' as_benchmark_aggr(df, task_id = "tasks", learner_id = "learners")
 #'
 #'
 #' if (requireNamespaces(c("mlr3", "rpart"))) {
@@ -422,29 +422,29 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 #'   bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
 #'
 #'   # default measure
-#'   as.BenchmarkAggr(bm)
+#'   as_benchmark_aggr(bm)
 #'
 #'   # change measure
-#'   as.BenchmarkAggr(bm, measures = msr("regr.rmse"))
+#'   as_benchmark_aggr(bm, measures = msr("regr.rmse"))
 #' }
 #'
 #' @export
-as.BenchmarkAggr = function(obj, task_id = "task_id", learner_id = "learner_id",
-                            independent = TRUE, strip_prefix = TRUE, ...) { # nolint
-  UseMethod("as.BenchmarkAggr", obj)
+as_benchmark_aggr = function(obj, task_id = "task_id", learner_id = "learner_id",
+                            independent = TRUE, strip_prefix = TRUE, ...) {
+  UseMethod("as_benchmark_aggr", obj)
 }
 
 #' @export
-as.BenchmarkAggr.default = function(obj, task_id = "task_id", learner_id = "learner_id",
-                                    independent = TRUE, strip_prefix = TRUE, ...) { # nolint
+as_benchmark_aggr.default = function(obj, task_id = "task_id", learner_id = "learner_id", # nolint
+                                    independent = TRUE, strip_prefix = TRUE, ...) {
   BenchmarkAggr$new(as.data.table(obj), task_id = task_id, learner_id = learner_id,
                     independent = independent, strip_prefix = strip_prefix)
 }
 
 #' @export
-as.BenchmarkAggr.BenchmarkResult = function(obj, task_id = "task_id", learner_id = "learner_id",
+as_benchmark_aggr.BenchmarkResult = function(obj, task_id = "task_id", learner_id = "learner_id", # nolint
                                             independent = TRUE, strip_prefix = TRUE,
-                                            measures = NULL, ...) { # nolint
+                                            measures = NULL, ...) {
   requireNamespaces("mlr3")
   measures = mlr3::as_measures(measures, task_type = obj$task_type)
   tab = obj$aggregate(measures = measures)
@@ -453,4 +453,17 @@ as.BenchmarkAggr.BenchmarkResult = function(obj, task_id = "task_id", learner_id
   tab$learner_id = factor(tab$learner_id, levels = unique(tab$learner_id))
   BenchmarkAggr$new(tab[, cols, with = FALSE], independent = independent,
                     strip_prefix = strip_prefix)
+}
+
+#' @title Coercion to BenchmarkAggr
+#'
+#' @description
+#' Coercion method to [BenchmarkAggr].
+#' Only there for backwards compatability. Use [`as_benchmark_aggr()`] instead.
+#'
+#' @param ... (any)\cr
+#'   Passed to [as_benchmark_aggr()].
+#' @export
+as.BenchmarkAggr = function(...) { # nolint
+  as_benchmark_aggr(...)
 }
