@@ -457,7 +457,7 @@ as_benchmark_aggr.BenchmarkResult = function(obj, task_id = "task_id", learner_i
 
 #' @title Coercions to BenchmarkAggr
 #'
-#' @description 
+#' @description
 #' This function is deprecated, use [`as_benchmark_aggr()`] instead.
 #'
 #' Coercion methods to [BenchmarkAggr]. For [mlr3::BenchmarkResult] this is a simple
