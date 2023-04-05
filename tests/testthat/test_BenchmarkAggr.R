@@ -108,3 +108,14 @@ test_that("mlr3 coercions", {
   expect_equal(class(as_benchmark_aggr(bm))[1], "BenchmarkAggr")
   expect_equal(ba$measures, c("rmse", "mae"))
 })
+
+test_that("Deprecated as.BenchmarkAggr works", {
+  df = data.frame(task_id = rep(c("A", "B"), each = 5),
+                  learner_id = paste0("L", 1:5),
+                  RMSE = round(runif(10, 1, 5)),
+                  stringsAsFactors = TRUE)
+  expect_warning(as.BenchmarkAggr(df), regexp = "'as.BenchmarkAggr' is deprecated", fixed = TRUE)
+
+  ba = suppressWarnings(as.BenchmarkAggr(df))
+  expect_class(ba, "BenchmarkAggr")
+})

@@ -455,15 +455,63 @@ as_benchmark_aggr.BenchmarkResult = function(obj, task_id = "task_id", learner_i
                     strip_prefix = strip_prefix)
 }
 
-#' @title Coercion to BenchmarkAggr
+#' @title Coercions to BenchmarkAggr
 #'
-#' @description
-#' Coercion method to [BenchmarkAggr].
-#' Only there for backwards compatability. Use [`as_benchmark_aggr()`] instead.
+#' @description 
+#' This function is deprecated, use [`as_benchmark_aggr()`] instead.
 #'
-#' @param ... (any)\cr
-#'   Passed to [as_benchmark_aggr()].
+#' Coercion methods to [BenchmarkAggr]. For [mlr3::BenchmarkResult] this is a simple
+#' wrapper around the [BenchmarkAggr] constructor called with [mlr3::BenchmarkResult]`$aggregate()`.
+#'
+#' @param obj ([mlr3::BenchmarkResult]|`matrix(1)`) \cr Passed to [BenchmarkAggr]`$new()`.
+#' @param task_id,learner_id,independent,strip_prefix See [BenchmarkAggr]`$initialize()`.
+#' @param ... `ANY` \cr Passed to [mlr3::BenchmarkResult]`$aggregate()`.
+#' @examples
+#' df = data.frame(tasks = factor(rep(c("A", "B"), each = 5),
+#'                                levels = c("A", "B")),
+#'                 learners = factor(paste0("L", 1:5)),
+#'                 RMSE = runif(10), MAE = runif(10))
+#'
+#' as_benchmark_aggr(df, task_id = "tasks", learner_id = "learners")
+#'
+#'
+#' if (requireNamespaces(c("mlr3", "rpart"))) {
+#'   library(mlr3)
+#'   task = tsks(c("boston_housing", "mtcars"))
+#'   learns = lrns(c("regr.featureless", "regr.rpart"))
+#'   bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
+#'
+#'   # default measure
+#'   as_benchmark_aggr(bm)
+#'
+#'   # change measure
+#'   as_benchmark_aggr(bm, measures = msr("regr.rmse"))
+#' }
+#'
 #' @export
-as.BenchmarkAggr = function(...) { # nolint
-  as_benchmark_aggr(...)
+as.BenchmarkAggr = function(obj, task_id = "task_id", learner_id = "learner_id", # nolint
+                            independent = TRUE, strip_prefix = TRUE, ...) {
+  .Deprecated("as_benchmark_aggr")
+  UseMethod("as.BenchmarkAggr", obj)
+}
+
+#' @export
+as.BenchmarkAggr.default = function(obj, task_id = "task_id", learner_id = "learner_id", # nolint
+                                    independent = TRUE, strip_prefix = TRUE, ...) {
+  BenchmarkAggr$new(as.data.table(obj), task_id = task_id, learner_id = learner_id,
+                    independent = independent, strip_prefix = strip_prefix)
+}
+
+#' @export
+as.BenchmarkAggr.BenchmarkResult = function(obj, task_id = "task_id", learner_id = "learner_id", # nolint
+                                            independent = TRUE, strip_prefix = TRUE,
+                                            measures = NULL, ...) {
+  requireNamespaces("mlr3")
+  measures = mlr3::as_measures(measures, task_type = obj$task_type)
+  tab = obj$aggregate(measures = measures)
+  cols = c("task_id", "learner_id", map_chr(measures, "id"))
+  tab$task_id = factor(tab$task_id, levels = unique(tab$task_id))
+  tab$learner_id = factor(tab$learner_id, levels = unique(tab$learner_id))
+  BenchmarkAggr$new(tab[, cols, with = FALSE], independent = independent,
+                    strip_prefix = strip_prefix)
 }

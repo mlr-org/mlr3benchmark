@@ -30,7 +30,7 @@ df = data.frame(tasks = factor(rep(c("A", "B"), each = 5),
                 learners = factor(paste0("L", 1:5)),
                 RMSE = runif(10), MAE = runif(10))
 
-as.BenchmarkAggr(df, task_id = "tasks", learner_id = "learners")
+as_benchmark_aggr(df, task_id = "tasks", learner_id = "learners")
 
 
 if (requireNamespaces(c("mlr3", "rpart"))) {
@@ -40,10 +40,10 @@ if (requireNamespaces(c("mlr3", "rpart"))) {
   bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
 
   # default measure
-  as.BenchmarkAggr(bm)
+  as_benchmark_aggr(bm)
 
   # change measure
-  as.BenchmarkAggr(bm, measures = msr("regr.rmse"))
+  as_benchmark_aggr(bm, measures = msr("regr.rmse"))
 }
 
 }
