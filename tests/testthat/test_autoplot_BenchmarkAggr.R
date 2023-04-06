@@ -46,7 +46,7 @@ test_that("autoplot with BenchmarkAggr from mlr3::benchmark()", {
     lrn("classif.rpart", id = "rpart2")
   )
   bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 3)))
-  ba = as.BenchmarkAggr(bm)
+  ba = as_benchmark_aggr(bm)
   expect_warning(expect_true(ggplot2::is.ggplot(autoplot(ba,
     type = "cd",
     friedman_global = FALSE

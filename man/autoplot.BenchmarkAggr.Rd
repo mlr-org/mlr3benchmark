@@ -98,7 +98,7 @@ set.seed(1)
 task = tsks(c("iris", "sonar", "wine", "zoo"))
 learns = lrns(c("classif.featureless", "classif.rpart", "classif.xgboost"))
 bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 3)))
-obj = as.BenchmarkAggr(bm)
+obj = as_benchmark_aggr(bm)
 
 # mean and error bars
 autoplot(obj, type = "mean", level = 0.95)

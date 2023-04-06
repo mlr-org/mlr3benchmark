@@ -9,7 +9,7 @@ An R6 class for aggregated benchmark results.
 \details{
 This class is used to easily carry out and guide analysis of models after aggregating
 the results after resampling. This can either be constructed using \CRANpkg{mlr3} objects,
-for example the result of \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}\verb{$aggregate} or via \link{as.BenchmarkAggr},
+for example the result of \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}\verb{$aggregate} or via \link{as_benchmark_aggr},
 or by passing in a custom dataset of results. Custom datasets must include at the very least,
 a character column for learner ids, a character column for task ids, and numeric columns for
 one or more measures.
@@ -22,7 +22,7 @@ df = data.frame(tasks = factor(rep(c("A", "B"), each = 5),
                                levels = c("A", "B")),
                 learners = factor(paste0("L", 1:5)),
                 RMSE = runif(10), MAE = runif(10))
-as.BenchmarkAggr(df, task_id = "tasks", learner_id = "learners")
+as_benchmark_aggr(df, task_id = "tasks", learner_id = "learners")
 
 if (requireNamespaces(c("mlr3", "rpart"))) {
   library(mlr3)
@@ -31,7 +31,7 @@ if (requireNamespaces(c("mlr3", "rpart"))) {
   bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
 
   # coercion
-  as.BenchmarkAggr(bm)
+  as_benchmark_aggr(bm)
 }
 }
 \references{
