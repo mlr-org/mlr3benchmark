@@ -1,3 +1,5 @@
+# mlr3benchmark 0.1.6-9000
+
 # mlr3benchmark 0.1.6
 
 * Renamed `as.BenchmarkAggr` to `as_benchmark_aggr()` for consistency. The former still works but is deprecated.
