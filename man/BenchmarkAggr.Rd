@@ -35,7 +35,10 @@ if (requireNamespaces(c("mlr3", "rpart"))) {
 }
 }
 \references{
-`r format_bib("demsar_2006")
+Demšar J (2006).
+\dQuote{Statistical Comparisons of Classifiers over Multiple Data Sets.}
+\emph{Journal of Machine Learning Research}, \bold{7}(1), 1-30.
+\url{https://jmlr.org/papers/v7/demsar06a.html}.
 }
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}

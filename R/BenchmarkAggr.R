@@ -11,7 +11,7 @@
 #' Currently supported for multiple independent datasets only.
 #'
 #' @references
-#' `r format_bib("demsar_2006")
+#' `r format_bib("demsar_2006")`
 #'
 #' @examples
 #' # Not restricted to mlr3 objects
