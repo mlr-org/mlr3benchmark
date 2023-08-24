@@ -109,7 +109,7 @@ autoplot.BenchmarkAggr = function(object, type = c("mean", "box", "fn", "cd"), m
                           stats::sd)[, 2] / sqrt(object$ntasks)
     loss$lower = loss[, meas] - se * stats::qnorm(1 - (1 - level) / 2)
     loss$upper = loss[, meas] + se * stats::qnorm(1 - (1 - level) / 2)
-    ggplot(data = loss, aes_string(x = object$col_roles$learner_id, y = meas)) +
+    ggplot(data = loss, aes(x = .data[[object$col_roles$learner_id]], y = .data[[meas]])) +
       geom_errorbar(aes(ymin = lower, ymax = upper),
                     width = .5) +
       geom_point()
@@ -136,7 +136,7 @@ autoplot.BenchmarkAggr = function(object, type = c("mean", "box", "fn", "cd"), m
     p$value = factor(ifelse(p$value < p.value, "0", "1"))
 
     ggplot(data = p, aes(x = Var1, y = Var2, fill = value)) +
-      geom_tile(size = 0.5, color = !is.na(p$value)) +
+      geom_tile(linewidth = 0.5, color = !is.na(p$value)) +
       scale_fill_manual(name = "p-value",
                         values = c("0" = col, "1" = "white"),
                         breaks = c("0", "1"),
@@ -153,7 +153,7 @@ autoplot.BenchmarkAggr = function(object, type = c("mean", "box", "fn", "cd"), m
 
   } else if (type == "box") {
     ggplot(data = object$data,
-           aes_string(x = object$col_roles$learner_id, y = meas)) +
+           aes(x = .data[[object$col_roles$learner_id]], y = .data[[meas]])) +
       geom_boxplot()
   }
 }
