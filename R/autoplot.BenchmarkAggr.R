@@ -114,6 +114,9 @@ autoplot.BenchmarkAggr = function(object, type = c("mean", "box", "fn", "cd"), m
                     width = .5) +
       geom_point()
   } else if (type == "fn") {
+    if (object$nlrns < 3) {
+      stop("At least three learners required for pair-wise comparisons.")
+    }
 
     p = tryCatch(object$friedman_posthoc(meas, p.value, FALSE)$p.value,
       warning = function(w) {
