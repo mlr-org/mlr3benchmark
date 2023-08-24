@@ -5,7 +5,7 @@
 #' the results after resampling. This can either be constructed using \CRANpkg{mlr3} objects,
 #' for example the result of [mlr3::BenchmarkResult]`$aggregate` or via [as_benchmark_aggr],
 #' or by passing in a custom dataset of results. Custom datasets must include at the very least,
-#' a character column for learner ids, a character column for task ids, and numeric columns for
+#' a factor column for learner ids, a factor column for task ids, and numeric columns for
 #' one or more measures.
 #'
 #' Currently supported for multiple independent datasets only.
@@ -38,10 +38,9 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' @param dt `(matrix(1))`\cr
     #' A `matrix` like object coercable to [data.table::data.table][data.table], should
     #' include column names "task_id" and "learner_id", and at least one measure (numeric).
-    #' If ids are not already factors then coerced internally.
-    #' @param task_id (`character(1)`) \cr
+    #' @param task_id (`factor(1)`) \cr
     #' String specifying name of task id column.
-    #' @param learner_id (`character(1)`)\cr
+    #' @param learner_id (`factor(1)`)\cr
     #' String specifying name of learner id column.
     #' @param independent `(logical(1))` \cr
     #' Are tasks independent of one another? Affects which tests can be used for analysis.
