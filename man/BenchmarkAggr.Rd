@@ -26,9 +26,9 @@ as_benchmark_aggr(df, task_id = "tasks", learner_id = "learners")
 
 if (requireNamespaces(c("mlr3", "rpart"))) {
   library(mlr3)
-  task = tsks(c("boston_housing", "mtcars"))
-  learns = lrns(c("regr.featureless", "regr.rpart"))
-  bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
+  tasks = tsks(c("boston_housing", "mtcars"))
+  learners = lrns(c("regr.featureless", "regr.rpart"))
+  bm = benchmark(benchmark_grid(tasks, learners, rsmp("cv", folds = 2)))
 
   # coercion
   as_benchmark_aggr(bm)
@@ -246,16 +246,16 @@ error if global test fails).}
 Subsets the data by given tasks or learners.
 Returns data as \link[data.table:data.table]{data.table::data.table}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BenchmarkAggr$subset(task = NULL, learner = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{BenchmarkAggr$subset(tasks = NULL, learners = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{task}}{(\code{character()}) \cr
+\item{\code{tasks}}{(\code{character()}) \cr
 Task(s) to subset the data by.}
 
-\item{\code{learner}}{(\code{character()}) \cr
+\item{\code{learners}}{(\code{character()}) \cr
 Learner(s) to subset the data by.}
 }
 \if{html}{\out{</div>}}
