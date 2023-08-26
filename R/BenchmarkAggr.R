@@ -271,17 +271,21 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 
     #' @description Subsets the data by given tasks or learners.
     #' Returns data as [data.table::data.table].
-    #' @param task (`character()`) \cr
+    #' @param tasks (`character()`) \cr
     #' Task(s) to subset the data by.
-    #' @param learner (`character()`) \cr
+    #' @param learners (`character()`) \cr
     #' Learner(s) to subset the data by.
-    subset = function(task = NULL, learner = NULL) {
+    subset = function(tasks = NULL, learners = NULL) {
       dt = private$.dt
 
-      if (!is.null(task))
-        dt = subset(dt, get(self$col_roles$task_id) == task)
-      if (!is.null(learner))
-        dt = dt[get(self$col_roles$learner_id) == learner]
+      if (!is.null(tasks)) {
+        rows = dt[[self$col_roles$task_id]] %in% tasks
+        dt = dt[rows]
+      }
+      if (!is.null(learners)) {
+        rows = dt[[self$col_roles$learner_id]] %in% learners
+        dt = dt[rows]
+      }
 
       dt
     }
