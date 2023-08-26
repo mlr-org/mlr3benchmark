@@ -114,7 +114,7 @@ test_that("mlr3 coercions", {
   aggr$task_id = factor(aggr$task_id)
   aggr$learner_id = factor(aggr$learner_id)
   ba = BenchmarkAggr$new(aggr)
-  expect_equal(class(as_benchmark_aggr(bm))[1], "BenchmarkAggr")
+  expect_equal(class(ba)[1], "BenchmarkAggr")
   expect_equal(ba$measures, c("rmse", "mae"))
 })
 
