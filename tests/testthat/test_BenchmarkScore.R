@@ -11,9 +11,6 @@ test_that("construction", {
   df2 = subset(df, select = c("task_id", "learner_id", "iteration"))
   expect_error(BenchmarkScore$new(df2), "At least one measure")
 
-  # no warning here, delete after cross checking with Bernd
-  # expect_warning(BenchmarkScore$new(df, independent = FALSE), "independent datasets")
-
   df = data.frame(
     tasks     = rep(c("A", "B"), each = 25),
     learners  = rep(paste0("regr.", 1:5), each = 5),
@@ -34,16 +31,6 @@ test_that("construction", {
     iteration = "iters", strip_prefix = FALSE)
   expect_equal(bms$learners, paste0("regr.", 1:5))
   expect_equal(bms$measures, c("regr.mae", "regr.mse"))
-
-  # At least 2 tasks should be provided
-  df = data.frame(
-    task_id    = rep("A", each = 25),
-    learner_id = rep(paste0("L", 1:5), each = 5),
-    iteration  = 1:5,
-    RMSE       = runif(25),
-    stringsAsFactors = TRUE
-  )
-  expect_warning(BenchmarkScore$new(df), "multiple tasks")
 
   # Same task-learner-iteration combination is not allowed
   df = data.frame(

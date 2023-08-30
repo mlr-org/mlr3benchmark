@@ -4,19 +4,20 @@
 \alias{BenchmarkScore}
 \title{Benchmark Score Result Object}
 \description{
-An R6 class for the non-aggregated benchmark results.
+An R6 class for non-aggregated, resampling-based benchmark results.
 }
 \details{
-This class is used to easily carry out and guide analysis of models
-using the benchmarking scores on the different resamplings. The class can
-either be constructed using \CRANpkg{mlr3} objects, for example the result
-of \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}\verb{$score} or via \link{as_benchmark_score}, or by passing
-in a custom dataset of results. Custom datasets must include at the very least,
-a factor column for learner ids, a factor column for task ids, a numeric
-column for the resampling iterations (e.g. 1,2,3,...) and numeric columns
-for one or more measures.
+This class is used as a container of benchmarking results where
+multiple learners (models) have been tested against multiple tasks (datasets)
+with different resamplings. The results stored are the performance scores on
+the aforementioned resamplings, so multiple values per learner-task combination.
 
-Supported for both multiple dependent and independent datasets.
+The class can either be constructed using \CRANpkg{mlr3} objects, for example
+the result of \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}\verb{$score} or via \link{as_benchmark_score}, or
+by passing in a custom dataset of results. Custom datasets must include at
+the very least, a factor column for learner ids, a factor column for task ids,
+a numeric column for the resampling iterations (e.g. 1,2,3,...) and numeric
+columns for one or more measures.
 }
 \examples{
 # Not restricted to mlr3 objects
@@ -41,12 +42,6 @@ if (requireNamespaces(c("mlr3", "rpart"))) {
   as_benchmark_score(bm)
 }
 }
-\references{
-Benavoli A, Corani G, Demšar J, Zaffalon M (2017).
-\dQuote{Time for a Change: a Tutorial for Comparing Multiple Classifiers Through Bayesian Analysis.}
-\emph{Journal of Machine Learning Research}, \bold{18}(77), 1-36.
-\url{http://jmlr.org/papers/v18/16-305.html}.
-}
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
@@ -56,7 +51,7 @@ Benavoli A, Corani G, Demšar J, Zaffalon M (2017).
 
 \item{\code{tasks}}{\code{(character())} \cr Unique task names.}
 
-\item{\code{iterations}}{\code{(numeric())} \cr}
+\item{\code{iterations}}{\code{(numeric())} \cr Unique resampling iterations.}
 
 \item{\code{measures}}{\code{(character())} \cr Unique measure names.}
 
@@ -96,7 +91,6 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   task_id = "task_id",
   learner_id = "learner_id",
   iteration = "iteration",
-  independent = TRUE,
   strip_prefix = TRUE,
   ...
 )}\if{html}{\out{</div>}}
@@ -107,7 +101,7 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 \describe{
 \item{\code{dt}}{\code{(matrix(1))}\cr
 A \code{matrix} like object coercable to \link[=data.table]{data.table::data.table},
-should include column names "task_id", "learner_id", "iteration", and at
+should include column names "task_id", "learner_id", "iteration" and at
 least one measure (numeric).}
 
 \item{\code{task_id}}{(\code{factor(1)}) \cr
@@ -118,9 +112,6 @@ String specifying name of learner id column.}
 
 \item{\code{iteration}}{(\code{character(1)})\cr
 String specifying name of iteration id column.}
-
-\item{\code{independent}}{\code{(logical(1))} \cr
-Are tasks independent of one another? Affects which tests can be used for analysis.}
 
 \item{\code{strip_prefix}}{(\code{logical(1)}) \cr
 If \code{TRUE} (default) then mlr prefixes, e.g. \code{regr.}, \code{classif.}, are automatically

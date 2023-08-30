@@ -9,7 +9,6 @@ as_benchmark_score(
   task_id = "task_id",
   learner_id = "learner_id",
   iteration = "iteration",
-  independent = TRUE,
   strip_prefix = TRUE,
   ...
 )

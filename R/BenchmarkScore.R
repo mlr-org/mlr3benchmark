@@ -1,19 +1,18 @@
 #' @title Benchmark Score Result Object
 #'
-#' @description An R6 class for the non-aggregated benchmark results.
-#' @details This class is used to easily carry out and guide analysis of models
-#' using the benchmarking scores on the different resamplings. The class can
-#' either be constructed using \CRANpkg{mlr3} objects, for example the result
-#' of [mlr3::BenchmarkResult]`$score` or via [as_benchmark_score], or by passing
-#' in a custom dataset of results. Custom datasets must include at the very least,
-#' a factor column for learner ids, a factor column for task ids, a numeric
-#' column for the resampling iterations (e.g. 1,2,3,...) and numeric columns
-#' for one or more measures.
+#' @description An R6 class for non-aggregated, resampling-based benchmark results.
 #'
-#' Supported for both multiple dependent and independent datasets.
+#' @details This class is used as a container of benchmarking results where
+#' multiple learners (models) have been tested against multiple tasks (datasets)
+#' with different resamplings. The results stored are the performance scores on
+#' the aforementioned resamplings, so multiple values per learner-task combination.
 #'
-#' @references
-#' `r format_bib("benavoli_2017")`
+#' The class can either be constructed using \CRANpkg{mlr3} objects, for example
+#' the result of [mlr3::BenchmarkResult]`$score` or via [as_benchmark_score], or
+#' by passing in a custom dataset of results. Custom datasets must include at
+#' the very least, a factor column for learner ids, a factor column for task ids,
+#' a numeric column for the resampling iterations (e.g. 1,2,3,...) and numeric
+#' columns for one or more measures.
 #'
 #' @examples
 #' # Not restricted to mlr3 objects
@@ -44,7 +43,7 @@ BenchmarkScore = R6Class("BenchmarkScore",
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #' @param dt `(matrix(1))`\cr
     #' A `matrix` like object coercable to [data.table::data.table][data.table],
-    #' should include column names "task_id", "learner_id", "iteration", and at
+    #' should include column names "task_id", "learner_id", "iteration" and at
     #' least one measure (numeric).
     #' @param task_id (`factor(1)`) \cr
     #' String specifying name of task id column.
@@ -52,21 +51,18 @@ BenchmarkScore = R6Class("BenchmarkScore",
     #' String specifying name of learner id column.
     #' @param iteration (`character(1)`)\cr
     #' String specifying name of iteration id column.
-    #' @param independent `(logical(1))` \cr
-    #' Are tasks independent of one another? Affects which tests can be used for analysis.
     #' @param strip_prefix (`logical(1)`) \cr
     #' If `TRUE` (default) then mlr prefixes, e.g. `regr.`, `classif.`, are automatically
     #' stripped from the `learner_id` and other columns (i.e. representing measure ids).
     #' @param ... `ANY` \cr
     #' Additional arguments, currently unused.
     initialize = function(dt, task_id = "task_id", learner_id = "learner_id",
-      iteration = "iteration", independent = TRUE, strip_prefix = TRUE, ...) {
+      iteration = "iteration", strip_prefix = TRUE, ...) {
 
       if (!is.data.table(dt)) {
         dt = as.data.table(dt)
       }
 
-      private$.independent = assert_flag(independent)
       assert_flag(strip_prefix)
       assert_subset(c(task_id, learner_id, iteration), colnames(dt))
       assert_factor(unlist(subset(dt, select = task_id)))
@@ -96,11 +92,6 @@ BenchmarkScore = R6Class("BenchmarkScore",
         stop("Less than two resamplings - better use BenchmarkAggr()")
       }
 
-      # to check with Bernd: can do both!
-      # if (!independent) {
-      #   warning("Currently only methods for independent datasets are supported.")
-      # }
-
       if (anyDuplicated(dt, by = c(task_id, learner_id, iteration))) {
         stop("Multiple results for a learner-task-iteration combination detected. There should be exactly one row for each learner-task-iteration combination.") # nolint
       }
@@ -121,13 +112,6 @@ BenchmarkScore = R6Class("BenchmarkScore",
       }
 
       private$.dt = dt
-
-      # At least 2 tasks
-      if (self$ntasks < 2) {
-        warning("Currently only supported for multiple tasks.")
-      }
-
-      # Restrict number of learners? (ask Bernd)
 
       invisible(self)
     },
@@ -187,7 +171,7 @@ BenchmarkScore = R6Class("BenchmarkScore",
     learners = function() levels(private$.dt[[self$col_roles$learner_id]]),
     #' @field tasks `(character())` \cr Unique task names.
     tasks = function() levels(private$.dt[[self$col_roles$task_id]]),
-    #' @field iterations `(numeric())` \cr
+    #' @field iterations `(numeric())` \cr Unique resampling iterations.
     iterations = function() unique(private$.dt[[self$col_roles$iteration]]),
     #' @field measures `(character())` \cr Unique measure names.
     measures = function() setdiff(colnames(private$.dt), unlist(self$col_roles)),
@@ -210,8 +194,7 @@ BenchmarkScore = R6Class("BenchmarkScore",
 
   private = list(
     .col_roles = character(0),
-    .dt = data.table(),
-    .independent = logical(0)
+    .dt = data.table()
   )
 )
 
@@ -250,28 +233,26 @@ BenchmarkScore = R6Class("BenchmarkScore",
 #'
 #' @export
 as_benchmark_score = function(obj, task_id = "task_id", learner_id = "learner_id",
-  iteration = "iteration", independent = TRUE, strip_prefix = TRUE, ...) {
+  iteration = "iteration", strip_prefix = TRUE, ...) {
   UseMethod("as_benchmark_score", obj)
 }
 
 #' @export
 as_benchmark_score.default = function(obj, task_id = "task_id",
-  learner_id = "learner_id", iteration = "iteration", independent = TRUE,
-  strip_prefix = TRUE, ...) {
+  learner_id = "learner_id", iteration = "iteration", strip_prefix = TRUE, ...) {
   BenchmarkScore$new(obj, task_id = task_id, learner_id = learner_id,
-    iteration = iteration, independent = independent, strip_prefix = strip_prefix)
+    iteration = iteration, strip_prefix = strip_prefix)
 }
 
 #' @export
 as_benchmark_score.BenchmarkResult = function(obj, task_id = "task_id",
-  learner_id = "learner_id", iteration = "iteration", independent = TRUE,
-  strip_prefix = TRUE, measures = NULL, ...) {
+  learner_id = "learner_id", iteration = "iteration", strip_prefix = TRUE,
+  measures = NULL, ...) {
   requireNamespaces("mlr3")
   measures = mlr3::as_measures(measures, task_type = obj$task_type)
   tab = obj$score(measures = measures)
   cols = c("task_id", "learner_id", "iteration", map_chr(measures, "id"))
   tab$task_id = factor(tab$task_id, levels = unique(tab$task_id))
   tab$learner_id = factor(tab$learner_id, levels = unique(tab$learner_id))
-  BenchmarkScore$new(tab[, cols, with = FALSE], independent = independent,
-    strip_prefix = strip_prefix)
+  BenchmarkScore$new(tab[, cols, with = FALSE], strip_prefix = strip_prefix)
 }
