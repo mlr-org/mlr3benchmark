@@ -15,6 +15,16 @@ bibentries = c(
     number  = "1",
     pages   = "1-30",
     url     = "https://jmlr.org/papers/v7/demsar06a.html"
+  ),
+  benavoli_2017 = bibentry("article",
+    author  = "Alessio Benavoli, Giorgio Corani, Janez Dem\u0161ar and Marco Zaffalon",
+    title   = "Time for a Change: a Tutorial for Comparing Multiple Classifiers Through Bayesian Analysis",
+    journal = "Journal of Machine Learning Research",
+    year    = "2017",
+    volume  = "18",
+    number  = "77",
+    pages   = "1-36",
+    url     = "http://jmlr.org/papers/v18/16-305.html"
   )
 )
 # nocov end

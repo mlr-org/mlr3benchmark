@@ -47,7 +47,8 @@ Suggests:
     PMCMRplus,
     rpart,
     testthat,
-    xgboost
+    xgboost,
+    lgr
 Encoding: UTF-8
 NeedsCompilation: no
 Roxygen: list(markdown = TRUE)

@@ -57,11 +57,20 @@ test_that("public methods", {
                c(1, 2, 3, 4, 5))
   expect_is(ba$friedman_test(), "data.frame")
   expect_is(ba$friedman_test(meas = "RMSE"), "htest")
-  expect_equal(ba$subset(task = "A", learner = "L1"),
-               data.table(tasks = factor("A"), learners = factor("L1"), RMSE = 2, MSE = 4))
-  expect_equal(ba$subset(learner = "L3"),
-               data.table(tasks = factor(c("A", "B")), learners = factor(c("L3", "L3")),
-                          RMSE = c(3, 4), MSE = c(9, 16)))
+  empty_dt = data.table(tasks = factor(), learners = factor(),
+                        RMSE = numeric(), MSE = numeric())
+  expect_equal(ba$subset(), ba$data) # no subsetting
+  expect_equal(ba$subset(tasks = c("A", "B")), ba$data)
+  expect_equal(ba$subset(tasks = "C42"), empty_dt)
+  expect_equal(ba$subset(learners = "L42"), empty_dt)
+  expect_equal(ba$subset(tasks = "A", learners = "L1"),
+    data.table(tasks = factor("A"), learners = factor("L1"), RMSE = 2, MSE = 4))
+  expect_equal(ba$subset(learners = "L3"),
+    data.table(tasks = factor(c("A", "B")), learners = factor(c("L3", "L3")),
+               RMSE = c(3, 4), MSE = c(9, 16)))
+  expect_equal(ba$subset(tasks = c("A", "C42"), learners = c("L1", "L42", "L3")),
+    data.table(tasks = factor("A"), learners = factor(c("L1", "L3")),
+      RMSE = c(2, 3), MSE = c(4, 9)))
 
   skip_if_not_installed("PMCMRplus")
   expect_error(ba$friedman_posthoc(), "measures")
@@ -105,7 +114,7 @@ test_that("mlr3 coercions", {
   aggr$task_id = factor(aggr$task_id)
   aggr$learner_id = factor(aggr$learner_id)
   ba = BenchmarkAggr$new(aggr)
-  expect_equal(class(as_benchmark_aggr(bm))[1], "BenchmarkAggr")
+  expect_equal(class(ba)[1], "BenchmarkAggr")
   expect_equal(ba$measures, c("rmse", "mae"))
 })
 

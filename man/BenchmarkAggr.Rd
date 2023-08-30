@@ -11,7 +11,7 @@ This class is used to easily carry out and guide analysis of models after aggreg
 the results after resampling. This can either be constructed using \CRANpkg{mlr3} objects,
 for example the result of \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}\verb{$aggregate} or via \link{as_benchmark_aggr},
 or by passing in a custom dataset of results. Custom datasets must include at the very least,
-a character column for learner ids, a character column for task ids, and numeric columns for
+a factor column for learner ids, a factor column for task ids, and numeric columns for
 one or more measures.
 
 Currently supported for multiple independent datasets only.
@@ -26,9 +26,9 @@ as_benchmark_aggr(df, task_id = "tasks", learner_id = "learners")
 
 if (requireNamespaces(c("mlr3", "rpart"))) {
   library(mlr3)
-  task = tsks(c("boston_housing", "mtcars"))
-  learns = lrns(c("regr.featureless", "regr.rpart"))
-  bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
+  tasks = tsks(c("boston_housing", "mtcars"))
+  learners = lrns(c("regr.featureless", "regr.rpart"))
+  bm = benchmark(benchmark_grid(tasks, learners, rsmp("cv", folds = 2)))
 
   # coercion
   as_benchmark_aggr(bm)
@@ -98,13 +98,12 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 \describe{
 \item{\code{dt}}{\code{(matrix(1))}\cr
 A \code{matrix} like object coercable to \link[=data.table]{data.table::data.table}, should
-include column names "task_id" and "learner_id", and at least one measure (numeric).
-If ids are not already factors then coerced internally.}
+include column names "task_id" and "learner_id", and at least one measure (numeric).}
 
-\item{\code{task_id}}{(\code{character(1)}) \cr
+\item{\code{task_id}}{(\code{factor(1)}) \cr
 String specifying name of task id column.}
 
-\item{\code{learner_id}}{(\code{character(1)})\cr
+\item{\code{learner_id}}{(\code{factor(1)})\cr
 String specifying name of learner id column.}
 
 \item{\code{independent}}{\code{(logical(1))} \cr
@@ -247,16 +246,16 @@ error if global test fails).}
 Subsets the data by given tasks or learners.
 Returns data as \link[data.table:data.table]{data.table::data.table}.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BenchmarkAggr$subset(task = NULL, learner = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{BenchmarkAggr$subset(tasks = NULL, learners = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{task}}{(\code{character()}) \cr
+\item{\code{tasks}}{(\code{character()}) \cr
 Task(s) to subset the data by.}
 
-\item{\code{learner}}{(\code{character()}) \cr
+\item{\code{learners}}{(\code{character()}) \cr
 Learner(s) to subset the data by.}
 }
 \if{html}{\out{</div>}}
