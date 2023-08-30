@@ -51,6 +51,16 @@ test_that("construction", {
     stringsAsFactors = TRUE
   )
   expect_error(BenchmarkScore$new(df), "Less than two resamplings")
+
+  # Not a complete benchmark design, i.e. for a task-learner combo,
+  # a resampling result is missing
+  df = data.frame(
+    task_id    = factor(rep(c("A", "B"), each = 25)),
+    learner_id = factor(rep(paste0("L", 1:5), each = 5)),
+    iteration  = 1:5,
+    RMSE       = runif(50)
+  )
+  expect_error(BenchmarkScore$new(df[1:49,]), "same number of iterations")
 })
 
 test_that("public methods", {

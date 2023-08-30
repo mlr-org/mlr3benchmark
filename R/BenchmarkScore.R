@@ -92,13 +92,18 @@ BenchmarkScore = R6Class("BenchmarkScore",
         stop("Less than two resamplings - better use BenchmarkAggr()")
       }
 
+      # data checks
       if (anyDuplicated(dt, by = c(task_id, learner_id, iteration))) {
         stop("Multiple results for a learner-task-iteration combination detected. There should be exactly one row for each learner-task-iteration combination.") # nolint
       }
 
-      # check 'full' benchmark results? Every task with every learner and every resampling!!!
-      # SHOULD WE FORCE THIS?
-      # stop("Not complete benchmark design")
+      count_dt = dt[, .(ucount = uniqueN(.SD)), by = .(
+        task    = get(private$.col_roles$task_id),
+        learner = get(private$.col_roles$learner_id))]
+
+      if (!all(count_dt[["ucount"]] == niters)) {
+        stop("For every task and learner combination there should be exactly the same number of iterations")
+      }
 
       if (strip_prefix) {
         if (isNamespaceLoaded("mlr3")) {
