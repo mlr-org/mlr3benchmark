@@ -205,7 +205,7 @@ BenchmarkScore = R6Class("BenchmarkScore",
 #' [BenchmarkScore] constructor called with [mlr3::BenchmarkResult]`$score()`.
 #'
 #' @param obj ([mlr3::BenchmarkResult]|`matrix(1)`) \cr Passed to [BenchmarkScore]`$new()`.
-#' @param task_id,learner_id,iteration,independent,strip_prefix See [BenchmarkScore]`$initialize()`.
+#' @param task_id,learner_id,iteration,strip_prefix See [BenchmarkScore]`$initialize()`.
 #' @param ... `ANY` \cr Passed to [mlr3::BenchmarkResult]`$score()`.
 #' @examples
 #' # From a data.frame object

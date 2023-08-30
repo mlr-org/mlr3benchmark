@@ -16,7 +16,7 @@ as_benchmark_score(
 \arguments{
 \item{obj}{(\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}|\code{matrix(1)}) \cr Passed to \link{BenchmarkScore}\verb{$new()}.}
 
-\item{task_id, learner_id, iteration, independent, strip_prefix}{See \link{BenchmarkScore}\verb{$initialize()}.}
+\item{task_id, learner_id, iteration, strip_prefix}{See \link{BenchmarkScore}\verb{$initialize()}.}
 
 \item{...}{\code{ANY} \cr Passed to \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}\verb{$score()}.}
 }
