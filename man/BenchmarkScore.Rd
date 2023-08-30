@@ -9,8 +9,8 @@ An R6 class for non-aggregated, resampling-based benchmark results.
 \details{
 This class is used as a container of benchmarking results where
 multiple learners (models) have been tested against multiple tasks (datasets)
-with different resamplings. The results stored are the performance scores on
-the aforementioned resamplings, so multiple values per learner-task combination.
+using a resampling scheme. The results stored are the per-resampling
+performance scores, so multiple values per learner-task combination.
 
 The class can either be constructed using \CRANpkg{mlr3} objects, for example
 the result of \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}\verb{$score} or via \link{as_benchmark_score}, or

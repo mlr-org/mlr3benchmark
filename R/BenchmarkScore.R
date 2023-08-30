@@ -4,8 +4,8 @@
 #'
 #' @details This class is used as a container of benchmarking results where
 #' multiple learners (models) have been tested against multiple tasks (datasets)
-#' with different resamplings. The results stored are the performance scores on
-#' the aforementioned resamplings, so multiple values per learner-task combination.
+#' using a resampling scheme. The results stored are the per-resampling
+#' performance scores, so multiple values per learner-task combination.
 #'
 #' The class can either be constructed using \CRANpkg{mlr3} objects, for example
 #' the result of [mlr3::BenchmarkResult]`$score` or via [as_benchmark_score], or
