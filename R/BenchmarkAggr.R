@@ -280,9 +280,9 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
       dt = private$.dt
 
       if (!is.null(task))
-        dt = subset(dt, get(self$col_roles$task_id) == task)
+        dt = subset(dt, get(self$col_roles$task_id) %in% task)
       if (!is.null(learner))
-        dt = dt[get(self$col_roles$learner_id) == learner]
+        dt = dt[get(self$col_roles$learner_id) %in% learner]
 
       dt
     }
