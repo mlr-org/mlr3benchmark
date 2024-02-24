@@ -3,7 +3,11 @@
 
   # Plot descriptive lines and learner names
   cd$data$yend = -cd$data$yend
-  cd$data$baseline = as.logical(cd$data$baseline)
+  if (!is.null(cd$data$baseline)) {
+    cd$data$baseline = as.logical(cd$data$baseline)
+  } else {
+    cd$data$baseline = FALSE
+  }
   p = ggplot(cd$data)
 
   # visible binding hack
@@ -81,7 +85,11 @@
 
 .plot_critdiff_2 = function(obj, meas, p.value, minimize, test, baseline, friedman_global) { # nolint
   cd = obj$.__enclos_env__$private$.crit_differences(meas, minimize, p.value, baseline, test, friedman_global)
-  cd$data$baseline = as.logical(cd$data$baseline)
+  if (!is.null(cd$data$baseline)) {
+    cd$data$baseline = as.logical(cd$data$baseline)
+  } else {
+    cd$data$baseline = FALSE
+  }
   # Plot descriptive lines and learner names
   p = ggplot(cd$data)
   # Point at mean rank
