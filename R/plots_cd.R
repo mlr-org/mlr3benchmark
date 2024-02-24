@@ -3,6 +3,7 @@
 
   # Plot descriptive lines and learner names
   cd$data$yend = -cd$data$yend
+  cd$data$baseline = as.logical(cd$data$baseline)
   p = ggplot(cd$data)
 
   # visible binding hack
@@ -29,9 +30,11 @@
                  aes(x = x, xend = x, y = 0, yend = 0.3))
 
   # Horizontal descriptive bar
-  p = p + geom_segment(aes_string("mean_rank", 0, xend = "mean_rank", yend = "yend"))
+  p = p + geom_segment(aes_string("mean_rank", 0, xend = "mean_rank",
+    yend = "yend", lty = "baseline"))
   # Vertical descriptive bar
-  p = p + geom_segment(aes_string("mean_rank", "yend", xend = "xend", yend = "yend"))
+  p = p + geom_segment(aes_string("mean_rank", "yend", xend = "xend",
+    yend = "yend", lty = "baseline"))
   # Plot Learner name
   p = p + geom_text(aes_string("xend", "yend", label = obj$col_roles$learner_id,
                                hjust = "right"), vjust = -0.5)
@@ -50,14 +53,15 @@
 
   # Plot the critical difference bars
   if (cd$test == "bd") {
-    cdx = as.numeric(unlist(subset(cd$data, baseline == 1, "mean_rank")))
+    cdx = as.numeric(unlist(subset(cd$data, baseline == TRUE, "mean_rank")))
     # Add horizontal bar around baseline
-    p = p + annotate("segment", x = cdx + cd$cd,
+    p = p + annotate("segment", x = c(cdx - cd$cd, cdx + cd$cd),
                      xend = cdx, y = -1, yend = -1,
                      color = "black", size = 1.3)
     # Add interval limiting bar's
-    p = p + annotate("segment", x = cdx + cd$cd, xend = cdx + cd$cd, y = -0.7,
-                     yend = -1.3, color = "black", size = 1.3)
+    p = p + annotate("segment", x = c(cdx - cd$cd, cdx + cd$cd),
+                      xend = c(cdx - cd$cd, cdx + cd$cd), y = -0.7,
+                      yend = -1.3, color = "black", size = 1.3)
   } else {
     nemenyi_data = cd$nemenyi_data # nolint
     if (!(nrow(nemenyi_data) == 0L)) {
@@ -77,17 +81,19 @@
 
 .plot_critdiff_2 = function(obj, meas, p.value, minimize, test, baseline, friedman_global) { # nolint
   cd = obj$.__enclos_env__$private$.crit_differences(meas, minimize, p.value, baseline, test, friedman_global)
-
+  cd$data$baseline = as.logical(cd$data$baseline)
   # Plot descriptive lines and learner names
   p = ggplot(cd$data)
   # Point at mean rank
   p = p + geom_point(aes_string("mean_rank", 0, colour = obj$col_roles$learner_id), size = 3)
   # Horizontal descriptive bar
   p = p + geom_segment(aes_string("mean_rank", 0, xend = "mean_rank", yend = "yend",
-                                  color = obj$col_roles$learner_id), size = 1)
+                                  color = obj$col_roles$learner_id,
+                                  lty = "baseline"), size = 1)
   # Vertical descriptive bar
   p = p + geom_segment(aes_string("mean_rank", "yend", xend = "xend",
-                                  yend = "yend", color = obj$col_roles$learner_id), size = 1)
+                                  yend = "yend", color = obj$col_roles$learner_id,
+                                  lty = "baseline"), size = 1)
   # Plot Learner name
   p = p + geom_text(aes_string("xend", "yend", label = obj$col_roles$learner_id,
                                color = obj$col_roles$learner_id,
@@ -120,15 +126,17 @@
                    size = 1.3, alpha = 0.9)
 
   # Plot the critical difference bars
+
   if (test == "bd") {
-    cdx = as.numeric(unlist(subset(cd$data, baseline == 1, "mean_rank"))) # nolint
+    cdx = as.numeric(unlist(subset(cd$data, baseline == TRUE, "mean_rank"))) # nolint
     # Add horizontal bar around baseline
-    p = p + annotate("segment", x = cdx + cd$cd,
+    p = p + annotate("segment", x = c(cdx - cd$cd, cdx + cd$cd),
                      xend = cdx, y = 0.5, yend = 0.5,
                      alpha = 0.9, color = "dimgrey", size = 1.3)
     # Add interval limiting bar's
-    p = p + annotate("segment", x = cdx + cd$cd, xend = cdx + cd$cd, y = 0.3,
-                     yend = 0.8, color = "dimgrey", size = 1.3, alpha = 0.9)
+    p = p + annotate("segment", x = c(cdx - cd$cd, cdx + cd$cd),
+                      xend = c(cdx - cd$cd, cdx + cd$cd), y = 0.3,
+                      yend = 0.8, color = "dimgrey", size = 1.3, alpha = 0.9)
     # Add point at learner
     p = p + annotate("point", x = cdx, y = 0.5, alpha = 0.6, color = "black")
   } else {
