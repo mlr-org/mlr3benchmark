@@ -1,36 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://mlr3benchmark.mlr-org.com/dev/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3benchmark.mlr-org.com/dev/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3benchmark.mlr-org.com/dev/index.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3benchmark.mlr-org.com/dev/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3benchmark.mlr-org.com/dev/reference/BenchmarkAggr.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3benchmark.mlr-org.com/dev/reference/as.BenchmarkAggr.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3benchmark.mlr-org.com/dev/reference/as_benchmark_aggr.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3benchmark.mlr-org.com/dev/reference/autoplot.BenchmarkAggr.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3benchmark.mlr-org.com/dev/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3benchmark.mlr-org.com/dev/reference/mlr3benchmark-package.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3benchmark.mlr-org.com/dev/reference/requireNamespaces.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://mlr3benchmark.mlr-org.com/dev/LICENSE-text.html</loc></url>
+<url><loc>https://mlr3benchmark.mlr-org.com/dev/authors.html</loc></url>
+<url><loc>https://mlr3benchmark.mlr-org.com/dev/index.html</loc></url>
+<url><loc>https://mlr3benchmark.mlr-org.com/dev/news/index.html</loc></url>
+<url><loc>https://mlr3benchmark.mlr-org.com/dev/reference/BenchmarkAggr.html</loc></url>
+<url><loc>https://mlr3benchmark.mlr-org.com/dev/reference/as.BenchmarkAggr.html</loc></url>
+<url><loc>https://mlr3benchmark.mlr-org.com/dev/reference/as_benchmark_aggr.html</loc></url>
+<url><loc>https://mlr3benchmark.mlr-org.com/dev/reference/autoplot.BenchmarkAggr.html</loc></url>
+<url><loc>https://mlr3benchmark.mlr-org.com/dev/reference/index.html</loc></url>
+<url><loc>https://mlr3benchmark.mlr-org.com/dev/reference/mlr3benchmark-package.html</loc></url>
+<url><loc>https://mlr3benchmark.mlr-org.com/dev/reference/requireNamespaces.html</loc></url>
 </urlset>
+
