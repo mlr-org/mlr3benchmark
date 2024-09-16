@@ -5,7 +5,7 @@
 #' the results after resampling. This can either be constructed using \CRANpkg{mlr3} objects,
 #' for example the result of [mlr3::BenchmarkResult]`$aggregate` or via [as_benchmark_aggr],
 #' or by passing in a custom dataset of results. Custom datasets must include at the very least,
-#' a character column for learner ids, a character column for task ids, and numeric columns for
+#' a factor column for learner ids, a factor column for task ids, and numeric columns for
 #' one or more measures.
 #'
 #' Currently supported for multiple independent datasets only.
@@ -23,9 +23,9 @@
 #'
 #' if (requireNamespaces(c("mlr3", "rpart"))) {
 #'   library(mlr3)
-#'   task = tsks(c("boston_housing", "mtcars"))
-#'   learns = lrns(c("regr.featureless", "regr.rpart"))
-#'   bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
+#'   tasks = tsks(c("boston_housing", "mtcars"))
+#'   learners = lrns(c("regr.featureless", "regr.rpart"))
+#'   bm = benchmark(benchmark_grid(tasks, learners, rsmp("cv", folds = 2)))
 #'
 #'   # coercion
 #'   as_benchmark_aggr(bm)
@@ -38,10 +38,9 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' @param dt `(matrix(1))`\cr
     #' A `matrix` like object coercable to [data.table::data.table][data.table], should
     #' include column names "task_id" and "learner_id", and at least one measure (numeric).
-    #' If ids are not already factors then coerced internally.
-    #' @param task_id (`character(1)`) \cr
+    #' @param task_id (`factor(1)`) \cr
     #' String specifying name of task id column.
-    #' @param learner_id (`character(1)`)\cr
+    #' @param learner_id (`factor(1)`)\cr
     #' String specifying name of learner id column.
     #' @param independent `(logical(1))` \cr
     #' Are tasks independent of one another? Affects which tests can be used for analysis.
@@ -272,17 +271,21 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 
     #' @description Subsets the data by given tasks or learners.
     #' Returns data as [data.table::data.table].
-    #' @param task (`character()`) \cr
+    #' @param tasks (`character()`) \cr
     #' Task(s) to subset the data by.
-    #' @param learner (`character()`) \cr
+    #' @param learners (`character()`) \cr
     #' Learner(s) to subset the data by.
-    subset = function(task = NULL, learner = NULL) {
+    subset = function(tasks = NULL, learners = NULL) {
       dt = private$.dt
 
-      if (!is.null(task))
-        dt = subset(dt, get(self$col_roles$task_id) == task)
-      if (!is.null(learner))
-        dt = dt[get(self$col_roles$learner_id) == learner]
+      if (!is.null(tasks)) {
+        rows = dt[[self$col_roles$task_id]] %in% tasks
+        dt = dt[rows]
+      }
+      if (!is.null(learners)) {
+        rows = dt[[self$col_roles$learner_id]] %in% learners
+        dt = dt[rows]
+      }
 
       dt
     }
@@ -417,9 +420,9 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 #'
 #' if (requireNamespaces(c("mlr3", "rpart"))) {
 #'   library(mlr3)
-#'   task = tsks(c("boston_housing", "mtcars"))
-#'   learns = lrns(c("regr.featureless", "regr.rpart"))
-#'   bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
+#'   tasks = tsks(c("boston_housing", "mtcars"))
+#'   learners = lrns(c("regr.featureless", "regr.rpart"))
+#'   bm = benchmark(benchmark_grid(tasks, learners, rsmp("cv", folds = 2)))
 #'
 #'   # default measure
 #'   as_benchmark_aggr(bm)
@@ -477,9 +480,9 @@ as_benchmark_aggr.BenchmarkResult = function(obj, task_id = "task_id", learner_i
 #'
 #' if (requireNamespaces(c("mlr3", "rpart"))) {
 #'   library(mlr3)
-#'   task = tsks(c("boston_housing", "mtcars"))
-#'   learns = lrns(c("regr.featureless", "regr.rpart"))
-#'   bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
+#'   tasks = tsks(c("boston_housing", "mtcars"))
+#'   learners = lrns(c("regr.featureless", "regr.rpart"))
+#'   bm = benchmark(benchmark_grid(tasks, learners, rsmp("cv", folds = 2)))
 #'
 #'   # default measure
 #'   as_benchmark_aggr(bm)
