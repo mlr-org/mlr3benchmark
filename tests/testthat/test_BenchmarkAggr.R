@@ -96,17 +96,17 @@ test_that("mlr3 coercions", {
   skip_if_not_installed("rpart")
 
   library(mlr3)
-  task = tsks(c("boston_housing", "mtcars"))
-  learns = lrns(c("regr.featureless", "regr.rpart"))
+  task = tsks(c("pima", "spam"))
+  learns = lrns(c("classif.featureless", "classif.rpart"))
   bm = benchmark(benchmark_grid(task, learns, rsmp("holdout")))
   expect_equal(class(as_benchmark_aggr(bm))[1], "BenchmarkAggr")
-  expect_equal(class(as_benchmark_aggr(bm, meas = msr("regr.mae")))[1], "BenchmarkAggr")
-  aggr = bm$aggregate(msrs(c("regr.rmse", "regr.mae")))
+  expect_equal(class(as_benchmark_aggr(bm, meas = msr("classif.ce")))[1], "BenchmarkAggr")
+  aggr = bm$aggregate(msrs(c("classif.acc", "classif.ce")))
   aggr$task_id = factor(aggr$task_id)
   aggr$learner_id = factor(aggr$learner_id)
   ba = BenchmarkAggr$new(aggr)
   expect_equal(class(as_benchmark_aggr(bm))[1], "BenchmarkAggr")
-  expect_equal(ba$measures, c("rmse", "mae"))
+  expect_equal(ba$measures, c("acc", "ce"))
 })
 
 test_that("Deprecated as.BenchmarkAggr works", {

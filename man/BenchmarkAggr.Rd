@@ -26,8 +26,8 @@ as_benchmark_aggr(df, task_id = "tasks", learner_id = "learners")
 
 if (requireNamespaces(c("mlr3", "rpart"))) {
   library(mlr3)
-  task = tsks(c("boston_housing", "mtcars"))
-  learns = lrns(c("regr.featureless", "regr.rpart"))
+  task = tsks(c("pima", "spam"))
+  learns = lrns(c("classif.featureless", "classif.rpart"))
   bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
 
   # coercion

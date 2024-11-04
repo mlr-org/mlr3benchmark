@@ -23,8 +23,8 @@
 #'
 #' if (requireNamespaces(c("mlr3", "rpart"))) {
 #'   library(mlr3)
-#'   task = tsks(c("boston_housing", "mtcars"))
-#'   learns = lrns(c("regr.featureless", "regr.rpart"))
+#'   task = tsks(c("pima", "spam"))
+#'   learns = lrns(c("classif.featureless", "classif.rpart"))
 #'   bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
 #'
 #'   # coercion
@@ -417,15 +417,15 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 #'
 #' if (requireNamespaces(c("mlr3", "rpart"))) {
 #'   library(mlr3)
-#'   task = tsks(c("boston_housing", "mtcars"))
-#'   learns = lrns(c("regr.featureless", "regr.rpart"))
+#'   task = tsks(c("pima", "spam"))
+#'   learns = lrns(c("classif.featureless", "classif.rpart"))
 #'   bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
 #'
 #'   # default measure
 #'   as_benchmark_aggr(bm)
 #'
 #'   # change measure
-#'   as_benchmark_aggr(bm, measures = msr("regr.rmse"))
+#'   as_benchmark_aggr(bm, measures = msr("classif.acc"))
 #' }
 #'
 #' @export
@@ -477,15 +477,15 @@ as_benchmark_aggr.BenchmarkResult = function(obj, task_id = "task_id", learner_i
 #'
 #' if (requireNamespaces(c("mlr3", "rpart"))) {
 #'   library(mlr3)
-#'   task = tsks(c("boston_housing", "mtcars"))
-#'   learns = lrns(c("regr.featureless", "regr.rpart"))
+#'   task = tsks(c("pima", "spam"))
+#'   learns = lrns(c("classif.featureless", "classif.rpart"))
 #'   bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
 #'
 #'   # default measure
 #'   as_benchmark_aggr(bm)
 #'
 #'   # change measure
-#'   as_benchmark_aggr(bm, measures = msr("regr.rmse"))
+#'   as_benchmark_aggr(bm, measures = msr("classif.acc"))
 #' }
 #'
 #' @export
