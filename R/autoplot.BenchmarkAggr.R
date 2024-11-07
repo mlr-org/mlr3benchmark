@@ -42,7 +42,7 @@
 #' otherwise the data can be accessed via the returned ggplot.
 #' @param ratio (`numeric(1)`) \cr
 #' For `type = "cd"` and `style = 1`, passed to [ggplot2::coord_fixed()], useful for quickly
-#' specifying the aspect ratio of the plot, best used with [ggsave()].
+#' specifying the aspect ratio of the plot, best used with [ggplot2::ggsave()].
 #' @param col (`character(1)`)\cr
 #' For `type = "fn"`, specifies color to fill significant tiles, default is `"red"`.
 #' @param friedman_global (`logical(1)`)\cr

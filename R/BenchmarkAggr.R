@@ -36,7 +36,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #' @param dt `(matrix(1))`\cr
-    #' A `matrix` like object coercable to [data.table::data.table][data.table], should
+    #' A `matrix` like object coercable to [data.table::data.table], should
     #' include column names "task_id" and "learner_id", and at least one measure (numeric).
     #' If ids are not already factors then coerced internally.
     #' @param task_id (`character(1)`) \cr
