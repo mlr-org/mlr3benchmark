@@ -1,6 +1,6 @@
 # mlr3benchmark 0.1.7
 
-# mlr3benchmark 0.1.6-9000
+* compatibility: mlr3 0.22.0
 
 # mlr3benchmark 0.1.6
 
