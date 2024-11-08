@@ -15,20 +15,22 @@
 #'
 #' @examples
 #' # Not restricted to mlr3 objects
-#' df = data.frame(tasks = factor(rep(c("A", "B"), each = 5),
-#'                                levels = c("A", "B")),
-#'                 learners = factor(paste0("L", 1:5)),
-#'                 RMSE = runif(10), MAE = runif(10))
-#' as_benchmark_aggr(df, task_id = "tasks", learner_id = "learners")
+#' \donttest{
+#'   df = data.frame(tasks = factor(rep(c("A", "B"), each = 5),
+#'                                  levels = c("A", "B")),
+#'                   learners = factor(paste0("L", 1:5)),
+#'                   RMSE = runif(10), MAE = runif(10))
+#'   as_benchmark_aggr(df, task_id = "tasks", learner_id = "learners")
 #'
-#' if (requireNamespaces(c("mlr3", "rpart"))) {
-#'   library(mlr3)
-#'   task = tsks(c("pima", "spam"))
-#'   learns = lrns(c("classif.featureless", "classif.rpart"))
-#'   bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
+#'   if (requireNamespaces(c("mlr3", "rpart"))) {
+#'     library(mlr3)
+#'     task = tsks(c("pima", "spam"))
+#'     learns = lrns(c("classif.featureless", "classif.rpart"))
+#'     bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
 #'
-#'   # coercion
-#'   as_benchmark_aggr(bm)
+#'     # coercion
+#'     as_benchmark_aggr(bm)
+#'   }
 #' }
 #' @export
 BenchmarkAggr = R6Class("BenchmarkAggr",
@@ -36,7 +38,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #' @param dt `(matrix(1))`\cr
-    #' A `matrix` like object coercable to [data.table::data.table][data.table], should
+    #' A `matrix` like object coercable to [data.table::data.table], should
     #' include column names "task_id" and "learner_id", and at least one measure (numeric).
     #' If ids are not already factors then coerced internally.
     #' @param task_id (`character(1)`) \cr
