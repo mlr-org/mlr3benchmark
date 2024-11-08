@@ -18,20 +18,22 @@ Currently supported for multiple independent datasets only.
 }
 \examples{
 # Not restricted to mlr3 objects
-df = data.frame(tasks = factor(rep(c("A", "B"), each = 5),
-                               levels = c("A", "B")),
-                learners = factor(paste0("L", 1:5)),
-                RMSE = runif(10), MAE = runif(10))
-as_benchmark_aggr(df, task_id = "tasks", learner_id = "learners")
+\donttest{
+  df = data.frame(tasks = factor(rep(c("A", "B"), each = 5),
+                                 levels = c("A", "B")),
+                  learners = factor(paste0("L", 1:5)),
+                  RMSE = runif(10), MAE = runif(10))
+  as_benchmark_aggr(df, task_id = "tasks", learner_id = "learners")
 
-if (requireNamespaces(c("mlr3", "rpart"))) {
-  library(mlr3)
-  task = tsks(c("pima", "spam"))
-  learns = lrns(c("classif.featureless", "classif.rpart"))
-  bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
+  if (requireNamespaces(c("mlr3", "rpart"))) {
+    library(mlr3)
+    task = tsks(c("pima", "spam"))
+    learns = lrns(c("classif.featureless", "classif.rpart"))
+    bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
 
-  # coercion
-  as_benchmark_aggr(bm)
+    # coercion
+    as_benchmark_aggr(bm)
+  }
 }
 }
 \references{

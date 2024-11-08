@@ -100,3 +100,4 @@ check/*
 .DS_Store
 CRAN-RELEASE
 .vscode
+CRAN-SUBMISSION
