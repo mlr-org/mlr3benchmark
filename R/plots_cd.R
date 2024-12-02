@@ -19,7 +19,7 @@
                    xend = mean(cd$data$mean_rank) + 0.5 * cd$cd,
                    y = 1.5,
                    yend = 1.5,
-                   size = 1)
+                   linewidth = 1)
 
   # Add crit difference test (descriptive)
   p = p + annotate("text",
@@ -34,13 +34,13 @@
                  aes(x = x, xend = x, y = 0, yend = 0.3))
 
   # Horizontal descriptive bar
-  p = p + geom_segment(aes_string("mean_rank", 0, xend = "mean_rank",
-    yend = "yend", lty = "baseline"))
+  p = p + geom_segment(aes(!!sym("mean_rank"), 0, xend = !!sym("mean_rank"),
+    yend = !!sym("yend"), lty = "baseline"))
   # Vertical descriptive bar
-  p = p + geom_segment(aes_string("mean_rank", "yend", xend = "xend",
-    yend = "yend", lty = "baseline"))
+  p = p + geom_segment(aes(!!sym("mean_rank"), !!sym("yend"), xend = !!sym("xend"),
+    yend = !!sym("yend"), lty = "baseline"))
   # Plot Learner name
-  p = p + geom_text(aes_string("xend", "yend", label = obj$col_roles$learner_id,
+  p = p + geom_text(aes(!!sym("xend"), !!sym("yend"), label = !!sym(obj$col_roles$learner_id),
                                hjust = "right"), vjust = -0.5)
 
   p = p + xlab("Average Rank")
@@ -61,18 +61,18 @@
     # Add horizontal bar around baseline
     p = p + annotate("segment", x = c(cdx - cd$cd, cdx + cd$cd),
                      xend = cdx, y = -1, yend = -1,
-                     color = "black", size = 1.3)
+                     color = "black", linewidth = 1.3)
     # Add interval limiting bar's
     p = p + annotate("segment", x = c(cdx - cd$cd, cdx + cd$cd),
                       xend = c(cdx - cd$cd, cdx + cd$cd), y = -0.7,
-                      yend = -1.3, color = "black", size = 1.3)
+                      yend = -1.3, color = "black", linewidth = 1.3)
   } else {
     nemenyi_data = cd$nemenyi_data # nolint
     if (!(nrow(nemenyi_data) == 0L)) {
       # Add connecting bars
       nemenyi_data$y = -nemenyi_data$y
-      p = p + geom_segment(aes_string("xstart", "y", xend = "xend", yend = "y"),
-                           data = nemenyi_data, size = 1.3)
+      p = p + geom_segment(aes(!!sym("xstart"), !!sym("y"), xend = !!sym("xend"), yend = !!sym("y")),
+                           data = nemenyi_data, linewidth = 1.3)
     } else {
       message("No connecting bars to plot!")
     }
@@ -93,17 +93,17 @@
   # Plot descriptive lines and learner names
   p = ggplot(cd$data)
   # Point at mean rank
-  p = p + geom_point(aes_string("mean_rank", 0, colour = obj$col_roles$learner_id), size = 3)
+  p = p + geom_point(aes(!!sym("mean_rank"), 0, colour = !!sym(obj$col_roles$learner_id)), size = 3)
   # Horizontal descriptive bar
-  p = p + geom_segment(aes_string("mean_rank", 0, xend = "mean_rank", yend = "yend",
-                                  color = obj$col_roles$learner_id,
-                                  lty = "baseline"), size = 1)
+  p = p + geom_segment(aes(!!sym("mean_rank"), 0, xend = !!sym("mean_rank"), yend = !!sym("yend"),
+                                  color = !!sym(obj$col_roles$learner_id),
+                                  lty = "baseline"), linewidth = 1)
   # Vertical descriptive bar
-  p = p + geom_segment(aes_string("mean_rank", "yend", xend = "xend",
-                                  yend = "yend", color = obj$col_roles$learner_id,
-                                  lty = "baseline"), size = 1)
+  p = p + geom_segment(aes(!!sym("mean_rank"), !!sym("yend"), xend = !!sym("xend"),
+                                  yend = !!sym("yend"), color = !!sym(obj$col_roles$learner_id),
+                                  lty = "baseline"), linewidth = 1)
   # Plot Learner name
-  p = p + geom_text(aes_string("xend", "yend", label = obj$col_roles$learner_id,
+  p = p + geom_text(aes(!!sym("xend"), !!sym("yend"), label = !!sym(obj$col_roles$learner_id),
                                color = obj$col_roles$learner_id,
                                hjust = "right"), vjust = -1)
 
@@ -116,7 +116,7 @@
                 legend.position = "none",
                 panel.background = element_blank(),
                 panel.border = element_blank(),
-                axis.line = element_line(size = 1),
+                axis.line = element_line(linewidth = 1),
                 axis.line.y = element_blank(),
                 panel.grid.major = element_blank(),
                 plot.background = element_blank())
@@ -131,7 +131,7 @@
                    xend = mean(cd$data$mean_rank) + 0.5 * cd$cd,
                    y = max(cd$data$yend) + 0.7,
                    yend = max(cd$data$yend) + 0.7,
-                   size = 1.3, alpha = 0.9)
+                   linewidth = 1.3, alpha = 0.9)
 
   # Plot the critical difference bars
 
@@ -140,19 +140,19 @@
     # Add horizontal bar around baseline
     p = p + annotate("segment", x = c(cdx - cd$cd, cdx + cd$cd),
                      xend = cdx, y = 0.5, yend = 0.5,
-                     alpha = 0.9, color = "dimgrey", size = 1.3)
+                     alpha = 0.9, color = "dimgrey", linewidth = 1.3)
     # Add interval limiting bar's
     p = p + annotate("segment", x = c(cdx - cd$cd, cdx + cd$cd),
                       xend = c(cdx - cd$cd, cdx + cd$cd), y = 0.3,
-                      yend = 0.8, color = "dimgrey", size = 1.3, alpha = 0.9)
+                      yend = 0.8, color = "dimgrey", linewidth = 1.3, alpha = 0.9)
     # Add point at learner
     p = p + annotate("point", x = cdx, y = 0.5, alpha = 0.6, color = "black")
   } else {
     nemenyi_data = cd$nemenyi_data # nolint
     if (!(nrow(nemenyi_data) == 0L)) {
       # Add connecting bars
-      p = p + geom_segment(aes_string("xstart", "y", xend = "xend", yend = "y"),
-                           data = nemenyi_data, size = 1.3, color = "dimgrey", alpha = 0.9,
+      p = p + geom_segment(aes(!!sym("xstart"), !!sym("y"), xend = !!sym("xend"), yend = !!sym("y")),
+                           data = nemenyi_data, linewidth = 1.3, color = "dimgrey", alpha = 0.9,
                            )
     } else {
       message("No connecting bars to plot!")

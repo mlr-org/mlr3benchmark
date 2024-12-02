@@ -42,7 +42,7 @@
 #' otherwise the data can be accessed via the returned ggplot.
 #' @param ratio (`numeric(1)`) \cr
 #' For `type = "cd"` and `style = 1`, passed to [ggplot2::coord_fixed()], useful for quickly
-#' specifying the aspect ratio of the plot, best used with [ggsave()].
+#' specifying the aspect ratio of the plot, best used with [ggplot2::ggsave()].
 #' @param col (`character(1)`)\cr
 #' For `type = "fn"`, specifies color to fill significant tiles, default is `"red"`.
 #' @param friedman_global (`logical(1)`)\cr
@@ -66,6 +66,7 @@
 #' set.seed(1)
 #' task = tsks(c("iris", "sonar", "wine", "zoo"))
 #' learns = lrns(c("classif.featureless", "classif.rpart", "classif.xgboost"))
+#' learns$classif.xgboost$param_set$values$nrounds = 50
 #' bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 3)))
 #' obj = as_benchmark_aggr(bm)
 #'
@@ -109,7 +110,7 @@ autoplot.BenchmarkAggr = function(object, type = c("mean", "box", "fn", "cd"), m
                           stats::sd)[, 2] / sqrt(object$ntasks)
     loss$lower = loss[, meas] - se * stats::qnorm(1 - (1 - level) / 2)
     loss$upper = loss[, meas] + se * stats::qnorm(1 - (1 - level) / 2)
-    ggplot(data = loss, aes_string(x = object$col_roles$learner_id, y = meas)) +
+    ggplot(data = loss, aes(x = !!sym(object$col_roles$learner_id), y = !!sym(meas))) +
       geom_errorbar(aes(ymin = lower, ymax = upper),
                     width = .5) +
       geom_point()
@@ -133,7 +134,7 @@ autoplot.BenchmarkAggr = function(object, type = c("mean", "box", "fn", "cd"), m
     p$value = factor(ifelse(p$value < p.value, "0", "1"))
 
     ggplot(data = p, aes(x = Var1, y = Var2, fill = value)) +
-      geom_tile(size = 0.5, color = !is.na(p$value)) +
+      geom_tile(linewidth = 0.5, color = !is.na(p$value)) +
       scale_fill_manual(name = "p-value",
                         values = c("0" = col, "1" = "white"),
                         breaks = c("0", "1"),
@@ -145,12 +146,12 @@ autoplot.BenchmarkAggr = function(object, type = c("mean", "box", "fn", "cd"), m
             panel.background = element_rect(fill = "white"),
             legend.background = element_rect(color = "black"),
             legend.key = element_rect(color = "black"),
-            legend.position = c(1, 0.9),
+            legend.position.inside = c(1, 0.9),
             legend.justification = "right")
 
   } else if (type == "box") {
     ggplot(data = object$data,
-           aes_string(x = object$col_roles$learner_id, y = meas)) +
+           aes(x = !!sym(object$col_roles$learner_id), y = !!sym(meas))) +
       geom_boxplot()
   }
 }
