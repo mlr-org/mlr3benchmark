@@ -1,4 +1,7 @@
-# mlr3benchmark 0.1.6-9000
+# mlr3benchmark 0.1.7
+
+* Changed examples to not use `tsk("boston_housing")` anymore
+* Remove use of deprecated `ggplot2` functions
 
 # mlr3benchmark 0.1.6
 

@@ -53,7 +53,7 @@ otherwise the data can be accessed via the returned ggplot.}
 
 \item{ratio}{(\code{numeric(1)}) \cr
 For \code{type = "cd"} and \code{style = 1}, passed to \code{\link[ggplot2:coord_fixed]{ggplot2::coord_fixed()}}, useful for quickly
-specifying the aspect ratio of the plot, best used with \code{\link[=ggsave]{ggsave()}}.}
+specifying the aspect ratio of the plot, best used with \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}}.}
 
 \item{col}{(\code{character(1)})\cr
 For \code{type = "fn"}, specifies color to fill significant tiles, default is \code{"red"}.}
@@ -97,6 +97,7 @@ library(ggplot2)
 set.seed(1)
 task = tsks(c("iris", "sonar", "wine", "zoo"))
 learns = lrns(c("classif.featureless", "classif.rpart", "classif.xgboost"))
+learns$classif.xgboost$param_set$values$nrounds = 50
 bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 3)))
 obj = as_benchmark_aggr(bm)
 
