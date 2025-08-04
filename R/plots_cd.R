@@ -27,7 +27,7 @@
                    y = 2, x = mean(cd$data$mean_rank))
 
   # manually build axis
-  p = p + geom_segment(aes(x = 0, xend = max(rank) + 1, y = 0, yend = 0)) +
+  p = p + annotate("segment", x = 0, xend = max(cd$data$rank) + 1, y = 0, yend = 0) +
     geom_text(data = data.frame(x = seq.int(0, max(cd$data$rank) + 1)),
               aes(x = x, label = x, y = 0.7)) +
     geom_segment(data = data.frame(x = seq.int(0, max(cd$data$rank) + 1)),
