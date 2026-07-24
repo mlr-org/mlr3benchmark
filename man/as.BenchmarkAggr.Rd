@@ -37,7 +37,7 @@ as_benchmark_aggr(df, task_id = "tasks", learner_id = "learners")
 
 if (requireNamespaces(c("mlr3", "rpart"))) {
   library(mlr3)
-  task = tsks(c("pima", "spam"))
+  task = tsks(c("sonar", "spam"))
   learns = lrns(c("classif.featureless", "classif.rpart"))
   bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
 

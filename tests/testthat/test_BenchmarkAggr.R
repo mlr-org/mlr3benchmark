@@ -96,7 +96,7 @@ test_that("mlr3 coercions", {
   skip_if_not_installed("rpart")
 
   library(mlr3)
-  task = tsks(c("pima", "spam"))
+  task = tsks(c("sonar", "spam"))
   learns = lrns(c("classif.featureless", "classif.rpart"))
   bm = benchmark(benchmark_grid(task, learns, rsmp("holdout")))
   expect_equal(class(as_benchmark_aggr(bm))[1], "BenchmarkAggr")
