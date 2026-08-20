@@ -1,3 +1,7 @@
+# mlr3benchmark (development version)
+
+* Examples and tests now use `tsk("sonar")` instead of the `pima` task, which was removed from `mlr3`.
+
 # mlr3benchmark 0.1.7
 
 * Changed examples to not use `tsk("boston_housing")` anymore
