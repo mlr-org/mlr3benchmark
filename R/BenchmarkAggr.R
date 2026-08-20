@@ -23,7 +23,7 @@
 #'
 #' if (requireNamespaces(c("mlr3", "rpart"))) {
 #'   library(mlr3)
-#'   task = tsks(c("pima", "spam"))
+#'   task = tsks(c("sonar", "spam"))
 #'   learns = lrns(c("classif.featureless", "classif.rpart"))
 #'   bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
 #'
@@ -417,7 +417,7 @@ BenchmarkAggr = R6Class("BenchmarkAggr",
 #'
 #' if (requireNamespaces(c("mlr3", "rpart"))) {
 #'   library(mlr3)
-#'   task = tsks(c("pima", "spam"))
+#'   task = tsks(c("sonar", "spam"))
 #'   learns = lrns(c("classif.featureless", "classif.rpart"))
 #'   bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
 #'
@@ -477,7 +477,7 @@ as_benchmark_aggr.BenchmarkResult = function(obj, task_id = "task_id", learner_i
 #'
 #' if (requireNamespaces(c("mlr3", "rpart"))) {
 #'   library(mlr3)
-#'   task = tsks(c("pima", "spam"))
+#'   task = tsks(c("sonar", "spam"))
 #'   learns = lrns(c("classif.featureless", "classif.rpart"))
 #'   bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 2)))
 #'
