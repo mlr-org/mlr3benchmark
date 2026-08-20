@@ -1,3 +1,8 @@
+# mlr3benchmark 0.1.8
+
+* Replaced `tsk("pima")` with `tsk("sonar")` as the
+  former is no longer available.
+
 # mlr3benchmark 0.1.7
 
 * Changed examples to not use `tsk("boston_housing")` anymore
