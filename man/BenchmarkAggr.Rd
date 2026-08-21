@@ -41,242 +41,246 @@ Demšar J (2006).
 \url{https://jmlr.org/papers/v7/demsar06a.html}.
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{data}}{(\link[data.table:data.table]{data.table::data.table}) \cr Aggregated data.}
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{data}}{(\link[data.table:data.table]{data.table::data.table}) \cr Aggregated data.}
 
-\item{\code{learners}}{\code{(character())} \cr Unique learner names.}
+    \item{\code{learners}}{\code{(character())} \cr Unique learner names.}
 
-\item{\code{tasks}}{\code{(character())} \cr Unique task names.}
+    \item{\code{tasks}}{\code{(character())} \cr Unique task names.}
 
-\item{\code{measures}}{\code{(character())} \cr Unique measure names.}
+    \item{\code{measures}}{\code{(character())} \cr Unique measure names.}
 
-\item{\code{nlrns}}{\code{(integer())} \cr Number of learners.}
+    \item{\code{nlrns}}{\code{(integer())} \cr Number of learners.}
 
-\item{\code{ntasks}}{\code{(integer())} \cr Number of tasks.}
+    \item{\code{ntasks}}{\code{(integer())} \cr Number of tasks.}
 
-\item{\code{nmeas}}{\code{(integer())} \cr Number of measures.}
+    \item{\code{nmeas}}{\code{(integer())} \cr Number of measures.}
 
-\item{\code{nrow}}{\code{(integer())} \cr Number of rows.}
+    \item{\code{nrow}}{\code{(integer())} \cr Number of rows.}
 
-\item{\code{col_roles}}{(\code{character()}) \cr
+    \item{\code{col_roles}}{(\code{character()}) \cr
 Column roles, currently cannot be changed after construction.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-BenchmarkAggr-new}{\code{BenchmarkAggr$new()}}
-\item \href{#method-BenchmarkAggr-print}{\code{BenchmarkAggr$print()}}
-\item \href{#method-BenchmarkAggr-summary}{\code{BenchmarkAggr$summary()}}
-\item \href{#method-BenchmarkAggr-rank_data}{\code{BenchmarkAggr$rank_data()}}
-\item \href{#method-BenchmarkAggr-friedman_test}{\code{BenchmarkAggr$friedman_test()}}
-\item \href{#method-BenchmarkAggr-friedman_posthoc}{\code{BenchmarkAggr$friedman_posthoc()}}
-\item \href{#method-BenchmarkAggr-subset}{\code{BenchmarkAggr$subset()}}
-\item \href{#method-BenchmarkAggr-clone}{\code{BenchmarkAggr$clone()}}
-}
+  \itemize{
+    \item \href{#method-BenchmarkAggr-initialize}{\code{BenchmarkAggr$new()}}
+    \item \href{#method-BenchmarkAggr-print}{\code{BenchmarkAggr$print()}}
+    \item \href{#method-BenchmarkAggr-summary}{\code{BenchmarkAggr$summary()}}
+    \item \href{#method-BenchmarkAggr-rank_data}{\code{BenchmarkAggr$rank_data()}}
+    \item \href{#method-BenchmarkAggr-friedman_test}{\code{BenchmarkAggr$friedman_test()}}
+    \item \href{#method-BenchmarkAggr-friedman_posthoc}{\code{BenchmarkAggr$friedman_posthoc()}}
+    \item \href{#method-BenchmarkAggr-subset}{\code{BenchmarkAggr$subset()}}
+    \item \href{#method-BenchmarkAggr-clone}{\code{BenchmarkAggr$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-BenchmarkAggr-new"></a>}}
-\if{latex}{\out{\hypertarget{method-BenchmarkAggr-new}{}}}
-\subsection{Method \code{new()}}{
-Creates a new instance of this \link[R6:R6Class]{R6} class.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BenchmarkAggr$new(
+\if{html}{\out{<a id="method-BenchmarkAggr-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-BenchmarkAggr-initialize}{}}}
+\subsection{\code{BenchmarkAggr$new()}}{
+  Creates a new instance of this \link[R6:R6Class]{R6} class.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BenchmarkAggr$new(
   dt,
   task_id = "task_id",
   learner_id = "learner_id",
   independent = TRUE,
   strip_prefix = TRUE,
   ...
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{dt}}{\code{(matrix(1))}\cr
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{dt}}{\code{(matrix(1))}\cr
 A \code{matrix} like object coercable to \link[data.table:data.table]{data.table::data.table}, should
 include column names "task_id" and "learner_id", and at least one measure (numeric).
 If ids are not already factors then coerced internally.}
-
-\item{\code{task_id}}{(\code{character(1)}) \cr
+      \item{\code{task_id}}{(\code{character(1)}) \cr
 String specifying name of task id column.}
-
-\item{\code{learner_id}}{(\code{character(1)})\cr
+      \item{\code{learner_id}}{(\code{character(1)})\cr
 String specifying name of learner id column.}
-
-\item{\code{independent}}{\code{(logical(1))} \cr
+      \item{\code{independent}}{\code{(logical(1))} \cr
 Are tasks independent of one another? Affects which tests can be used for analysis.}
-
-\item{\code{strip_prefix}}{(\code{logical(1)}) \cr
+      \item{\code{strip_prefix}}{(\code{logical(1)}) \cr
 If \code{TRUE} (default) then mlr prefixes, e.g. \code{regr.}, \code{classif.}, are automatically
 stripped from the \code{learner_id}.}
-
-\item{\code{...}}{\code{ANY} \cr
+      \item{\code{...}}{\code{ANY} \cr
 Additional arguments, currently unused.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-BenchmarkAggr-print"></a>}}
 \if{latex}{\out{\hypertarget{method-BenchmarkAggr-print}{}}}
-\subsection{Method \code{print()}}{
-Prints the internal data via \link[data.table:print.data.table]{data.table::print.data.table}.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BenchmarkAggr$print(...)}\if{html}{\out{</div>}}
+\subsection{\code{BenchmarkAggr$print()}}{
+  Prints the internal data via \link[data.table:print.data.table]{data.table::print.data.table}.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BenchmarkAggr$print(...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{\code{ANY} \cr Passed to \link[data.table:print.data.table]{data.table::print.data.table}.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{\code{ANY} \cr Passed to \link[data.table:print.data.table]{data.table::print.data.table}.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-BenchmarkAggr-summary"></a>}}
 \if{latex}{\out{\hypertarget{method-BenchmarkAggr-summary}{}}}
-\subsection{Method \code{summary()}}{
-Prints the internal data via \link[data.table:print.data.table]{data.table::print.data.table}.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BenchmarkAggr$summary(...)}\if{html}{\out{</div>}}
+\subsection{\code{BenchmarkAggr$summary()}}{
+  Prints the internal data via \link[data.table:print.data.table]{data.table::print.data.table}.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BenchmarkAggr$summary(...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{\code{ANY} \cr Passed to \link[data.table:print.data.table]{data.table::print.data.table}.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{\code{ANY} \cr Passed to \link[data.table:print.data.table]{data.table::print.data.table}.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-BenchmarkAggr-rank_data"></a>}}
 \if{latex}{\out{\hypertarget{method-BenchmarkAggr-rank_data}{}}}
-\subsection{Method \code{rank_data()}}{
-Ranks the aggregated data given some measure.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BenchmarkAggr$rank_data(meas = NULL, minimize = TRUE, task = NULL, ...)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{meas}}{\code{(character(1))} \cr
+\subsection{\code{BenchmarkAggr$rank_data()}}{
+  Ranks the aggregated data given some measure.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BenchmarkAggr$rank_data(meas = NULL, minimize = TRUE, task = NULL, ...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{meas}}{\code{(character(1))} \cr
 Measure to rank the data against, should be in \verb{$measures}. Can be \code{NULL} if only one measure
 in data.}
-
-\item{\code{minimize}}{\code{(logical(1))} \cr
+      \item{\code{minimize}}{\code{(logical(1))} \cr
 Should the measure be minimized? Default is \code{TRUE}.}
-
-\item{\code{task}}{\code{(character(1))} \cr
+      \item{\code{task}}{\code{(character(1))} \cr
 If \code{NULL} then returns a matrix of ranks where columns are tasks and rows are
 learners, otherwise returns a one-column matrix of a specified task, should
 be in \verb{$tasks}.}
+      \item{\code{...}}{\code{ANY} \code{ANY} \cr Passed to \code{\link[data.table:frank]{data.table::frank()}}.}
+    }
+    \if{html}{\out{</div>}}
+  }
+}
 
-\item{\code{...}}{\code{ANY} \code{ANY} \cr Passed to \code{\link[data.table:frank]{data.table::frank()}}.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-BenchmarkAggr-friedman_test"></a>}}
 \if{latex}{\out{\hypertarget{method-BenchmarkAggr-friedman_test}{}}}
-\subsection{Method \code{friedman_test()}}{
-Computes Friedman test over all tasks, assumes datasets are independent.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BenchmarkAggr$friedman_test(meas = NULL, p.adjust.method = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{meas}}{\code{(character(1))} \cr
+\subsection{\code{BenchmarkAggr$friedman_test()}}{
+  Computes Friedman test over all tasks, assumes datasets are independent.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BenchmarkAggr$friedman_test(meas = NULL, p.adjust.method = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{meas}}{\code{(character(1))} \cr
 Measure to rank the data against, should be in \verb{$measures}. If no measure is provided
 then returns a matrix of tests for all measures.}
-
-\item{\code{p.adjust.method}}{\code{(character(1))} \cr
+      \item{\code{p.adjust.method}}{\code{(character(1))} \cr
 Passed to \link{p.adjust} if \code{meas = NULL} for multiple testing correction. If \code{NULL}
 then no correction applied.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-BenchmarkAggr-friedman_posthoc"></a>}}
 \if{latex}{\out{\hypertarget{method-BenchmarkAggr-friedman_posthoc}{}}}
-\subsection{Method \code{friedman_posthoc()}}{
-Posthoc Friedman Nemenyi tests. Computed with
+\subsection{\code{BenchmarkAggr$friedman_posthoc()}}{
+  Posthoc Friedman Nemenyi tests. Computed with
 \link[PMCMRplus:frdAllPairsNemenyiTest]{PMCMRplus::frdAllPairsNemenyiTest}. If global \verb{$friedman_test} is non-significant then
 this is returned and no post-hocs computed. Also returns critical difference
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BenchmarkAggr$friedman_posthoc(
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BenchmarkAggr$friedman_posthoc(
   meas = NULL,
   p.value = 0.05,
   friedman_global = TRUE
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{meas}}{\code{(character(1))} \cr
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{meas}}{\code{(character(1))} \cr
 Measure to rank the data against, should be in \verb{$measures}. Can be \code{NULL} if only one measure
 in data.}
-
-\item{\code{p.value}}{\code{(numeric(1))} \cr
+      \item{\code{p.value}}{\code{(numeric(1))} \cr
 p.value for which the global test will be considered significant.}
-
-\item{\code{friedman_global}}{(\code{logical(1)})\cr
+      \item{\code{friedman_global}}{(\code{logical(1)})\cr
 Should a friedman global test be performed before conducting the posthoc
 test? If \code{FALSE}, a warning is issued in case the corresponding friedman
 global test fails instead of an error. Default is \code{TRUE} (raises an
 error if global test fails).}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-BenchmarkAggr-subset"></a>}}
 \if{latex}{\out{\hypertarget{method-BenchmarkAggr-subset}{}}}
-\subsection{Method \code{subset()}}{
-Subsets the data by given tasks or learners.
+\subsection{\code{BenchmarkAggr$subset()}}{
+  Subsets the data by given tasks or learners.
 Returns data as \link[data.table:data.table]{data.table::data.table}.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BenchmarkAggr$subset(task = NULL, learner = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{task}}{(\code{character()}) \cr
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BenchmarkAggr$subset(task = NULL, learner = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{task}}{(\code{character()}) \cr
 Task(s) to subset the data by.}
-
-\item{\code{learner}}{(\code{character()}) \cr
+      \item{\code{learner}}{(\code{character()}) \cr
 Learner(s) to subset the data by.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-BenchmarkAggr-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-BenchmarkAggr-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BenchmarkAggr$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{BenchmarkAggr$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BenchmarkAggr$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

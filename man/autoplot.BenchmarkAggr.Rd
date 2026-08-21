@@ -89,15 +89,17 @@ It's recommended to crop white space using external tools, or function \code{ima
 }
 }
 \examples{
-if (requireNamespaces(c("mlr3learners", "mlr3", "rpart", "xgboost"))) {
+if (requireNamespaces(c("mlr3", "rpart"))) {
 library(mlr3)
-library(mlr3learners)
 library(ggplot2)
 
 set.seed(1)
 task = tsks(c("iris", "sonar", "wine", "zoo"))
-learns = lrns(c("classif.featureless", "classif.rpart", "classif.xgboost"))
-learns$classif.xgboost$param_set$values$nrounds = 50
+learns = list(
+  lrn("classif.featureless"),
+  lrn("classif.rpart"),
+  lrn("classif.rpart", id = "classif.stump", maxdepth = 1)
+)
 bm = benchmark(benchmark_grid(task, learns, rsmp("cv", folds = 3)))
 obj = as_benchmark_aggr(bm)
 
@@ -106,8 +108,8 @@ autoplot(obj, type = "mean", level = 0.95)
 
 if (requireNamespace("PMCMRplus", quietly = TRUE)) {
   # critical differences
-  autoplot(obj, type = "cd",style = 1)
-  autoplot(obj, type = "cd",style = 2)
+  autoplot(obj, type = "cd", style = 1)
+  autoplot(obj, type = "cd", style = 2)
 
   # post-hoc friedman-nemenyi
   autoplot(obj, type = "fn")
