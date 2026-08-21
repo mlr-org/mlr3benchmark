@@ -20,7 +20,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/mlr-org/mlr3benchmark/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/mlr-org/mlr3benchmark/blob/v0.1.8/DESCRIPTION)
 
 Raphael S, Pfisterer F (2026). *mlr3benchmark: Analysis and
 Visualisation of Benchmark Experiments*. R package version 0.1.8,
